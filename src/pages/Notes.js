@@ -4,7 +4,8 @@ import Masonry from "react-masonry-css";
 import NoteCard from "../components/NoteCard";
 // import axios from "axios";
 
-const uri = "http://localhost:4000/notes/";
+// const uri = "http://localhost:4000/notes/";
+// const uri = "mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
 
 export default function Notes() {
 	const [notes, setNotes] = useState([]);
@@ -17,7 +18,7 @@ export default function Notes() {
 
 	const handleDelete = async (_id) => {
 		console.log(_id);
-		await fetch("http://localhost:4000/notes/" + _id, {
+		await fetch(uri + _id, {
 			method: "DELETE",
 		});
 		const newNotes = notes.filter((note) => note._id !== _id);
