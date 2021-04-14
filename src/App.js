@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Notes from "./pages/Notes";
-import Create from "./pages/Create";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
+
 import Layout from "./components/Layout";
+import Notes from "./pages/Notes";
+import Create from "./pages/Create";
 
 const theme = createMuiTheme({
 	root: {

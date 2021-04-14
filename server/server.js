@@ -1,13 +1,15 @@
 let express = require("express");
 let mongoose = require("mongoose");
 let cors = require("cors");
-let bodyParser = require("body-parser");
+let morgan = require("morgan");
 let database = require("./database/db");
 
 const noteRoute = require("../server/routes/note.routes");
-const { ExposurePlus1Sharp } = require("@material-ui/icons");
 
 mongoose.Promise = global.Promise;
+mongoose.set('useFindAndModify', false);
+
+
 mongoose
 	.connect(database.db, {
 		useNewUrlParser: true,
@@ -30,6 +32,7 @@ app.use(
 	})
 );
 app.use(cors());
+app.use(morgan("dev"));
 app.use("/notes", noteRoute);
 
 const port = process.env.PORT || 4000;
@@ -42,7 +45,7 @@ app.use((req, res, next) => {
 	next(createError(404));
 });
 
-app.use(function (err, req, res, next) {
+app.use(function createError(err, req, res, next) {
 	console.error(err.message);
 	if (!err.statusCode) err.statusCode = 500;
 	res.status(err.statusCode).send(err.message);

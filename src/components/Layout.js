@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	page: {
 		background: "#f9f9f9",
 		padding: theme.spacing(2),
+		width: '100%'
 	},
 	appBar: {
 		[theme.breakpoints.up("sm")]: {
@@ -82,7 +83,7 @@ export default function Layout({ children }) {
 			text: "Create Note",
 			icon: <AddCircleOutlineOutlined color="secondary" />,
 			path: "/create",
-		},
+		}
 	];
 
 	const handleDrawerToggle = () => {
@@ -125,7 +126,7 @@ export default function Layout({ children }) {
 									key={item.text}
 									onClick={() => history.push(item.path)}
 									className={
-										location.pathname == item.path ? classes.active : null
+										location.pathname === item.path ? classes.active : null
 									}
 								>
 									<ListItemIcon>{item.icon}</ListItemIcon>
@@ -141,7 +142,7 @@ export default function Layout({ children }) {
 							paper: classes.drawerPaper,
 						}}
 						variant="permanent"
-						open
+						close
 					>
 						<div>
 							<Link className={classes.title} variant="h6" to="/">
@@ -157,7 +158,7 @@ export default function Layout({ children }) {
 									key={item.text}
 									onClick={() => history.push(item.path)}
 									className={
-										location.pathname == item.path ? classes.active : null
+										location.pathname === item.path ? classes.active : null
 									}
 								>
 									<ListItemIcon>{item.icon}</ListItemIcon>

@@ -5,7 +5,7 @@ let mongoose = require("mongoose"),
 let note = require("../models/note-schema");
 
 router.route("/").get((req, res) => {
-	note.find((error, data) => {
+	note.find((error, data, next) => {
 		if (error) {
 			return next(error);
 		} else {
@@ -25,7 +25,7 @@ router.route("/").post((req, res, next) => {
 	});
 });
 
-router.route("/:id").get((req, res) => {
+router.route("/:id").get((req, res, next) => {
 	note.findById(req.params.id, (error, data) => {
 		if (error) {
 			return next(error);
@@ -38,18 +38,15 @@ router.route("/:id").get((req, res) => {
 // Update Student
 router.route("/:id").put((req, res, next) => {
 	note.findByIdAndUpdate(
-		req.params.id,
-		{
-			$set: req.body,
-		},
-		(error, data) => {
+		req.params.id, { ...req.body, }, (error, data) => {
 			if (error) {
-				return next(error);
 				console.log(error);
+				res.send(404)
 			} else {
 				res.json(data);
 				console.log("note updated successfully !");
 			}
+			return next(error);
 		}
 	);
 });
