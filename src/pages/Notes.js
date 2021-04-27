@@ -5,6 +5,7 @@ import Masonry from "react-masonry-css";
 import NoteCard from "../components/NoteCard";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
 // import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const uri = "http://localhost:4000/note/";
+// const uri = "http://localhost:4000/notes/";
+const uri = "https://jsonplaceholder.typicode.com/posts";
 // const uri =
 // 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
 
@@ -28,6 +30,8 @@ export default function Notes() {
 	const [bdrop, setBdrop] = React.useState(false);
 
 	useEffect(() => {
+		console.log(isLoading);
+
 		setBdrop(true);
 		setIsLoading(true);
 		fetch(uri)
@@ -40,6 +44,7 @@ export default function Notes() {
 			});
 		setIsLoading(false);
 		setBdrop(false);
+		console.log(isLoading);
 	}, [isLoading]);
 
 	const handleDelete = async (_id) => {
@@ -64,7 +69,7 @@ export default function Notes() {
 
 	return (
 		<Container>
-			{!isLoading ? (
+			{!isLoading && notes.length > 0 ? (
 				<Masonry
 					breakpointCols={breakpoints}
 					className="my-masonry-grid"
@@ -85,6 +90,16 @@ export default function Notes() {
 					<CircularProgress color="inherit" />
 				</Backdrop>
 			)}
+			<Backdrop className={classes.backdrop} open={bdrop}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+			{/* <button
+				onClick={() => {
+					setBdrop(!bdrop);
+				}}
+			>
+				me
+			</button> */}
 			{error ? <p>{JSON.stringify(error)}</p> : null}
 		</Container>
 	);

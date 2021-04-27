@@ -6,6 +6,7 @@ import { purple } from "@material-ui/core/colors";
 import Layout from "./components/Layout";
 import Notes from "./pages/Notes";
 import Create from "./pages/Create";
+import Edit from "./pages/Edit";
 
 const theme = createMuiTheme({
 	root: {
@@ -43,7 +44,7 @@ function App() {
 								<Create />
 							</Route>
 							<Route path="/edit/:id">
-								<Create />
+								<Edit />
 							</Route>
 						</Switch>
 					</Layout>

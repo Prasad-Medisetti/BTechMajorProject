@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -9,7 +9,6 @@ import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = makeStyles({
@@ -23,14 +22,10 @@ const useStyles = makeStyles({
 	},
 });
 
-const uri = "http://localhost:4000/notes/";
-// const uri =
-// 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
-
 export default function Edit(props) {
 	const classes = useStyles();
 	const history = useHistory();
-	const params = useParams();
+	// const params = useParams();
 	const [titleError, setTitleError] = useState(false);
 	const [detailsError, setDetailsError] = useState(false);
 
@@ -40,14 +35,14 @@ export default function Edit(props) {
 		category: "monney",
 	});
 
-	useEffect(() => {
-		const _id = params.id;
-		console.log(params.id);
-		fetch(uri + _id)
-			.then((res) => res.json())
-			.then((data) => setNote(data))
-			.catch((error) => console.log(error));
-	}, [params.id]);
+	// useEffect(() => {
+	// 	const _id = params.id;
+	// 	console.log(params.id);
+	// 	fetch(uri + _id)
+	// 		.then((res) => res.json())
+	// 		.then((data) => setNote(data))
+	// 		.catch((error) => console.log(error));
+	// }, [params.id]);
 
 	const onChange = (e) => {
 		const value = e.target.value;
@@ -94,7 +89,7 @@ export default function Edit(props) {
 				component="h2"
 				gutterBottom
 			>
-				Edit a Note
+				Create a New Post
 			</Typography>
 
 			<form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -125,10 +120,11 @@ export default function Edit(props) {
 					error={detailsError}
 				/>
 
-				<FormControl className={classes.field}>
+				<div className={classes.field}>
 					<FormLabel>Post Category</FormLabel>
 					<RadioGroup
 						name="category"
+						aria-label="category"
 						value={note.category}
 						onChange={(e) => onChange(e)}
 					>
@@ -141,7 +137,7 @@ export default function Edit(props) {
 						/>
 						<FormControlLabel value="work" control={<Radio />} label="Work" />
 					</RadioGroup>
-				</FormControl>
+				</div>
 
 				<Button
 					type="submit"
