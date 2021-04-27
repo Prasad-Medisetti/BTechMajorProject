@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -14,7 +14,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = makeStyles({
 	container: {
-		width: '100%',
+		width: "100%",
 	},
 	field: {
 		marginTop: 20,
@@ -27,37 +27,35 @@ const uri = "http://localhost:4000/notes/";
 // const uri =
 // 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
 
-export default function Edit() {
+export default function Edit(props) {
 	const classes = useStyles();
 	const history = useHistory();
-	const location = useLocation();
+	const params = useParams();
 	const [titleError, setTitleError] = useState(false);
 	const [detailsError, setDetailsError] = useState(false);
 
 	const [note, setNote] = useState({
 		title: "",
 		details: "",
-		category: "monney"
+		category: "monney",
 	});
 
 	useEffect(() => {
-		const _id = location.pathname.split("create/")[1];
-		// console.log(_id)
+		const _id = params.id;
+		console.log(params.id);
 		fetch(uri + _id)
 			.then((res) => res.json())
 			.then((data) => setNote(data))
-			.catch((error) =>
-				console.log(error)
-			);
-	}, [location.pathname]);
+			.catch((error) => console.log(error));
+	}, [params.id]);
 
 	const onChange = (e) => {
 		const value = e.target.value;
 		setNote({
 			...note,
-			[e.target.name]: value
+			[e.target.name]: value,
 		});
-	}
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -78,8 +76,7 @@ export default function Edit() {
 					headers: { "Content-type": "application/json" },
 					body: JSON.stringify({ ...note }),
 				}).then(() => history.push("/"));
-			}
-			else {
+			} else {
 				fetch("http://localhost:4000/notes/", {
 					method: "POST",
 					headers: { "Content-type": "application/json" },
@@ -98,13 +95,13 @@ export default function Edit() {
 				gutterBottom
 			>
 				Edit a Note
-			</ Typography >
+			</Typography>
 
 			<form noValidate autoComplete="off" onSubmit={handleSubmit}>
 				<TextField
 					className={classes.field}
 					onChange={(e) => onChange(e)}
-					label="Note Title"
+					label="Post Title"
 					variant="outlined"
 					color="secondary"
 					fullWidth
@@ -116,7 +113,7 @@ export default function Edit() {
 				<TextField
 					className={classes.field}
 					onChange={(e) => onChange(e)}
-					label="Details"
+					label="Post Details"
 					variant="outlined"
 					color="secondary"
 					multiline
@@ -129,7 +126,7 @@ export default function Edit() {
 				/>
 
 				<FormControl className={classes.field}>
-					<FormLabel>Note Category</FormLabel>
+					<FormLabel>Post Category</FormLabel>
 					<RadioGroup
 						name="category"
 						value={note.category}

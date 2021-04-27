@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	page: {
 		background: "#f9f9f9",
 		padding: theme.spacing(2),
-		width: '100%'
+		width: "100%",
 	},
 	appBar: {
 		[theme.breakpoints.up("sm")]: {
@@ -75,15 +75,15 @@ export default function Layout({ children }) {
 
 	const menuItems = [
 		{
-			text: "My Notes",
+			text: "My Posts",
 			icon: <SubjectOutlined color="secondary" />,
 			path: "/",
 		},
 		{
-			text: "Create Note",
+			text: "Create Post",
 			icon: <AddCircleOutlineOutlined color="secondary" />,
 			path: "/create",
-		}
+		},
 	];
 
 	const handleDrawerToggle = () => {
@@ -124,7 +124,10 @@ export default function Layout({ children }) {
 								<ListItem
 									button
 									key={item.text}
-									onClick={() => history.push(item.path)}
+									onClick={() => {
+										history.push(item.path);
+										handleDrawerToggle();
+									}}
 									className={
 										location.pathname === item.path ? classes.active : null
 									}
@@ -156,7 +159,9 @@ export default function Layout({ children }) {
 								<ListItem
 									button
 									key={item.text}
-									onClick={() => history.push(item.path)}
+									onClick={() => {
+										history.push(item.path);
+									}}
 									className={
 										location.pathname === item.path ? classes.active : null
 									}
