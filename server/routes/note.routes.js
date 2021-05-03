@@ -37,18 +37,16 @@ router.route("/:id").get((req, res, next) => {
 
 // Update Student
 router.route("/:id").put((req, res, next) => {
-	note.findByIdAndUpdate(
-		req.params.id, { ...req.body, }, (error, data) => {
-			if (error) {
-				console.log(error);
-				res.send(404)
-			} else {
-				res.json(data);
-				console.log("note updated successfully !");
-			}
-			return next(error);
+	note.findByIdAndUpdate(req.params.id, { ...req.body }, (error, data) => {
+		if (error) {
+			console.log(error);
+			res.send(404);
+		} else {
+			res.json(data);
+			console.log("note updated successfully !");
 		}
-	);
+		return next(error);
+	});
 });
 
 router.route("/:id").delete((req, res, next) => {

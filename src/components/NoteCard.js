@@ -47,50 +47,54 @@ export default function NoteCard({ note, handleEdit, handleDelete }) {
 		setcardMenu(null);
 	};
 
+	console.log(note);
+
 	return (
 		<div>
-			<Card elevation={1} variant="outlined">
-				<CardHeader
-					avatar={
-						<Avatar className={classes.avatar}>
-							{note.category[0].toUpperCase()}
-						</Avatar>
-					}
-					action={
-						<>
-							<IconButton
-								aria-label="settings"
-								aria-haspopup="true"
-								onClick={showCardMenu}
-								className={classes.cardMenu}
-							>
-								<MoreVertOutlined />
-							</IconButton>
-							<Menu
-								id="card-menu"
-								anchorEl={cardMenu}
-								keepMounted
-								open={Boolean(cardMenu)}
-								onClose={handleClose}
-							>
-								<MenuItem onClick={() => handleEdit(note._id)}>
-									<EditOutlined fontSize="small" /> Edit
-								</MenuItem>
-								<MenuItem onClick={() => handleDelete(note._id)}>
-									<DeleteOutlined fontSize="small" /> Delete
-								</MenuItem>
-							</Menu>
-						</>
-					}
-					title={note.title}
-					subheader={note.category}
-				/>
-				<CardContent>
-					<Typography variant="body2" color="textSecondary">
-						{note.details}
-					</Typography>
-				</CardContent>
-			</Card>
+			{note ? (
+				<Card elevation={1} variant="outlined">
+					<CardHeader
+						avatar={
+							<Avatar className={classes.avatar}>
+								{note.category[0].toUpperCase()}
+							</Avatar>
+						}
+						action={
+							<>
+								<IconButton
+									aria-label="settings"
+									aria-haspopup="true"
+									onClick={showCardMenu}
+									className={classes.cardMenu}
+								>
+									<MoreVertOutlined />
+								</IconButton>
+								<Menu
+									id="card-menu"
+									anchorEl={cardMenu}
+									keepMounted
+									open={Boolean(cardMenu)}
+									onClose={handleClose}
+								>
+									<MenuItem onClick={() => handleEdit(note._id)}>
+										<EditOutlined fontSize="small" /> Edit
+									</MenuItem>
+									<MenuItem onClick={() => handleDelete(note._id)}>
+										<DeleteOutlined fontSize="small" /> Delete
+									</MenuItem>
+								</Menu>
+							</>
+						}
+						title={note.title}
+						subheader={note.category}
+					/>
+					<CardContent>
+						<Typography variant="body2" color="textSecondary">
+							{note.details}
+						</Typography>
+					</CardContent>
+				</Card>
+			) : null}
 		</div>
 	);
 }

@@ -3,7 +3,13 @@ import { useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Masonry from "react-masonry-css";
 import NoteCard from "../components/NoteCard";
-import { Backdrop, CircularProgress } from "@material-ui/core";
+import {
+	Backdrop,
+	CircularProgress,
+	Grid,
+	Paper,
+	Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 // import axios from "axios";
@@ -15,37 +21,31 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-// const uri = "http://localhost:4000/notes/";
-const uri = "https://jsonplaceholder.typicode.com/posts";
+const uri = "http://localhost:4000/notes/";
 // const uri =
 // 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
 
 export default function Notes() {
 	const classes = useStyles();
 	const history = useHistory();
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [notes, setNotes] = useState([]);
 
-	const [bdrop, setBdrop] = React.useState(false);
-
 	useEffect(() => {
-		console.log(isLoading);
-
-		setBdrop(true);
-		setIsLoading(true);
+		setLoading(true);
 		fetch(uri)
-			.then((res) => res.json())
-			.then((data) => {
-				setNotes(data);
+			.then((res) => {
+				console.log("res :>> ", res);
+				if (res.ok) {
+					setNotes((prevNotes, newNotes) => newNotes);
+				} else {
+					setError(res.statusText);
+				}
 			})
-			.catch((error) => {
-				setError(error);
-			});
-		setIsLoading(false);
-		setBdrop(false);
-		console.log(isLoading);
-	}, [isLoading]);
+			.catch((err) => setError(err));
+		setLoading(false);
+	}, [notes]);
 
 	const handleDelete = async (_id) => {
 		// console.log(_id);
@@ -69,6 +69,19 @@ export default function Notes() {
 
 	return (
 		<Container>
+			{isLoading ? (
+				<div
+					style={{
+						margin: ".5rem auto",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						height: "85vh",
+					}}
+				>
+					<CircularProgress color="inherit" />
+				</div>
+			) : null}
 			{!isLoading && notes.length > 0 ? (
 				<Masonry
 					breakpointCols={breakpoints}
@@ -85,22 +98,20 @@ export default function Notes() {
 						</div>
 					))}
 				</Masonry>
-			) : (
-				<Backdrop className={classes.backdrop} open={bdrop}>
-					<CircularProgress color="inherit" />
-				</Backdrop>
-			)}
-			<Backdrop className={classes.backdrop} open={bdrop}>
-				<CircularProgress color="inherit" />
-			</Backdrop>
-			{/* <button
-				onClick={() => {
-					setBdrop(!bdrop);
-				}}
-			>
-				me
-			</button> */}
-			{error ? <p>{JSON.stringify(error)}</p> : null}
+			) : null}
+			{error ? (
+				<div
+					style={{
+						margin: ".5rem auto",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						height: "85vh",
+					}}
+				>
+					<Typography>{error}</Typography>
+				</div>
+			) : null}
 		</Container>
 	);
 }

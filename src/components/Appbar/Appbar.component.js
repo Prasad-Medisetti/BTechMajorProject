@@ -14,7 +14,7 @@ function Appbar({ classes, handleDrawerToggle }) {
 		<AppBar
 			position="fixed"
 			className={classes.appBar}
-			elevation={0}
+			elevation={2}
 			color="primary"
 		>
 			<Toolbar>
