@@ -8,6 +8,8 @@ import Notes from "./pages/Notes";
 import Create from "./pages/Create";
 import Edit from "./pages/Edit";
 
+// import AppBar from "./components/appBar/appBar.component";
+
 const theme = createMuiTheme({
 	root: {
 		// transition: "1s",
@@ -26,9 +28,6 @@ const theme = createMuiTheme({
 		fontWeightBold: 700,
 	},
 });
-
-// import AppBar from "./components/appBar/appBar.component";
-// import Footer from "./components/footer/footer.component";
 
 function App() {
 	return (
@@ -49,8 +48,6 @@ function App() {
 						</Switch>
 					</Layout>
 				</Router>
-				{/* <AppBar /> */}
-				{/* <Footer /> */}
 			</div>
 		</ThemeProvider>
 	);

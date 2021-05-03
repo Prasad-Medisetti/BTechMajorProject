@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/MenuOutlined";
 
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 function Appbar({ classes, handleDrawerToggle }) {
 	return (
@@ -29,12 +31,12 @@ function Appbar({ classes, handleDrawerToggle }) {
 						<MenuIcon />
 					</IconButton>
 				</Hidden>
-				<Typography className={classes.date}>
+				{/* <Typography className={classes.date}>
 					Today is the {format(new Date(), "do MMMM Y")}
-				</Typography>
-				{/* <Typography variant="h6" className={classes.title}>
-					Online Notice Board
 				</Typography> */}
+				<Link to="/" className={classes.title}>
+					Online Notice Board
+				</Link>
 				<Typography>Admin</Typography>
 				<Avatar className={classes.avatar} />
 			</Toolbar>

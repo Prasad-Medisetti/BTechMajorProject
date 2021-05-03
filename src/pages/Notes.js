@@ -19,9 +19,16 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: theme.zIndex.drawer + 1,
 		color: "#fff",
 	},
+	block: {
+		margin: ".5rem auto",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		height: "78vh",
+	},
 }));
 
-const uri = "http://localhost:4000/notes/";
+const uri = "http://localhost:4000/note/";
 // const uri =
 // 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
 
@@ -32,20 +39,27 @@ export default function Notes() {
 	const [error, setError] = useState(null);
 	const [notes, setNotes] = useState([]);
 
-	useEffect(() => {
-		setLoading(true);
+	const fetchPosts = (URI) => {
 		fetch(uri)
-			.then((res) => {
-				console.log("res :>> ", res);
-				if (res.ok) {
-					setNotes((prevNotes, newNotes) => newNotes);
+			.then((res) => res.json())
+			.then((data) => {
+				if (Array.isArray(data)) {
+					setError(null);
+					setNotes(data);
 				} else {
-					setError(res.statusText);
+					setError(data.error);
+					setNotes([]);
 				}
 			})
-			.catch((err) => setError(err));
+			.catch((err) => setError(JSON.stringify(err)));
+	};
+
+	useEffect(() => {
+		setLoading(true);
+		setError(null);
+		fetchPosts(uri);
 		setLoading(false);
-	}, [notes]);
+	}, [setError, setLoading]);
 
 	const handleDelete = async (_id) => {
 		// console.log(_id);
@@ -70,15 +84,7 @@ export default function Notes() {
 	return (
 		<Container>
 			{isLoading ? (
-				<div
-					style={{
-						margin: ".5rem auto",
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						height: "85vh",
-					}}
-				>
+				<div className={classes.block}>
 					<CircularProgress color="inherit" />
 				</div>
 			) : null}
@@ -100,17 +106,9 @@ export default function Notes() {
 				</Masonry>
 			) : null}
 			{error ? (
-				<div
-					style={{
-						margin: ".5rem auto",
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						height: "85vh",
-					}}
-				>
+				<Paper variant="elevation" elevation={2} className={classes.block}>
 					<Typography>{error}</Typography>
-				</div>
+				</Paper>
 			) : null}
 		</Container>
 	);

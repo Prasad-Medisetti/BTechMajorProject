@@ -47,8 +47,6 @@ export default function NoteCard({ note, handleEdit, handleDelete }) {
 		setcardMenu(null);
 	};
 
-	console.log(note);
-
 	return (
 		<div>
 			{note ? (

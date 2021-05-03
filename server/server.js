@@ -34,7 +34,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use("/notes", noteRoute);
 app.use("*", (req, res) => {
-	res.status(404).json({ message: "Not Found" });
+	res.status(404).json({ error: "Not Found" });
 });
 
 const port = process.env.PORT || 4000;

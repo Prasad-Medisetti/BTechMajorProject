@@ -1,8 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link as RouterLink, useHistory, useLocation } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,17 +11,22 @@ import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
 import { purple } from "@material-ui/core/colors";
 
 import Appbar from "./Appbar/Appbar.component";
+import Footer from "./Footer/Footer.component";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
+		flexDirection: "column",
 	},
 	page: {
 		background: "#f9f9f9",
-		padding: theme.spacing(2),
-		width: "100%",
+		padding: theme.spacing(2, 0),
+		[theme.breakpoints.up("sm")]: {
+			width: `calc(100% - ${drawerWidth}px)`,
+			marginLeft: drawerWidth,
+		},
 	},
 	appBar: {
 		[theme.breakpoints.up("sm")]: {
@@ -29,6 +34,23 @@ const useStyles = makeStyles((theme) => ({
 			marginLeft: drawerWidth,
 		},
 		display: "flex",
+	},
+	footer: {
+		[theme.breakpoints.up("sm")]: {
+			width: `calc(100% - ${drawerWidth}px)`,
+			marginLeft: drawerWidth,
+		},
+		margin: theme.spacing(0),
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+		minHeight: "4vh",
+		padding: theme.spacing(2, 0, 2, 0),
+		backgroundColor:
+			theme.palette.type === "light"
+				? theme.palette.grey[200]
+				: theme.palette.grey[800],
 	},
 	// necessary for content to be below app bar
 	drawer: {
@@ -113,9 +135,9 @@ export default function Layout({ children }) {
 						}}
 					>
 						<div>
-							<Link className={classes.title} variant="h6" to="/">
+							<RouterLink className={classes.title} variant="h6" to="/">
 								Online Notice Board
-							</Link>
+							</RouterLink>
 						</div>
 
 						{/* links/list section */}
@@ -148,9 +170,9 @@ export default function Layout({ children }) {
 						close
 					>
 						<div>
-							<Link className={classes.title} variant="h6" to="/">
+							<RouterLink className={classes.title} variant="h6" to="/">
 								Online Notice Board
-							</Link>
+							</RouterLink>
 						</div>
 
 						{/* links/list section */}
@@ -176,10 +198,12 @@ export default function Layout({ children }) {
 			</nav>
 
 			{/* main content */}
-			<div className={classes.page}>
+			<main className={classes.page}>
 				<div className={classes.toolbar}></div>
 				{children}
-			</div>
+			</main>
+
+			<Footer classes={classes} />
 		</div>
 	);
 }
