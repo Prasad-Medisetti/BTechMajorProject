@@ -110,12 +110,12 @@ export default function Layout({ children }) {
 		{
 			text: "My Posts",
 			icon: <SubjectOutlined color="secondary" />,
-			path: "posts",
+			path: "/posts",
 		},
 		{
 			text: "Create Post",
 			icon: <AddCircleOutlineOutlined color="secondary" />,
-			path: "create",
+			path: "/posts/create",
 		},
 	];
 
@@ -214,13 +214,10 @@ export default function Layout({ children }) {
 				{children}
 				<Router>
 					<Switch>
-						<Route exact path="/">
-							<Notes />
-						</Route>
-						<Route path="create">
+						<Route path="/create">
 							<Create />
 						</Route>
-						<Route path="edit/:id">
+						<Route path="/edit/:id">
 							<Edit />
 						</Route>
 					</Switch>

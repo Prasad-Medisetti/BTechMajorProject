@@ -4,11 +4,11 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
-import { makeStyles } from "@material-ui/core";
+import { FormControlLabel, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = makeStyles({
@@ -76,13 +76,14 @@ export default function Edit(props) {
 					method: "POST",
 					headers: { "Content-type": "application/json" },
 					body: JSON.stringify({ ...note }),
-				}).then(() => history.push("/"));
+				}).then(() => history.push("/posts"));
 			}
 		}
 	};
 
 	return (
 		<Container maxWidth="sm">
+			{window.location.pathname}
 			<Typography
 				variant="h6"
 				color="textSecondary"
@@ -128,14 +129,30 @@ export default function Edit(props) {
 						value={note.category}
 						onChange={(e) => onChange(e)}
 					>
-						<FormControlLabel value="money" control={<Radio />} label="Money" />
-						<FormControlLabel value="todos" control={<Radio />} label="Todos" />
-						<FormControlLabel
+						<FormControl
+							required
+							value="money"
+							control={<Radio />}
+							label="Money"
+						/>
+						<FormControl
+							required
+							value="todos"
+							control={<Radio />}
+							label="Todos"
+						/>
+						<FormControl
+							required
 							value="reminders"
 							control={<Radio />}
 							label="Reminders"
 						/>
-						<FormControlLabel value="work" control={<Radio />} label="Work" />
+						<FormControl
+							required
+							value="work"
+							control={<Radio />}
+							label="Work"
+						/>
 					</RadioGroup>
 				</div>
 

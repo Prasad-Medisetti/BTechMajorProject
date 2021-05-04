@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Masonry from "react-masonry-css";
 import NoteCard from "../components/NoteCard";
@@ -35,6 +35,7 @@ const uri = "http://localhost:4000/note/";
 export default function Notes() {
 	const classes = useStyles();
 	const history = useHistory();
+	const location = useLocation();
 	const [isLoading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [notes, setNotes] = useState([]);
@@ -71,7 +72,7 @@ export default function Notes() {
 	};
 
 	const handleEdit = async (_id) => {
-		history.push("/edit/" + _id);
+		history.push("/posts/edit/" + _id);
 	};
 
 	const breakpoints = {
