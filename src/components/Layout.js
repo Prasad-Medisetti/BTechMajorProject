@@ -2,16 +2,27 @@ import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import { Link as RouterLink, useHistory, useLocation } from "react-router-dom";
+import {
+	Link as RouterLink,
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	useHistory,
+	useLocation,
+} from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+
 import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
 import { purple } from "@material-ui/core/colors";
 
 import Appbar from "./Appbar/Appbar.component";
 import Footer from "./Footer/Footer.component";
+import Notes from "../pages/Notes";
+import Create from "../pages/Create";
+import Edit from "../pages/Edit";
 
 const drawerWidth = 240;
 
@@ -99,12 +110,12 @@ export default function Layout({ children }) {
 		{
 			text: "My Posts",
 			icon: <SubjectOutlined color="secondary" />,
-			path: "/",
+			path: "posts",
 		},
 		{
 			text: "Create Post",
 			icon: <AddCircleOutlineOutlined color="secondary" />,
-			path: "/create",
+			path: "create",
 		},
 	];
 
@@ -201,6 +212,19 @@ export default function Layout({ children }) {
 			<main className={classes.page}>
 				<div className={classes.toolbar}></div>
 				{children}
+				<Router>
+					<Switch>
+						<Route exact path="/">
+							<Notes />
+						</Route>
+						<Route path="create">
+							<Create />
+						</Route>
+						<Route path="edit/:id">
+							<Edit />
+						</Route>
+					</Switch>
+				</Router>
 			</main>
 
 			<Footer classes={classes} />

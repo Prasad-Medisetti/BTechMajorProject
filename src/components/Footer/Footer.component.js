@@ -7,7 +7,7 @@ export default function Footer({ classes }) {
 		<footer className={classes.footer}>
 			<Typography variant="body2" color="textSecondary">
 				{"© " + new Date().getFullYear() + " "}
-				<Link color="inherit" href="https://material-ui.com/">
+				<Link color="inherit" href="">
 					Online Notice Board
 				</Link>
 			</Typography>

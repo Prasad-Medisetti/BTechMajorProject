@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import Notes from "./pages/Notes";
 import Create from "./pages/Create";
 import Edit from "./pages/Edit";
+import Home from "./pages/Home/Home.component";
 
 // import AppBar from "./components/appBar/appBar.component";
 
@@ -34,19 +35,14 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<div className="App">
 				<Router>
-					<Layout>
-						<Switch>
-							<Route exact path="/">
-								<Notes />
-							</Route>
-							<Route path="/create">
-								<Create />
-							</Route>
-							<Route path="/edit/:id">
-								<Edit />
-							</Route>
-						</Switch>
-					</Layout>
+					<Switch>
+						<Route exact path="/">
+							<Home />
+						</Route>
+						<Route path="/posts">
+							<Layout />
+						</Route>
+					</Switch>
 				</Router>
 			</div>
 		</ThemeProvider>
