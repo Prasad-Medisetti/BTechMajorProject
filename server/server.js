@@ -2,10 +2,12 @@ let express = require("express");
 let mongoose = require("mongoose");
 let cors = require("cors");
 let morgan = require("morgan");
+
 let database = require("./database/db");
 
 const noteRoute = require("../server/routes/note.routes");
 
+require("dotenv").config();
 mongoose.Promise = global.Promise;
 mongoose.set("useFindAndModify", false);
 

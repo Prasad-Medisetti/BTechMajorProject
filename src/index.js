@@ -1,14 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import reportWebVitals from "./reportWebVitals";
+
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import "material-design-icons/iconfont/material-icons.css";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
+		<Router basename={process.env.PUBLIC_URL}>
+			<App />
+		</Router>
 	</React.StrictMode>,
-	document.querySelector("#root")
+	document.querySelector("#root"),
 );
 
 // If you want to start measuring performance in your app, pass a function

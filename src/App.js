@@ -154,9 +154,14 @@ function App() {
 		setMobileOpen(!mobileOpen);
 	};
 
+	const click = () => {
+		console.log("history :>> ", history);
+		history.push("/");
+	};
+	// console.log(process.env.PUBLIC_URL);
 	return (
-		<ThemeProvider theme={theme}>
-			<Router basename={process.env.PUBLIC_URL}>
+		<>
+			<ThemeProvider theme={theme}>
 				<div className={classes.root}>
 					{/* app bar */}
 					<AppBar position="sticky" className={classes.appbar}>
@@ -164,9 +169,7 @@ function App() {
 							<Link
 								className={classes.title}
 								style={{ fontSize: 24 }}
-								onClick={() => {
-									history.replace("/");
-								}}
+								onClick={click}
 							>
 								Online Notice Board
 							</Link>
@@ -178,21 +181,20 @@ function App() {
 									size="large"
 									aria-label="vertical contained primary button group"
 								>
+									{/* <Button onClick={() => history.push("/")}>Go to home</Button> */}
 									{menuItems.map((item, index) => (
 										<Button
 											key={index}
 											variant="text"
 											color="inherit"
 											fullWidth
-											onClick={() => {
-												history.push(item.path);
-											}}
+											onClick={() => history.push("/")}
 										>
 											{item.text}
 										</Button>
 									))}
 								</ButtonGroup>
-								<span class="material-icons md-18">face</span>
+								<span className="material-icons md-18">face</span>
 							</Hidden>
 							<Hidden mdUp implementation="css">
 								<IconButton
@@ -220,9 +222,7 @@ function App() {
 									variant="h6"
 									component="h4"
 									children="Online Notice Board"
-									onClick={() => {
-										history.replace("/");
-									}}
+									onClick={() => history.push("/")}
 								/>
 							</ListItem>
 							<Divider style={{ margin: "1em" }} />
@@ -248,10 +248,7 @@ function App() {
 											color="inherit"
 											fullWidth
 											startIcon={item.icon}
-											onClick={() => {
-												history.replace(item.path);
-												console.log(item.path);
-											}}
+											onClick={() => history.push("/")}
 										>
 											{item.text}
 										</Button>
@@ -277,8 +274,8 @@ function App() {
 					</main>
 					<Footer classes={classes} />
 				</div>
-			</Router>
-		</ThemeProvider>
+			</ThemeProvider>
+		</>
 	);
 }
 
