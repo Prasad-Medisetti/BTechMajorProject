@@ -141,12 +141,12 @@ function App() {
 		{
 			text: "SIGN IN",
 			icon: <BiLogInCircle className={classes.icon} />,
-			path: "#",
+			path: "/signin",
 		},
 		{
-			text: "SIGN OUT",
+			text: "SIGN UP",
 			icon: <BiLogOutCircle />,
-			path: "#",
+			path: "/signup",
 		},
 	];
 
@@ -184,12 +184,15 @@ function App() {
 											variant="text"
 											color="inherit"
 											fullWidth
-											endIcon={item.icon}
+											onClick={() => {
+												history.push(item.path);
+											}}
 										>
 											{item.text}
 										</Button>
 									))}
 								</ButtonGroup>
+								<span class="material-icons md-18">face</span>
 							</Hidden>
 							<Hidden mdUp implementation="css">
 								<IconButton
@@ -245,6 +248,10 @@ function App() {
 											color="inherit"
 											fullWidth
 											startIcon={item.icon}
+											onClick={() => {
+												history.replace(item.path);
+												console.log(item.path);
+											}}
 										>
 											{item.text}
 										</Button>

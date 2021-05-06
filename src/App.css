@@ -1,38 +1,54 @@
-.App {
-	text-align: center;
+.material-icons {
+	font-family: "Material Icons";
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px; /* Preferred icon size */
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+
+	/* Support for all WebKit browsers. */
+	-webkit-font-smoothing: antialiased;
+	/* Support for Safari and Chrome. */
+	text-rendering: optimizeLegibility;
+
+	/* Support for Firefox. */
+	-moz-osx-font-smoothing: grayscale;
+
+	/* Support for IE. */
+	font-feature-settings: "liga";
 }
 
-.App-logo {
-	height: 40vmin;
-	pointer-events: none;
+/* Rules for sizing the icon. */
+.material-icons.md-18 {
+	font-size: 18px;
+}
+.material-icons.md-24 {
+	font-size: 24px;
+}
+.material-icons.md-36 {
+	font-size: 36px;
+}
+.material-icons.md-48 {
+	font-size: 48px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-	.App-logo {
-		animation: App-logo-spin infinite 20s linear;
-	}
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark {
+	color: rgba(0, 0, 0, 0.54);
+}
+.material-icons.md-dark.md-inactive {
+	color: rgba(0, 0, 0, 0.26);
 }
 
-.App-header {
-	background-color: #282c34;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: calc(10px + 2vmin);
-	color: white;
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light {
+	color: rgba(255, 255, 255, 1);
 }
-
-.App-link {
-	color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+.material-icons.md-light.md-inactive {
+	color: rgba(255, 255, 255, 0.3);
 }
