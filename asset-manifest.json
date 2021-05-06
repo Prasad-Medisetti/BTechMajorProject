@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/BTechMajorProject/static/css/main.6d96902c.chunk.css",
-    "main.js": "/BTechMajorProject/static/js/main.0183ae92.chunk.js",
-    "main.js.map": "/BTechMajorProject/static/js/main.0183ae92.chunk.js.map",
+    "main.js": "/BTechMajorProject/static/js/main.436b9527.chunk.js",
+    "main.js.map": "/BTechMajorProject/static/js/main.436b9527.chunk.js.map",
     "runtime-main.js": "/BTechMajorProject/static/js/runtime-main.490f3d8a.js",
     "runtime-main.js.map": "/BTechMajorProject/static/js/runtime-main.490f3d8a.js.map",
     "static/js/2.28778a9a.chunk.js": "/BTechMajorProject/static/js/2.28778a9a.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.490f3d8a.js",
     "static/js/2.28778a9a.chunk.js",
     "static/css/main.6d96902c.chunk.css",
-    "static/js/main.0183ae92.chunk.js"
+    "static/js/main.436b9527.chunk.js"
   ]
 }
