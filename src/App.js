@@ -34,14 +34,14 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="App">
-				<Router>
+				<Router basename={process.env.PUBLIC_URL}>
 					<Switch>
 						<Route exact path="/">
 							<Home />
 						</Route>
-						<Route path="/posts">
+						{/* <Route path="/posts">
 							<Layout />
-						</Route>
+						</Route> */}
 					</Switch>
 				</Router>
 			</div>
