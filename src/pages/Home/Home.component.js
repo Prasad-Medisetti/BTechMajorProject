@@ -144,7 +144,13 @@ export default function Home() {
 			{/* app bar */}
 			<AppBar position="sticky" className={classes.appbar}>
 				<Toolbar className={classes.toolbar}>
-					<Link className={classes.title} style={{ fontSize: 24 }} href="/">
+					<Link
+						className={classes.title}
+						style={{ fontSize: 24 }}
+						onClick={() => {
+							history.replace("/");
+						}}
+					>
 						Online Notice Board
 					</Link>
 					<Hidden smDown implementation="css">
