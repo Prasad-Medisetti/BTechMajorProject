@@ -5,7 +5,6 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
 import App from "./App";
-import "material-design-icons/iconfont/material-icons.css";
 
 ReactDOM.render(
 	<React.StrictMode>

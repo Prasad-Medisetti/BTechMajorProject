@@ -28,9 +28,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const uri = "http://localhost:4000/note/";
-// const uri =
-// 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
+const uri = "https://onlinenoticeboard-server.herokuapp.com/notes";
 
 export default function Notes() {
 	const classes = useStyles();
@@ -72,7 +70,7 @@ export default function Notes() {
 	};
 
 	const handleEdit = async (_id) => {
-		history.push("/posts/edit/" + _id);
+		history.push("/dashboard/edit/" + _id);
 	};
 
 	const breakpoints = {

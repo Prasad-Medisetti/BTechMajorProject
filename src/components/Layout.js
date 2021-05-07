@@ -110,12 +110,12 @@ export default function Layout({ children }) {
 		{
 			text: "My Posts",
 			icon: <SubjectOutlined color="secondary" />,
-			path: "/posts",
+			path: "/dashboard",
 		},
 		{
 			text: "Create Post",
 			icon: <AddCircleOutlineOutlined color="secondary" />,
-			path: "/posts/create",
+			path: "/dashboard/create",
 		},
 	];
 
@@ -223,8 +223,6 @@ export default function Layout({ children }) {
 					</Switch>
 				</Router>
 			</main>
-
-			<Footer classes={classes} />
 		</div>
 	);
 }

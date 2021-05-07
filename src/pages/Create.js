@@ -66,17 +66,20 @@ export default function Edit(props) {
 		if (note.title && note.details) {
 			if (note._id) {
 				// console.log(note._id);
-				fetch("http://localhost:4000/notes/" + note._id, {
-					method: "PUT",
-					headers: { "Content-type": "application/json" },
-					body: JSON.stringify({ ...note }),
-				}).then(() => history.push("/"));
+				fetch(
+					"https://onlinenoticeboard-server.herokuapp.com/notes" + note._id,
+					{
+						method: "PUT",
+						headers: { "Content-type": "application/json" },
+						body: JSON.stringify({ ...note }),
+					},
+				).then(() => history.push("/"));
 			} else {
-				fetch("http://localhost:4000/notes/", {
+				fetch("https://onlinenoticeboard-server.herokuapp.com/notes", {
 					method: "POST",
 					headers: { "Content-type": "application/json" },
 					body: JSON.stringify({ ...note }),
-				}).then(() => history.push("/posts"));
+				}).then(() => history.push("/dashboard"));
 			}
 		}
 	};

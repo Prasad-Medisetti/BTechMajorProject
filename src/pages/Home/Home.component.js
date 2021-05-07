@@ -20,7 +20,7 @@ export default function Home() {
 		fetchData();
 		setIsLoaded(true);
 		return;
-	}, [users]);
+	}, []);
 
 	return (
 		<>

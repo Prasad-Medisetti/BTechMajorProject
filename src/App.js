@@ -4,6 +4,7 @@ import {
 	Switch,
 	Route,
 	useHistory,
+	useLocation,
 } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
@@ -26,6 +27,7 @@ import AppBar from "@material-ui/core/AppBar";
 import MenuIcon from "@material-ui/icons/Menu";
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
 
+import "./App.css";
 import Footer from "./components/Footer/Footer.component";
 import TemporaryDrawer from "./components/TemporaryDrawer/TemporaryDrawer";
 import Layout from "./components/Layout";
@@ -103,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	listItemText: { fontSize: theme.typography.fontSize * 1.15 },
 	active: {
-		background: "#f4f4f4",
+		backgroundColor: "rgba(0, 0, 0, 0.23)",
 	},
 	avatar: {
 		marginLeft: theme.spacing(1),
@@ -134,19 +136,25 @@ const theme = createMuiTheme({
 
 function App() {
 	const classes = useStyles();
+	const location = useLocation();
 	const history = useHistory();
 	const [mobileOpen, setMobileOpen] = useState(false);
 
 	const menuItems = [
 		{
 			text: "SIGN IN",
-			icon: <BiLogInCircle className={classes.icon} />,
+			icon: <span className="material-icons-outlined">login</span>,
 			path: "/signin",
 		},
 		{
 			text: "SIGN UP",
-			icon: <BiLogOutCircle />,
+			icon: <span className="material-icons-outlined">person_add_alt</span>,
 			path: "/signup",
+		},
+		{
+			text: "DASHBOARD",
+			icon: <span className="material-icons">dashboard</span>,
+			path: "/dashboard",
 		},
 	];
 
@@ -154,10 +162,6 @@ function App() {
 		setMobileOpen(!mobileOpen);
 	};
 
-	const click = () => {
-		console.log("history :>> ", history);
-		history.push("/");
-	};
 	// console.log(process.env.PUBLIC_URL);
 	return (
 		<>
@@ -168,8 +172,8 @@ function App() {
 						<Toolbar className={classes.toolbar}>
 							<Link
 								className={classes.title}
-								style={{ fontSize: 24 }}
-								onClick={click}
+								style={{ fontSize: 22 }}
+								onClick={() => history.replace("/")}
 							>
 								Online Notice Board
 							</Link>
@@ -181,20 +185,22 @@ function App() {
 									size="large"
 									aria-label="vertical contained primary button group"
 								>
-									{/* <Button onClick={() => history.push("/")}>Go to home</Button> */}
 									{menuItems.map((item, index) => (
 										<Button
 											key={index}
+											className={
+												location.pathname === item.path ? classes.active : null
+											}
 											variant="text"
 											color="inherit"
 											fullWidth
-											onClick={() => history.push("/")}
+											endIcon={item.icon}
+											onClick={() => history.replace(item.path)}
 										>
 											{item.text}
 										</Button>
 									))}
 								</ButtonGroup>
-								<span className="material-icons md-18">face</span>
 							</Hidden>
 							<Hidden mdUp implementation="css">
 								<IconButton
@@ -222,7 +228,7 @@ function App() {
 									variant="h6"
 									component="h4"
 									children="Online Notice Board"
-									onClick={() => history.push("/")}
+									onClick={() => history.replace("/")}
 								/>
 							</ListItem>
 							<Divider style={{ margin: "1em" }} />
@@ -248,7 +254,7 @@ function App() {
 											color="inherit"
 											fullWidth
 											startIcon={item.icon}
-											onClick={() => history.push("/")}
+											onClick={() => history.replace(item.path)}
 										>
 											{item.text}
 										</Button>
@@ -264,9 +270,9 @@ function App() {
 							<Route exact path="/">
 								<Home />
 							</Route>
-							{/* <Route path="/posts">
-							<Layout />
-						</Route> */}
+							<Route path="/dashboard">
+								<Layout />
+							</Route>
 							<Route path="*">
 								<NotFound />
 							</Route>
