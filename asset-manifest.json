@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/BTechMajorProject/static/css/main.6d96902c.chunk.css",
-    "main.js": "/BTechMajorProject/static/js/main.436b9527.chunk.js",
-    "main.js.map": "/BTechMajorProject/static/js/main.436b9527.chunk.js.map",
-    "runtime-main.js": "/BTechMajorProject/static/js/runtime-main.490f3d8a.js",
-    "runtime-main.js.map": "/BTechMajorProject/static/js/runtime-main.490f3d8a.js.map",
-    "static/js/2.28778a9a.chunk.js": "/BTechMajorProject/static/js/2.28778a9a.chunk.js",
-    "static/js/2.28778a9a.chunk.js.map": "/BTechMajorProject/static/js/2.28778a9a.chunk.js.map",
-    "static/js/3.d08f5be7.chunk.js": "/BTechMajorProject/static/js/3.d08f5be7.chunk.js",
-    "static/js/3.d08f5be7.chunk.js.map": "/BTechMajorProject/static/js/3.d08f5be7.chunk.js.map",
+    "main.css": "/BTechMajorProject/static/css/main.9ba8e7ab.chunk.css",
+    "main.js": "/BTechMajorProject/static/js/main.d5158136.chunk.js",
+    "main.js.map": "/BTechMajorProject/static/js/main.d5158136.chunk.js.map",
+    "runtime-main.js": "/BTechMajorProject/static/js/runtime-main.0b2370f5.js",
+    "runtime-main.js.map": "/BTechMajorProject/static/js/runtime-main.0b2370f5.js.map",
+    "static/js/2.b4a79f20.chunk.js": "/BTechMajorProject/static/js/2.b4a79f20.chunk.js",
+    "static/js/2.b4a79f20.chunk.js.map": "/BTechMajorProject/static/js/2.b4a79f20.chunk.js.map",
+    "static/js/3.7cfb596f.chunk.js": "/BTechMajorProject/static/js/3.7cfb596f.chunk.js",
+    "static/js/3.7cfb596f.chunk.js.map": "/BTechMajorProject/static/js/3.7cfb596f.chunk.js.map",
     "index.html": "/BTechMajorProject/index.html",
-    "static/css/main.6d96902c.chunk.css.map": "/BTechMajorProject/static/css/main.6d96902c.chunk.css.map",
-    "static/js/2.28778a9a.chunk.js.LICENSE.txt": "/BTechMajorProject/static/js/2.28778a9a.chunk.js.LICENSE.txt"
+    "static/css/main.9ba8e7ab.chunk.css.map": "/BTechMajorProject/static/css/main.9ba8e7ab.chunk.css.map",
+    "static/js/2.b4a79f20.chunk.js.LICENSE.txt": "/BTechMajorProject/static/js/2.b4a79f20.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/BTechMajorProject/static/media/MaterialIconsTwoTone-Regular.f546c1fd.otf"
   },
   "entrypoints": [
-    "static/js/runtime-main.490f3d8a.js",
-    "static/js/2.28778a9a.chunk.js",
-    "static/css/main.6d96902c.chunk.css",
-    "static/js/main.436b9527.chunk.js"
+    "static/js/runtime-main.0b2370f5.js",
+    "static/js/2.b4a79f20.chunk.js",
+    "static/css/main.9ba8e7ab.chunk.css",
+    "static/js/main.d5158136.chunk.js"
   ]
 }
