@@ -1,41 +1,13 @@
-import React, { useEffect, useState } from "react";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	useHistory,
-	useLocation,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import {
-	Button,
-	Divider,
-	IconButton,
-	Link,
-	makeStyles,
-	Toolbar,
-	Typography,
-} from "@material-ui/core";
-import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import AppBar from "@material-ui/core/AppBar";
-import MenuIcon from "@material-ui/icons/Menu";
-import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
+import { makeStyles } from "@material-ui/core";
 
 import "./App.css";
-import Footer from "./components/Footer/Footer.component";
-import TemporaryDrawer from "./components/TemporaryDrawer/TemporaryDrawer";
 import Layout from "./components/Layout";
-import Notes from "./pages/Notes";
-import Create from "./pages/Create";
-import Edit from "./pages/Edit";
-import Home from "./pages/Home/Home.component";
-import NotFound from "./pages/NotFound/NotFound";
+import NotFound from "./pages/notFoundPage/notFoundPage";
+import HomePage from "./pages/homePage/homePage";
 
 // import AppBar from "./components/appBar/appBar.component";
 
@@ -136,150 +108,26 @@ const theme = createMuiTheme({
 
 function App() {
 	const classes = useStyles();
-	const location = useLocation();
-	const history = useHistory();
-	const [mobileOpen, setMobileOpen] = useState(false);
 
-	const menuItems = [
-		{
-			text: "SIGN IN",
-			icon: <span className="material-icons-outlined">login</span>,
-			path: "/signin",
-		},
-		{
-			text: "SIGN UP",
-			icon: <span className="material-icons-outlined">person_add_alt</span>,
-			path: "/signup",
-		},
-		{
-			text: "DASHBOARD",
-			icon: <span className="material-icons">dashboard</span>,
-			path: "/dashboard",
-		},
-	];
-
-	const handleDrawerToggle = () => {
-		setMobileOpen(!mobileOpen);
-	};
-
-	// console.log(process.env.PUBLIC_URL);
 	return (
 		<>
 			<ThemeProvider theme={theme}>
-				<div className={classes.root}>
-					{/* app bar */}
-					<AppBar position="sticky" className={classes.appbar}>
-						<Toolbar className={classes.toolbar}>
-							<Link
-								className={classes.title}
-								style={{ fontSize: 22 }}
-								onClick={() => history.replace("/")}
-							>
-								Online Notice Board
-							</Link>
-							<Hidden smDown implementation="css">
-								<ButtonGroup
-									orientation="horizontal"
-									variant="text"
-									color="inherit"
-									size="large"
-									aria-label="vertical contained primary button group"
-								>
-									{menuItems.map((item, index) => (
-										<Button
-											key={index}
-											className={
-												location.pathname === item.path ? classes.active : null
-											}
-											variant="text"
-											color="inherit"
-											fullWidth
-											endIcon={item.icon}
-											onClick={() => history.replace(item.path)}
-										>
-											{item.text}
-										</Button>
-									))}
-								</ButtonGroup>
-							</Hidden>
-							<Hidden mdUp implementation="css">
-								<IconButton
-									edge="start"
-									className={classes.menuButton}
-									color="inherit"
-									onClick={handleDrawerToggle}
-									aria-label="menu"
-								>
-									<MenuIcon />
-								</IconButton>
-							</Hidden>
-						</Toolbar>
-					</AppBar>
-					<TemporaryDrawer
-						anchor="right"
-						style={{ width: "80vw" }}
-						open={mobileOpen}
-						onClose={handleDrawerToggle}
-					>
-						<List>
-							<ListItem key="title" button>
-								<Typography
-									className={classes.drawerTitle}
-									variant="h6"
-									component="h4"
-									children="Online Notice Board"
-									onClick={() => history.replace("/")}
-								/>
-							</ListItem>
-							<Divider style={{ margin: "1em" }} />
-							<ListItem
-								style={{
-									minHeight: "80vh",
-									display: "flex",
-									flexDirection: "column",
-									justifyContent: "center",
-									alignItems: "center",
-								}}
-							>
-								<ButtonGroup
-									orientation="vertical"
-									variant="text"
-									fullWidth
-									aria-label="vertical contained primary button group"
-								>
-									{menuItems.map((item, index) => (
-										<Button
-											key={index}
-											variant="text"
-											color="inherit"
-											fullWidth
-											startIcon={item.icon}
-											onClick={() => history.replace(item.path)}
-										>
-											{item.text}
-										</Button>
-									))}
-								</ButtonGroup>
-							</ListItem>
-						</List>
-					</TemporaryDrawer>
-
+				<Router
+				// basename={process.env.PUBLIC_URL}
+				>
 					{/* main content */}
-					<main className={classes.main}>
-						<Switch>
-							<Route exact path="/">
-								<Home />
-							</Route>
-							<Route path="/dashboard">
-								<Layout />
-							</Route>
-							<Route path="*">
-								<NotFound />
-							</Route>
-						</Switch>
-					</main>
-					<Footer classes={classes} />
-				</div>
+					<Switch>
+						<Route exact path="/">
+							<HomePage />
+						</Route>
+						<Route path="/dashboard">
+							<Layout />
+						</Route>
+						<Route path="*">
+							<NotFound />
+						</Route>
+					</Switch>
+				</Router>
 			</ThemeProvider>
 		</>
 	);

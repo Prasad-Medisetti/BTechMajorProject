@@ -31,12 +31,9 @@ function Appbar({ classes, handleDrawerToggle }) {
 						<MenuIcon />
 					</IconButton>
 				</Hidden>
-				{/* <Typography className={classes.date}>
+				<Typography className={classes.date}>
 					Today is the {format(new Date(), "do MMMM Y")}
-				</Typography> */}
-				<Link to="/" className={classes.title}>
-					Online Notice Board
-				</Link>
+				</Typography>
 				<Typography>Admin</Typography>
 				<Avatar className={classes.avatar} />
 			</Toolbar>
