@@ -4,7 +4,7 @@ import { CircularProgress, makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 
-import "./home.css";
+import "./LandingPage.css";
 import HomeAppBar from "../../components/homeAppBar/homeAppBar";
 import Footer from "../../components/Footer/Footer.component";
 
@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 		background: "#f9f9f9",
 		minHeight: "79vh",
 		maxWidth: "100vw",
-		overflow: "scroll",
 		margin: theme.spacing(2),
 		display: "flex",
 		flexWrap: "wrap",
@@ -77,7 +76,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	listItemText: { fontSize: theme.typography.fontSize * 1.15 },
 	active: {
-		backgroundColor: "rgba(0, 0, 0, 0.23)",
+		textDecoration: "none",
+		backgroundColor: "rgba(0, 0, 0, 0.04)",
 	},
 	avatar: {
 		marginLeft: theme.spacing(1),
@@ -98,6 +98,11 @@ export default function HomePage() {
 
 	const menuItems = [
 		{
+			text: "HOME",
+			icon: <span className="material-icons-outlined">home</span>,
+			path: "/",
+		},
+		{
 			text: "SIGN IN",
 			icon: <span className="material-icons-outlined">login</span>,
 			path: "/signin",
@@ -114,8 +119,8 @@ export default function HomePage() {
 		},
 	];
 
-	const handleDrawerToggle = () => {
-		setMobileOpen(!mobileOpen);
+	const handleDrawerToggle = (open) => {
+		setMobileOpen(open);
 	};
 
 	const fetchData = async () => {
@@ -132,9 +137,7 @@ export default function HomePage() {
 
 	useEffect(() => {
 		setIsLoaded(false);
-		setTimeout(() => {
-			fetchData();
-		}, 3000);
+		fetchData();
 		setIsLoaded(true);
 	}, [initialState.users]);
 
@@ -168,6 +171,7 @@ export default function HomePage() {
 								<h2>{user.login}</h2>
 								<img
 									src={user.avatar_url}
+									loading="lazy"
 									style={{ width: "300px", borderRadius: 8 }}
 									alt={user.name}
 								/>

@@ -66,7 +66,9 @@ function HomeAppBar(props) {
 								edge="start"
 								className={props.classes.menuButton}
 								color="inherit"
-								onClick={props.handleDrawerToggle}
+								onClick={() => {
+									props.handleDrawerToggle(true);
+								}}
 								aria-label="menu"
 							>
 								<MenuIcon />
@@ -78,7 +80,9 @@ function HomeAppBar(props) {
 					anchor="right"
 					style={{ width: "80vw" }}
 					open={props.mobileOpen}
-					onClose={props.handleDrawerToggle}
+					onClose={() => {
+						props.handleDrawerToggle(false);
+					}}
 				>
 					<List>
 						<ListItem key="title" button>
@@ -90,7 +94,7 @@ function HomeAppBar(props) {
 								onClick={() => history.replace("/")}
 							/>
 						</ListItem>
-						<Divider style={{ margin: "1em" }} />
+						<Divider />
 						<ListItem
 							style={{
 								minHeight: "80vh",
@@ -113,7 +117,16 @@ function HomeAppBar(props) {
 										color="inherit"
 										fullWidth
 										startIcon={item.icon}
-										onClick={() => {history.replace(item.path);props.handleDrawerToggle()}}
+										className={
+											location.pathname === item.path
+												? props.classes.active
+												: null
+										}
+										style={{ justifyContent: "flex-start" }}
+										onClick={() => {
+											history.replace(item.path);
+											props.handleDrawerToggle(false);
+										}}
 									>
 										{item.text}
 									</Button>

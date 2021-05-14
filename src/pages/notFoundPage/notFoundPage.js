@@ -44,11 +44,10 @@ const useStyles = makeStyles((theme) => ({
 	main: {
 		background: "#f9f9f9",
 		minHeight: "79vh",
-		maxWidth:"100vw",
-		overflow:'scroll',
-		margin:theme.spacing(2),
+		maxWidth: "100vw",
+		margin: theme.spacing(2),
 		display: "flex",
-		flexWrap:'wrap',
+		flexWrap: "wrap",
 		// flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
@@ -80,14 +79,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 	listItemText: { fontSize: theme.typography.fontSize * 1.15 },
 	active: {
-		backgroundColor: "rgba(0, 0, 0, 0.23)",
+		textDecoration: "none",
+		backgroundColor: "rgba(0, 0, 0, 0.04)",
 	},
 	avatar: {
 		marginLeft: theme.spacing(1),
 		width: theme.spacing(3),
 		height: theme.spacing(3),
 	},
-	toolbar: { display: "flex" }
+	toolbar: { display: "flex" },
 }));
 
 function SlideTransition(props) {
@@ -98,30 +98,35 @@ export default function NotFound(props) {
 	const classes = useStyles();
 	const location = useLocation();
 
-	const [mobileOpen, setMobileOpen] = useState(true);
+	const [mobileOpen, setMobileOpen] = useState(false);
 	const [path, setPath] = useState("");
 	const [open, setOpen] = useState(null);
 
 	const menuItems = [
-	{
-		text: "SIGN IN",
-		icon: <span className="material-icons-outlined">login</span>,
-		path: "/signin",
-	},
-	{
-		text: "SIGN UP",
-		icon: <span className="material-icons-outlined">person_add_alt</span>,
-		path: "/signup",
-	},
-	{
-		text: "DASHBOARD",
-		icon: <span className="material-icons">dashboard</span>,
-		path: "/dashboard",
-	},
-];
+		{
+			text: "HOME",
+			icon: <span className="material-icons-outlined">home</span>,
+			path: "/",
+		},
+		{
+			text: "SIGN IN",
+			icon: <span className="material-icons-outlined">login</span>,
+			path: "/signin",
+		},
+		{
+			text: "SIGN UP",
+			icon: <span className="material-icons-outlined">person_add_alt</span>,
+			path: "/signup",
+		},
+		{
+			text: "DASHBOARD",
+			icon: <span className="material-icons-outlined">dashboard</span>,
+			path: "/dashboard",
+		},
+	];
 
-	const handleDrawerToggle = () => {
-		setMobileOpen(!mobileOpen);
+	const handleDrawerToggle = (open) => {
+		setMobileOpen(open);
 	};
 
 	useEffect(() => {
@@ -168,7 +173,9 @@ export default function NotFound(props) {
 								<CloseIcon color="inherit" fontSize="inherit" />
 							</IconButton>
 						}
-						icon={<span className="material-icons-outlined">error_outline</span>}
+						icon={
+							<span className="material-icons-outlined">error_outline</span>
+						}
 						onClose={handleClose}
 						severity="error"
 					>
