@@ -1,24 +1,25 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { purple } from "@material-ui/core/colors";
 import { CircularProgress, makeStyles } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import { Link } from "react-router-dom";
 
 import "./LandingPage.css";
-import HomeAppBar from "../../components/homeAppBar/homeAppBar";
+import HomeAppBar from "../../components/HomeAppBar/HomeAppBar";
 import Footer from "../../components/Footer/Footer.component";
 
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	menuButton: {},
 	appBar: {
-		marginLeft: theme.spacing(1),
+		// marginLeft: theme.spacing(1),
+		// background: "#000000",
+		// color: "#78909c",
 	},
 	drawerTitle: {
 		flexGrow: 1,
 		letterSpacing: 0,
 		textDecoration: "none",
 		color: "#000000DE",
+		textTransform: "uppercase",
 		transition: ".4s",
 		"&:hover": {
 			color: purple[900],
@@ -29,19 +30,22 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		letterSpacing: 0,
 		color: "#000000DE",
+		// color: "#00e676",
+		textTransform: "uppercase",
 		cursor: "pointer",
 		transition: ".4s",
 		"&:hover": {
-			color: purple[900],
+			// color: "#ffffff",
 			filter: "drop-shadow(0px 0px 1px inherit)",
 			textDecoration: "none",
 		},
 		fontSize: theme.typography.fontSize * 1.5,
 	},
 	main: {
-		background: "#f9f9f9",
 		minHeight: "79vh",
 		maxWidth: "100vw",
+		// background: "#000000",
+		// color: "#78909c",
 		margin: theme.spacing(2),
 		display: "flex",
 		flexWrap: "wrap",
@@ -60,7 +64,14 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor:
 			theme.palette.type === "light"
 				? theme.palette.grey[200]
-				: theme.palette.grey[800],
+				: theme.palette.grey[800], // backgroundColor: "#000000",
+		// color: "#78909c",
+	},
+	circularProgress: {
+		padding: theme.spacing(1.25),
+		opacity: 0.8,
+		backgroundColor: "#eeeeee",
+		borderRadius: "50%",
 	},
 	listItem: {
 		display: "flex",
@@ -77,7 +88,9 @@ const useStyles = makeStyles((theme) => ({
 	listItemText: { fontSize: theme.typography.fontSize * 1.15 },
 	active: {
 		textDecoration: "none",
-		backgroundColor: "rgba(0, 0, 0, 0.04)",
+		// color: "#ffffff",
+		opacity: 0.9,
+		backgroundColor: "rgba(0, 0, 0, 0.08)",
 	},
 	avatar: {
 		marginLeft: theme.spacing(1),
@@ -114,7 +127,7 @@ export default function HomePage() {
 		},
 		{
 			text: "DASHBOARD",
-			icon: <span className="material-icons">dashboard</span>,
+			icon: <span className="material-icons-outlined">dashboard</span>,
 			path: "/dashboard",
 		},
 	];
@@ -189,7 +202,10 @@ export default function HomePage() {
 						);
 					})
 				) : (
-					<CircularProgress color="inherit" />
+					<CircularProgress
+						className={classes.circularProgress}
+						color="inherit"
+					/>
 				)}
 			</main>
 			<Footer classes={classes} />

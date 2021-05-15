@@ -3,11 +3,11 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { useHistory } from "react-router";
 
-export default function Footer({ classes }) {
+export default function Footer(props) {
 	const history = useHistory();
 	return (
-		<footer className={classes.footer}>
-			<Typography variant="body2" color="textSecondary">
+		<footer className={props.classes.footer}>
+			<Typography variant="body2" color="inherit">
 				{"© " + new Date().getFullYear() + " "}
 				<Link
 					color="inherit"

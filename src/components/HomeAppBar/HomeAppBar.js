@@ -25,8 +25,21 @@ function HomeAppBar(props) {
 		<>
 			<div className={props.classes.root}>
 				{/* app bar */}
-				<AppBar position="sticky" className={props.classes.appbar}>
+				<AppBar position="sticky" className={props.classes.appBar}>
 					<Toolbar className={props.classes.toolbar}>
+						<Hidden mdUp implementation="css">
+							<IconButton
+								edge="start"
+								className={props.classes.menuButton}
+								color="inherit"
+								onClick={() => {
+									props.handleDrawerToggle(true);
+								}}
+								aria-label="menu"
+							>
+								<MenuIcon />
+							</IconButton>
+						</Hidden>
 						<Link
 							className={props.classes.title}
 							style={{ fontSize: 22 }}
@@ -61,23 +74,10 @@ function HomeAppBar(props) {
 								))}
 							</ButtonGroup>
 						</Hidden>
-						<Hidden mdUp implementation="css">
-							<IconButton
-								edge="start"
-								className={props.classes.menuButton}
-								color="inherit"
-								onClick={() => {
-									props.handleDrawerToggle(true);
-								}}
-								aria-label="menu"
-							>
-								<MenuIcon />
-							</IconButton>
-						</Hidden>
 					</Toolbar>
 				</AppBar>
 				<TemporaryDrawer
-					anchor="right"
+					anchor="left"
 					style={{ width: "80vw" }}
 					open={props.mobileOpen}
 					onClose={() => {
