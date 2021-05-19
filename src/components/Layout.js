@@ -1,28 +1,23 @@
-import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { purple } from "@material-ui/core/colors";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import {
-	Link as RouterLink,
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	useHistory,
-	useLocation,
-} from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
-import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
-import { purple } from "@material-ui/core/colors";
-
-import Appbar from "./Appbar/Appbar.component";
-import Footer from "./Footer/Footer.component";
-import Notes from "../pages/Notes";
+import React from "react";
+import {
+	BrowserRouter as Router,
+	Link as RouterLink,
+	Route,
+	Switch,
+	useHistory,
+	useLocation,
+} from "react-router-dom";
 import Create from "../pages/Create";
 import Edit from "../pages/Edit";
+import Appbar from "./Appbar/Appbar.component";
 
 const drawerWidth = 240;
 
@@ -100,24 +95,11 @@ const useStyles = makeStyles((theme) => ({
 	toolbar: theme.mixins.toolbar,
 }));
 
-export default function Layout({ children }) {
+export default function Layout({ children, dashboardMenuItems }) {
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-
-	const menuItems = [
-		{
-			text: "My Posts",
-			icon: <SubjectOutlined color="secondary" />,
-			path: "/dashboard",
-		},
-		{
-			text: "Create Post",
-			icon: <AddCircleOutlineOutlined color="secondary" />,
-			path: "/dashboard/create",
-		},
-	];
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -153,7 +135,7 @@ export default function Layout({ children }) {
 
 						{/* links/list section */}
 						<List>
-							{menuItems.map((item) => (
+							{dashboardMenuItems.map((item) => (
 								<ListItem
 									button
 									key={item.text}
@@ -188,7 +170,7 @@ export default function Layout({ children }) {
 
 						{/* links/list section */}
 						<List>
-							{menuItems.map((item) => (
+							{dashboardMenuItems.map((item) => (
 								<ListItem
 									button
 									key={item.text}

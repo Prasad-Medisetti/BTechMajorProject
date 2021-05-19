@@ -1,6 +1,3 @@
-import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {
 	Button,
 	Divider,
@@ -9,40 +6,28 @@ import {
 	Toolbar,
 	Typography,
 } from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import AppBar from "@material-ui/core/AppBar";
 import MenuIcon from "@material-ui/icons/Menu";
+import React from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import TemporaryDrawer from "../../components/TemporaryDrawer/TemporaryDrawer";
 
-import TemporaryDrawer from "../TemporaryDrawer/TemporaryDrawer";
-
-function HomeAppBar(props) {
+function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 	const location = useLocation();
 	const history = useHistory();
 
 	return (
 		<>
-			<div className={props.classes.root}>
+			<div className={classes.root}>
 				{/* app bar */}
-				<AppBar position="sticky" className={props.classes.appBar}>
-					<Toolbar className={props.classes.toolbar}>
-						<Hidden mdUp implementation="css">
-							<IconButton
-								edge="start"
-								className={props.classes.menuButton}
-								color="inherit"
-								onClick={() => {
-									props.handleDrawerToggle(true);
-								}}
-								aria-label="menu"
-							>
-								<MenuIcon />
-							</IconButton>
-						</Hidden>
+				<AppBar position="sticky" className={classes.appBar} color="default">
+					<Toolbar className={classes.toolbar}>
 						<Link
-							className={props.classes.title}
-							style={{ fontSize: 22 }}
+							className={classes.title}
 							onClick={() => history.replace("/")}
 						>
 							Online Notice Board
@@ -55,13 +40,11 @@ function HomeAppBar(props) {
 								size="large"
 								aria-label="vertical contained primary button group"
 							>
-								{props.menuItems.map((item, index) => (
+								{menuItems.map((item, index) => (
 									<Button
 										key={index}
 										className={
-											location.pathname === item.path
-												? props.classes.active
-												: null
+											location.pathname === item.path ? classes.active : null
 										}
 										variant="text"
 										color="inherit"
@@ -74,26 +57,40 @@ function HomeAppBar(props) {
 								))}
 							</ButtonGroup>
 						</Hidden>
+						<Hidden mdUp implementation="css">
+							<IconButton
+								edge="start"
+								className={classes.menuButton}
+								color="inherit"
+								onClick={() => {
+									handleDrawerToggle(true);
+								}}
+								aria-label="menu"
+							>
+								<MenuIcon />
+							</IconButton>
+						</Hidden>
 					</Toolbar>
 				</AppBar>
 				<TemporaryDrawer
-					anchor="left"
-					style={{ width: "80vw" }}
-					open={props.mobileOpen}
+					anchor="right"
+					style={{ width: "50vw" }}
+					open={mobileOpen}
 					onClose={() => {
-						props.handleDrawerToggle(false);
+						handleDrawerToggle(false);
 					}}
 				>
 					<List>
 						<ListItem key="title" button>
 							<Typography
-								className={props.classes.drawerTitle}
+								className={classes.drawerTitle}
 								variant="h6"
 								component="h4"
 								children="Online Notice Board"
 								onClick={() => history.replace("/")}
 							/>
 						</ListItem>
+
 						<Divider />
 						<ListItem
 							style={{
@@ -110,7 +107,7 @@ function HomeAppBar(props) {
 								fullWidth
 								aria-label="vertical contained primary button group"
 							>
-								{props.menuItems.map((item, index) => (
+								{menuItems.map((item, index) => (
 									<Button
 										key={index}
 										variant="text"
@@ -118,14 +115,12 @@ function HomeAppBar(props) {
 										fullWidth
 										startIcon={item.icon}
 										className={
-											location.pathname === item.path
-												? props.classes.active
-												: null
+											location.pathname === item.path ? classes.active : null
 										}
 										style={{ justifyContent: "flex-start" }}
 										onClick={() => {
 											history.replace(item.path);
-											props.handleDrawerToggle(false);
+											handleDrawerToggle(false);
 										}}
 									>
 										{item.text}

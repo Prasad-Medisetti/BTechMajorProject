@@ -1,15 +1,12 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Hidden from "@material-ui/core/Hidden";
 import Avatar from "@material-ui/core/Avatar";
+import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/MenuOutlined";
-
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import React from "react";
 
 function Appbar({ classes, handleDrawerToggle }) {
 	return (
@@ -17,7 +14,7 @@ function Appbar({ classes, handleDrawerToggle }) {
 			position="fixed"
 			className={classes.appBar}
 			elevation={2}
-			color="primary"
+			color="default"
 		>
 			<Toolbar>
 				<Hidden smUp implementation="css">

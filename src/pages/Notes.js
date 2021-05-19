@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import Masonry from "react-masonry-css";
-import NoteCard from "../components/NoteCard";
-import {
-	Backdrop,
-	CircularProgress,
-	Grid,
-	Paper,
-	Typography,
-} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
+import Masonry from "react-masonry-css";
+import { useHistory } from "react-router-dom";
+import NoteCard from "../components/NoteCard";
 
 // import axios from "axios";
 
@@ -33,7 +27,6 @@ const uri = "https://onlinenoticeboard-server.herokuapp.com/notes";
 export default function Notes() {
 	const classes = useStyles();
 	const history = useHistory();
-	const location = useLocation();
 	const [isLoading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [notes, setNotes] = useState([]);
