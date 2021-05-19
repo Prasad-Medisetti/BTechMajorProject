@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core";
 
 import "./App.css";
 import Layout from "./components/Layout";
-import NotFound from "./pages/NotFoundPage/NotFoundPage";
+import NotFound from "./pages/notFoundPage/notFoundPage";
 import HomePage from "./pages/LandingPage/LandingPage";
 
 // import AppBar from "./components/appBar/appBar.component";
