@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@material-ui/styles";
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./assets/font/material-icons.css";
+// import "./assets/font/material-icons.css";
 import Footer from "./components/Footer/Footer.component";
 import HomeAppBar from "./components/HomeAppBar";
 import Layout from "./components/Layout";
