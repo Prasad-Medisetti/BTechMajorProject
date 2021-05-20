@@ -1,4 +1,11 @@
-import { Button, Container, Select, TextField } from "@material-ui/core";
+import {
+	Button,
+	Container,
+	List,
+	ListItem,
+	Select,
+	TextField,
+} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -11,20 +18,49 @@ import React, { useState } from "react";
 
 export default function SignIn({ classes }) {
 	// const params = useParams();
-	const handleMouseDownPassword = (event) => {
-		event.preventDefault();
-	};
 
-	const [userNameError, setUserNameError] = useState(false);
-	const [passwordError, setPasswordError] = useState(false);
-	const [typeError, setTypeError] = useState(false);
-
+	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [user, setUser] = useState({
-		username: "",
+		email: "",
 		password: "",
 		type: "",
 		showPassword: false,
 	});
+
+	const [emailError, setEmailError] = useState(false);
+	const [passwordError, setPasswordError] = useState({
+		error: false,
+		minLen: false,
+		digits: false,
+		upperCh: false,
+		lowerCh: false,
+		specialSym: false,
+	});
+	const [typeError, setTypeError] = useState(false);
+
+	const emailRegex = /^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/;
+
+	const validateEmail = () => {
+		setEmailError(user.email === "" || !emailRegex.test(user.email));
+	};
+	const validatePassword = () => {
+		setPasswordError({
+			minLen: user.password === "" || !user.password.length >= 8,
+			digits: user.password === "" || !/\d/.test(user.password),
+			lowerCh: user.password === "" || !/[a-z]/.test(user.password),
+			upperCh: user.password === "" || !/[A-Z]/.test(user.password),
+			specialSym: user.password === "" || !/[/S]/.test(user.password),
+			error:
+				!user.password.length >= 8 ||
+				!/\d/.test(user.password) ||
+				!/[a-z]/.test(user.password) ||
+				!/[A-Z]/.test(user.password) ||
+				!/[/S]/.test(user.password),
+		});
+	};
+	const validateType = () => {
+		setTypeError(user.type === "");
+	};
 
 	const onChange = (e) => {
 		const value = e.target.value;
@@ -38,24 +74,21 @@ export default function SignIn({ classes }) {
 		setUser({ ...user, [prop]: event.target.value });
 	};
 
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
+
 	const handleClickShowPassword = () => {
 		setUser({ ...user, showPassword: !user.showPassword });
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setUserNameError(false);
-		setPasswordError(false);
+		setIsSubmitted(true);
+		validateEmail();
+		validatePassword();
+		validateType();
 
-		if (user.username === "") {
-			setUserNameError(true);
-		}
-		if (user.password === "") {
-			setPasswordError(true);
-		}
-		if (user.type === "") {
-			setTypeError(true);
-		}
 		// if (note.title && note.details) {
 		// 	if (note._id) {
 		// 		// console.log(note._id);
@@ -79,19 +112,9 @@ export default function SignIn({ classes }) {
 
 	return (
 		<main className={classes.main}>
-			<Container
-				maxWidth="sm"
-				style={{
-					Width: "100vw",
-				}}
-			>
-				<code
-					style={{ overflow: "auto", display: "block", marginBottom: "2em" }}
-				>
-					{JSON.stringify(user)}
-				</code>
+			<Container maxWidth="sm">
 				<Typography
-					variant="h5"
+					variant="h6"
 					align="center"
 					color="inherit"
 					style={{
@@ -106,31 +129,59 @@ export default function SignIn({ classes }) {
 					<TextField
 						className={classes.field}
 						onChange={(e) => onChange(e)}
-						label="User Name"
+						onBlur={validateEmail}
+						label="Email"
 						variant="outlined"
 						fullWidth
-						name="username"
-						value={user.username}
+						type="email"
+						name="email"
+						value={user.email}
 						required
-						error={userNameError}
+						error={emailError}
 					/>
+					{emailError && (
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5em auto" }}
+							aria-label="password validation hints"
+						>
+							<ListItem style={{ padding: ".25em .5em" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
+								>
+									error_outline
+								</span>
+								<Typography variant="body1" color="error">
+									Please enter email address.
+								</Typography>
+							</ListItem>
+						</List>
+					)}
+					{/* {isSubmitted && (
+						<pre>
+							t:{emailRegex.test(user.email)}
+							{JSON.stringify(emailError, null, "\t")}
+						</pre>
+					)} */}
 					<FormControl
 						className={classes.field}
 						variant="outlined"
 						required
-						error={passwordError}
+						error={passwordError.error}
 					>
-						<InputLabel htmlFor="outlined-adornment-password">
-							Password
-						</InputLabel>
+						<InputLabel htmlFor="user_password">Password</InputLabel>
 						<OutlinedInput
 							name="password"
-							id="outlined-adornment-password"
+							id="user_password"
 							type={user.showPassword ? "text" : "password"}
 							value={user.password}
 							required
 							fullWidth
 							onChange={handleChange("password")}
+							onBlur={validatePassword}
 							endAdornment={
 								<InputAdornment position="end">
 									<IconButton
@@ -146,26 +197,101 @@ export default function SignIn({ classes }) {
 							labelWidth={80}
 						/>
 					</FormControl>
+					{/* {<pre>{JSON.stringify(passwordError, null, 4)}</pre>} */}
+					{passwordError.error && (
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".25em auto" }}
+							aria-label="password validation hints"
+						>
+							{passwordError.minLen && (
+								<ListItem style={{ padding: ".25em .5em" }}>
+									<span
+										className="material-icons md-18"
+										style={{ color: "#f44336", marginRight: ".5em" }}
+									>
+										error_outline
+									</span>
+									<Typography variant="body1" color="error">
+										Your password must be at least 8 characters
+									</Typography>
+								</ListItem>
+							)}
+							{passwordError.lowerCh && (
+								<ListItem style={{ padding: ".25em .5em" }}>
+									<span
+										className="material-icons md-18"
+										style={{ color: "#f44336", marginRight: ".5em" }}
+									>
+										error_outline
+									</span>
+									<Typography variant="body1" color="error">
+										Your password must contain at least one lowercase letter.
+									</Typography>
+								</ListItem>
+							)}
+							{passwordError.upperCh && (
+								<ListItem style={{ padding: ".25em .5em" }}>
+									<span
+										className="material-icons md-18"
+										style={{ color: "#f44336", marginRight: ".5em" }}
+									>
+										error_outline
+									</span>
+									<Typography variant="body1" color="error">
+										Your password must contain at least one uppercase letter.
+									</Typography>
+								</ListItem>
+							)}
+							{passwordError.digits && (
+								<ListItem style={{ padding: ".25em .5em" }}>
+									<span
+										className="material-icons md-18"
+										style={{ color: "#f44336", marginRight: ".5em" }}
+									>
+										error_outline
+									</span>
+									<Typography variant="body1" color="error">
+										Your password must contain at least one digit.
+									</Typography>
+								</ListItem>
+							)}
+							{passwordError.specialSym && (
+								<ListItem style={{ padding: ".25em .5em" }}>
+									<span
+										className="material-icons md-18"
+										style={{ color: "#f44336", marginRight: ".5em" }}
+									>
+										error_outline
+									</span>
+									<Typography variant="body1" color="error">
+										Your password must contain at least one special character.
+									</Typography>
+								</ListItem>
+							)}
+						</List>
+					)}
 					<FormControl
 						variant="outlined"
 						error={typeError}
 						required
 						className={classes.field}
 					>
-						<InputLabel id="demo-simple-select-outlined-label">
-							Login As
-						</InputLabel>
+						<InputLabel htmlFor="user_type">Login As</InputLabel>
 						<Select
 							native
 							value={user.type}
 							onChange={onChange}
+							onBlur={validateType}
 							variant="outlined"
 							required
 							fullWidth
 							labelWidth={70}
 							inputProps={{
 								name: "type",
-								id: "demo-simple-select-outlined-label",
+								id: "user_type",
 							}}
 						>
 							<option aria-label="None" value="" />
@@ -174,6 +300,27 @@ export default function SignIn({ classes }) {
 							<option value={"Hod"}>Hod</option>
 						</Select>
 					</FormControl>
+					{typeError && (
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5em auto" }}
+							aria-label="type validation hints"
+						>
+							<ListItem style={{ padding: ".25em .5em" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
+								>
+									error_outline
+								</span>
+								<Typography variant="body1" color="error">
+									Please choose an option.
+								</Typography>
+							</ListItem>
+						</List>
+					)}
 					<Button
 						type="submit"
 						variant="contained"
@@ -181,10 +328,12 @@ export default function SignIn({ classes }) {
 						fullWidth
 						size="large"
 						endIcon={<span className="material-icons-outlined">login</span>}
+						style={{ margin: ".5em auto" }}
 					>
 						Sign In
 					</Button>
 				</form>
+				{isSubmitted && <pre>{JSON.stringify(user, null, "\t")}</pre>}
 			</Container>
 		</main>
 	);

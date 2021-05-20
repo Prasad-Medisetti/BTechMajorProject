@@ -2,7 +2,6 @@
 	"name": "btech-major-project",
 	"version": "0.1.0",
 	"private": true,
-	"homepage": "https://prasad-medisetti.github.io/BTechMajorProject/",
 	"dependencies": {
 		"@material-ui/core": "^4.11.4",
 		"@material-ui/icons": "^4.11.2",
@@ -20,7 +19,7 @@
 		"react-masonry-css": "^1.0.14",
 		"react-redux": "^7.2.3",
 		"react-router-dom": "^5.2.0",
-		"react-scripts": "4.0.3",
+		"react-scripts": "^4.0.3",
 		"redux": "^4.0.5",
 		"web-vitals": "^1.1.0"
 	},
