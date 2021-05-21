@@ -44,22 +44,20 @@ export default function SignIn({ classes }) {
 
 	const validateEmail = () => {
 		setEmailError(user.email === "" || !emailRegex.test(user.email));
-		return emailError;
 	};
 	const validatePassword = () => {
 		setPasswordError({
-			minLen: user.password === "" || !user.password.length >= 8,
+			minLen: user.password.length >= 0 && user.password.length < 8,
 			digits: user.password === "" || !/\d/.test(user.password),
 			lowerCh: user.password === "" || !/[a-z]/.test(user.password),
 			upperCh: user.password === "" || !/[A-Z]/.test(user.password),
-			specialSym:
-				user.password === "" || !/[.!@#$%^&*()_+-=]/.test(user.password),
+			specialSym: user.password === "" || !/[^a-zA-Z0-9]/.test(user.password),
 			error:
-				!user.password.length >= 8 ||
+				(user.password.length > 0 && user.password.length < 8) ||
 				!/\d/.test(user.password) ||
 				!/[a-z]/.test(user.password) ||
 				!/[A-Z]/.test(user.password) ||
-				!/[.!@#$%^&*()_+-=]/.test(user.password),
+				!/[^a-zA-Z0-9]/.test(user.password),
 		});
 		return passwordError.error;
 	};
@@ -90,9 +88,19 @@ export default function SignIn({ classes }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(!validateEmail() && !validatePassword() && !validateType());
-		setIsSubmitted(!validateEmail() && !validatePassword() && !validateType());
+		// console.log(!emailError && !passwordError.error && !typeError);
+		validateEmail();
+		validatePassword();
+		validateType();
 
+		setIsSubmitted(
+			user.email !== "" &&
+				user.password !== "" &&
+				user.user_type !== "" &&
+				!emailError &&
+				!passwordError.error &&
+				!typeError,
+		);
 		// if (note.title && note.details) {
 		// 	if (note._id) {
 		// 		// console.log(note._id);
@@ -117,7 +125,7 @@ export default function SignIn({ classes }) {
 	return (
 		<main className={classes.main}>
 			<Container maxWidth="sm">
-				{isSubmitted !== true && (
+				{isSubmitted === false && (
 					<>
 						<Typography
 							variant="h6"
@@ -125,9 +133,6 @@ export default function SignIn({ classes }) {
 							color="inherit"
 							style={{
 								textTransform: "uppercase",
-								fontFamily: "Quicksand",
-								maxWidth: "100%",
-								fontWeight: 600,
 							}}
 						>
 							Sign In
@@ -145,6 +150,7 @@ export default function SignIn({ classes }) {
 								value={user.email}
 								required
 								error={emailError}
+								size="small"
 							/>
 							{emailError && (
 								<List
@@ -161,22 +167,17 @@ export default function SignIn({ classes }) {
 										>
 											error_outline
 										</span>
-										<Typography variant="body1" color="error">
+										<Typography variant="body2" color="error">
 											Please enter email address.
 										</Typography>
 									</ListItem>
 								</List>
 							)}
-							{isSubmitted && (
-								<pre>
-									t:{emailRegex.test(user.email)}
-									{JSON.stringify(emailError, null, "\t")}
-								</pre>
-							)}
 							<FormControl
 								className={classes.field}
 								variant="outlined"
 								required
+								size="small"
 								error={passwordError.error}
 							>
 								<InputLabel htmlFor="user_password">Password</InputLabel>
@@ -185,6 +186,7 @@ export default function SignIn({ classes }) {
 									id="user_password"
 									type={user.showPassword ? "text" : "password"}
 									value={user.password}
+									labelWidth={90}
 									required
 									fullWidth
 									onChange={handleChange("password")}
@@ -201,7 +203,6 @@ export default function SignIn({ classes }) {
 											</IconButton>
 										</InputAdornment>
 									}
-									labelWidth={80}
 								/>
 							</FormControl>
 							{/* {<pre>{JSON.stringify(passwordError, null, 4)}</pre>} */}
@@ -221,7 +222,7 @@ export default function SignIn({ classes }) {
 											>
 												error_outline
 											</span>
-											<Typography variant="body1" color="error">
+											<Typography variant="body2" color="error">
 												Your password must be at least 8 characters
 											</Typography>
 										</ListItem>
@@ -234,7 +235,7 @@ export default function SignIn({ classes }) {
 											>
 												error_outline
 											</span>
-											<Typography variant="body1" color="error">
+											<Typography variant="body2" color="error">
 												Your password must contain at least one lowercase
 												letter.
 											</Typography>
@@ -248,7 +249,7 @@ export default function SignIn({ classes }) {
 											>
 												error_outline
 											</span>
-											<Typography variant="body1" color="error">
+											<Typography variant="body2" color="error">
 												Your password must contain at least one uppercase
 												letter.
 											</Typography>
@@ -262,7 +263,7 @@ export default function SignIn({ classes }) {
 											>
 												error_outline
 											</span>
-											<Typography variant="body1" color="error">
+											<Typography variant="body2" color="error">
 												Your password must contain at least one digit.
 											</Typography>
 										</ListItem>
@@ -275,7 +276,7 @@ export default function SignIn({ classes }) {
 											>
 												error_outline
 											</span>
-											<Typography variant="body1" color="error">
+											<Typography variant="body2" color="error">
 												Your password must contain at least one special
 												character.
 											</Typography>
@@ -287,6 +288,8 @@ export default function SignIn({ classes }) {
 								variant="outlined"
 								required
 								className={classes.field}
+								error={typeError}
+								size="small"
 							>
 								<InputLabel htmlFor="user_type">Login As</InputLabel>
 								<Select
@@ -294,10 +297,11 @@ export default function SignIn({ classes }) {
 									value={user.user_type}
 									onChange={onChange}
 									onBlur={validateType}
+									error={typeError}
 									variant="outlined"
 									required
 									fullWidth
-									labelWidth={70}
+									labelWidth={90}
 									inputProps={{
 										name: "user_type",
 										id: "user_type",
@@ -309,7 +313,7 @@ export default function SignIn({ classes }) {
 									<option value={"Hod"}>Hod</option>
 								</Select>
 							</FormControl>
-							{typeError === true && (
+							{typeError && (
 								<List
 									dense
 									disablePadding
@@ -324,7 +328,7 @@ export default function SignIn({ classes }) {
 										>
 											error_outline
 										</span>
-										<Typography variant="body1" color="error">
+										<Typography variant="body2" color="error">
 											Please choose an option.
 										</Typography>
 									</ListItem>

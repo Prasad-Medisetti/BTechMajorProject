@@ -1,6 +1,5 @@
 import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import "./Landing.css";
 
 export default function HomePage({ classes, menuItems }) {
 	const initialState = { isloaded: false, users: [] };
@@ -24,7 +23,7 @@ export default function HomePage({ classes, menuItems }) {
 		setIsLoaded(false);
 		fetchData();
 		setIsLoaded(true);
-	}, [initialState.users]);
+	}, []);
 
 	return (
 		<>
@@ -50,7 +49,7 @@ export default function HomePage({ classes, menuItems }) {
 								<img
 									src={user.avatar_url}
 									loading="lazy"
-									style={{ width: "300px", borderRadius: 8 }}
+									style={{ width: "240px", borderRadius: 8 }}
 									alt={user.name}
 								/>
 								<a

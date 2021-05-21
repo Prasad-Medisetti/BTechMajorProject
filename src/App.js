@@ -1,15 +1,17 @@
+import { CircularProgress } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // import "./assets/font/material-icons.css";
 import Footer from "./components/Footer/Footer.component";
 import HomeAppBar from "./components/HomeAppBar";
-import Layout from "./components/Layout";
 import { dashboardMenuItems, menuItems } from "./constants";
-import HomePage from "./pages/Landing";
-import NotFound from "./pages/NotFound";
-import SignIn from "./pages/SignIn";
 import { theme, useStyles } from "./styles";
+const HomePage = React.lazy(() => import("./pages/Landing"));
+const NotFoundPage = React.lazy(() => import("./pages/NotFound"));
+const SignInPage = React.lazy(() => import("./pages/SignIn"));
+const SignUpPage = React.lazy(() => import("./pages/SignUp"));
+const DashboardPage = React.lazy(() => import("./components/Layout"));
 
 function App() {
 	const classes = useStyles();
@@ -37,7 +39,18 @@ function App() {
 								setMobileOpen={setMobileOpen}
 								handleDrawerToggle={handleDrawerToggle}
 							/>
-							<HomePage classes={classes} menuItems={menuItems} />
+							<Suspense
+								fallback={
+									<main className={classes.main}>
+										<CircularProgress
+											className={classes.circularProgress}
+											color="inherit"
+										/>
+									</main>
+								}
+							>
+								<HomePage classes={classes} menuItems={menuItems} />
+							</Suspense>
 							<Footer classes={classes} />
 						</Route>
 						<Route path="/signin">
@@ -48,14 +61,68 @@ function App() {
 								setMobileOpen={setMobileOpen}
 								handleDrawerToggle={handleDrawerToggle}
 							/>
-							<SignIn classes={classes} />
+							<Suspense
+								fallback={
+									<main className={classes.main}>
+										<CircularProgress
+											className={classes.circularProgress}
+											color="inherit"
+										/>
+									</main>
+								}
+							>
+								<SignInPage classes={classes} />
+							</Suspense>
+							<Footer classes={classes} />
+						</Route>
+						<Route path="/signup">
+							<HomeAppBar
+								classes={classes}
+								menuItems={menuItems}
+								mobileOpen={mobileOpen}
+								setMobileOpen={setMobileOpen}
+								handleDrawerToggle={handleDrawerToggle}
+							/>
+							<Suspense
+								fallback={
+									<main className={classes.main}>
+										<CircularProgress
+											className={classes.circularProgress}
+											color="inherit"
+										/>
+									</main>
+								}
+							>
+								<SignUpPage classes={classes} />
+							</Suspense>
 							<Footer classes={classes} />
 						</Route>
 						<Route path="/dashboard">
-							<Layout dashboardMenuItems={dashboardMenuItems} />
+							<Suspense
+								fallback={
+									<main className={classes.main}>
+										<CircularProgress
+											className={classes.circularProgress}
+											color="inherit"
+										/>
+									</main>
+								}
+							>
+								<DashboardPage dashboardMenuItems={dashboardMenuItems} />
+							</Suspense>
 						</Route>
 						<Route path="*">
-							<NotFound classes={classes} menuItems={menuItems} />
+							<Suspense
+								fallback={
+									<CircularProgress
+										className={classes.circularProgress}
+										color="inherit"
+									/>
+								}
+							>
+								<NotFoundPage classes={classes} menuItems={menuItems} />
+							</Suspense>
+							<Footer classes={classes} />
 						</Route>
 					</Switch>
 				</Router>

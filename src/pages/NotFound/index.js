@@ -5,23 +5,16 @@ import CloseIcon from "@material-ui/icons/CloseOutlined";
 import { Alert } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import Footer from "../../components/Footer/Footer.component";
-import HomeAppBar from "../../components/HomeAppBar";
 
 function SlideTransition(props) {
 	return <Slide {...props} direction="up" />;
 }
 
-export default function NotFound({ classes, menuItems }) {
+export default function NotFound({ classes }) {
 	const location = useLocation();
 
-	const [mobileOpen, setMobileOpen] = useState(false);
 	const [path, setPath] = useState("");
 	const [open, setOpen] = useState(null);
-
-	const handleDrawerToggle = (open) => {
-		setMobileOpen(open);
-	};
 
 	useEffect(() => {
 		setPath(location.pathname);
@@ -35,14 +28,6 @@ export default function NotFound({ classes, menuItems }) {
 
 	return (
 		<>
-			<HomeAppBar
-				classes={classes}
-				menuItems={menuItems}
-				mobileOpen={mobileOpen}
-				setMobileOpen={setMobileOpen}
-				handleDrawerToggle={handleDrawerToggle}
-			/>
-
 			<main className={classes.main}>
 				<Typography variant="h6" color="error">
 					<code>{path}</code> is Not Found
@@ -77,8 +62,6 @@ export default function NotFound({ classes, menuItems }) {
 					</Alert>
 				</Snackbar>
 			</main>
-
-			<Footer classes={classes} />
 		</>
 	);
 }
