@@ -372,9 +372,7 @@ export default function SignIn({ classes }) {
 							</ListItem>
 							<ListItem>
 								<ListItemIcon>
-									<span className="material-icons-outlined">
-										person_outline
-									</span>
+									<span className="material-icons-outlined">account_box</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
 									{user.user_type}

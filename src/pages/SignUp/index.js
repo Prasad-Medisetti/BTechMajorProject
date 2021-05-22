@@ -16,35 +16,51 @@ import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 
 export default function SignUp({ classes }) {
-	const history = useHistory();
+	const initialState = {
+		isSubmitted: false,
+		user: {
+			name: "",
+			email: "",
+			password: "",
+			user_type: "",
+			showPassword: false,
+		},
+		nameError: false,
+		emailError: false,
+		passwordError: {
+			error: false,
+			minLen: false,
+			digits: false,
+			upperCh: false,
+			lowerCh: false,
+			specialSym: false,
+		},
+		designationError: false,
+	};
 
-	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [user, setUser] = useState({
-		email: "",
-		password: "",
-		user_type: "",
-		showPassword: false,
-	});
-
-	const [emailError, setEmailError] = useState(false);
-	const [passwordError, setPasswordError] = useState({
-		error: false,
-		minLen: false,
-		digits: false,
-		upperCh: false,
-		lowerCh: false,
-		specialSym: false,
-	});
-	const [typeError, setTypeError] = useState(false);
+	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
+	const [user, setUser] = useState(initialState.user);
+	const [nameError, setNameError] = useState(initialState.nameError);
+	const [emailError, setEmailError] = useState(initialState.emailError);
+	const [passwordError, setPasswordError] = useState(
+		initialState.passwordError,
+	);
+	const [designationError, setDesignationError] = useState(
+		initialState.designationError,
+	);
 
 	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+	const validateName = () => {
+		setNameError(user.name === "" || user.name.length <= 2);
+	};
 
 	const validateEmail = () => {
 		setEmailError(user.email === "" || !emailRegex.test(user.email));
 	};
+
 	const validatePassword = () => {
 		setPasswordError({
 			minLen: user.password.length >= 0 && user.password.length < 8,
@@ -59,11 +75,10 @@ export default function SignUp({ classes }) {
 				!/[A-Z]/.test(user.password) ||
 				!/[^a-zA-Z0-9]/.test(user.password),
 		});
-		return passwordError.error;
 	};
+
 	const validateType = () => {
-		setTypeError(user.user_type === "");
-		return typeError;
+		setDesignationError(user.user_type === "");
 	};
 
 	const onChange = (e) => {
@@ -88,7 +103,8 @@ export default function SignUp({ classes }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// console.log(!emailError && !passwordError.error && !typeError);
+		// console.log(!emailError && !passwordError.error && !designationError);
+		validateName();
 		validateEmail();
 		validatePassword();
 		validateType();
@@ -99,7 +115,7 @@ export default function SignUp({ classes }) {
 				user.user_type !== "" &&
 				!emailError &&
 				!passwordError.error &&
-				!typeError,
+				!designationError,
 		);
 		// if (note.title && note.details) {
 		// 	if (note._id) {
@@ -140,6 +156,43 @@ export default function SignUp({ classes }) {
 						<form noValidate autoComplete="off" onSubmit={handleSubmit}>
 							<TextField
 								className={classes.field}
+								onChange={(e) => {
+									onChange(e);
+								}}
+								onBlur={validateName}
+								label="Full Name"
+								variant="outlined"
+								fullWidth
+								type="text"
+								name="name"
+								value={user.name}
+								required
+								error={nameError}
+								size="small"
+							/>
+							{nameError && (
+								<List
+									dense
+									disablePadding
+									className={classes.field}
+									style={{ margin: ".5em auto" }}
+									aria-label="password validation hints"
+								>
+									<ListItem style={{ padding: ".25em .5em" }}>
+										<span
+											className="material-icons md-18"
+											style={{ color: "#f44336", marginRight: ".5em" }}
+										>
+											error_outline
+										</span>
+										<Typography variant="body2" color="error">
+											Please enter your full name.
+										</Typography>
+									</ListItem>
+								</List>
+							)}
+							<TextField
+								className={classes.field}
 								onChange={(e) => onChange(e)}
 								onBlur={validateEmail}
 								label="Email"
@@ -168,7 +221,7 @@ export default function SignUp({ classes }) {
 											error_outline
 										</span>
 										<Typography variant="body2" color="error">
-											Please enter email address.
+											Please enter your email address.
 										</Typography>
 									</ListItem>
 								</List>
@@ -288,7 +341,7 @@ export default function SignUp({ classes }) {
 								variant="outlined"
 								required
 								className={classes.field}
-								error={typeError}
+								error={designationError}
 								size="small"
 							>
 								<InputLabel htmlFor="user_type">Designation</InputLabel>
@@ -297,11 +350,11 @@ export default function SignUp({ classes }) {
 									value={user.user_type}
 									onChange={onChange}
 									onBlur={validateType}
-									error={typeError}
+									error={designationError}
 									variant="outlined"
 									required
 									fullWidth
-									labelWidth={110}
+									labelWidth={100}
 									inputProps={{
 										name: "user_type",
 										id: "user_type",
@@ -313,7 +366,7 @@ export default function SignUp({ classes }) {
 									<option value={"Hod"}>Hod</option>
 								</Select>
 							</FormControl>
-							{typeError && (
+							{designationError && (
 								<List
 									dense
 									disablePadding
@@ -360,6 +413,17 @@ export default function SignUp({ classes }) {
 						<List aria-label="user info" style={{ marginTop: "1rem" }}>
 							<ListItem>
 								<ListItemIcon>
+									<span className="material-icons-outlined">face</span>
+								</ListItemIcon>
+								<Typography variant="body1" color="textPrimary">
+									{user.name
+										.split(" ")
+										.map((w) => w[0].toUpperCase() + w.substr(1).toLowerCase())
+										.join(" ")}
+								</Typography>
+							</ListItem>
+							<ListItem>
+								<ListItemIcon>
 									<span className="material-icons-outlined">mail_outline</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
@@ -376,9 +440,7 @@ export default function SignUp({ classes }) {
 							</ListItem>
 							<ListItem>
 								<ListItemIcon>
-									<span className="material-icons-outlined">
-										person_outline
-									</span>
+									<span className="material-icons-outlined">account_box</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
 									{user.user_type}
