@@ -17,11 +17,11 @@ export const menuItems = [
 		icon: <span className="material-icons-outlined">person_add_alt</span>,
 		path: "/signup",
 	},
-	{
-		text: "DASHBOARD",
-		icon: <span className="material-icons-outlined">dashboard</span>,
-		path: "/dashboard",
-	},
+	// {
+	// 	text: "DASHBOARD",
+	// 	icon: <span className="material-icons-outlined">dashboard</span>,
+	// 	path: "/dashboard",
+	// },
 ];
 export const dashboardMenuItems = [
 	{

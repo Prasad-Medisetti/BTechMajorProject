@@ -42,7 +42,7 @@ export const useStyles = makeStyles((theme) => ({
 		// color: "#78909c",
 	},
 	main: {
-		minHeight: "80vh",
+		minHeight: "81vh",
 		Width: "100vw",
 		// background: "#000000",
 		// color: "#78909c",
@@ -76,8 +76,8 @@ export const useStyles = makeStyles((theme) => ({
 		borderRadius: "50%",
 	},
 	field: {
-		marginTop: "1em",
-		marginBottom: "1em",
+		marginTop: "1rem",
+		marginBottom: "1rem",
 		display: "block",
 		color: "#0a0a0a",
 	},

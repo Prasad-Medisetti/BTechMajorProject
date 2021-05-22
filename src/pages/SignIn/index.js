@@ -16,35 +16,44 @@ import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 
 export default function SignIn({ classes }) {
-	const history = useHistory();
+	const initialState = {
+		isSubmitted: false,
+		user: {
+			email: "",
+			password: "",
+			designation: "",
+			showPassword: false,
+		},
+		emailError: false,
+		passwordError: {
+			error: false,
+			minLen: false,
+			digits: false,
+			upperCh: false,
+			lowerCh: false,
+			specialSym: false,
+		},
+		designationError: false,
+	};
 
-	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [user, setUser] = useState({
-		email: "",
-		password: "",
-		user_type: "",
-		showPassword: false,
-	});
-
-	const [emailError, setEmailError] = useState(false);
-	const [passwordError, setPasswordError] = useState({
-		error: false,
-		minLen: false,
-		digits: false,
-		upperCh: false,
-		lowerCh: false,
-		specialSym: false,
-	});
-	const [typeError, setTypeError] = useState(false);
+	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
+	const [user, setUser] = useState(initialState.user);
+	const [emailError, setEmailError] = useState(initialState.emailError);
+	const [passwordError, setPasswordError] = useState(
+		initialState.passwordError,
+	);
+	const [designationError, setDesignationError] = useState(
+		initialState.designationError,
+	);
 
 	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 	const validateEmail = () => {
 		setEmailError(user.email === "" || !emailRegex.test(user.email));
 	};
+
 	const validatePassword = () => {
 		setPasswordError({
 			minLen: user.password.length >= 0 && user.password.length < 8,
@@ -59,11 +68,10 @@ export default function SignIn({ classes }) {
 				!/[A-Z]/.test(user.password) ||
 				!/[^a-zA-Z0-9]/.test(user.password),
 		});
-		return passwordError.error;
 	};
-	const validateType = () => {
-		setTypeError(user.user_type === "");
-		return typeError;
+
+	const validateDesignation = () => {
+		setDesignationError(user.designation === "");
 	};
 
 	const onChange = (e) => {
@@ -88,18 +96,20 @@ export default function SignIn({ classes }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// console.log(!emailError && !passwordError.error && !typeError);
+		// console.log(!emailError && !passwordError.error && !designationError);
+
 		validateEmail();
 		validatePassword();
-		validateType();
+		validateDesignation();
 
 		setIsSubmitted(
 			user.email !== "" &&
+				user.gender !== "" &&
 				user.password !== "" &&
-				user.user_type !== "" &&
+				user.designation !== "" &&
 				!emailError &&
 				!passwordError.error &&
-				!typeError,
+				!designationError,
 		);
 		// if (note.title && note.details) {
 		// 	if (note._id) {
@@ -157,10 +167,12 @@ export default function SignIn({ classes }) {
 									dense
 									disablePadding
 									className={classes.field}
-									style={{ margin: ".5em auto" }}
+									style={{ margin: ".5rem auto" }}
 									aria-label="password validation hints"
 								>
-									<ListItem style={{ padding: ".25em .5em" }}>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
 										<span
 											className="material-icons md-18"
 											style={{ color: "#f44336", marginRight: ".5em" }}
@@ -168,7 +180,7 @@ export default function SignIn({ classes }) {
 											error_outline
 										</span>
 										<Typography variant="body2" color="error">
-											Please enter email address.
+											Please enter your email address.
 										</Typography>
 									</ListItem>
 								</List>
@@ -215,7 +227,9 @@ export default function SignIn({ classes }) {
 									aria-label="password validation hints"
 								>
 									{passwordError.minLen && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -228,7 +242,9 @@ export default function SignIn({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.lowerCh && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -242,7 +258,9 @@ export default function SignIn({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.upperCh && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -256,7 +274,9 @@ export default function SignIn({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.digits && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -269,7 +289,9 @@ export default function SignIn({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.specialSym && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -288,23 +310,23 @@ export default function SignIn({ classes }) {
 								variant="outlined"
 								required
 								className={classes.field}
-								error={typeError}
+								error={designationError}
 								size="small"
 							>
-								<InputLabel htmlFor="user_type">Login As</InputLabel>
+								<InputLabel htmlFor="designation">Login As</InputLabel>
 								<Select
 									native
-									value={user.user_type}
+									value={user.designation}
 									onChange={onChange}
-									onBlur={validateType}
-									error={typeError}
+									onBlur={validateDesignation}
+									error={designationError}
 									variant="outlined"
 									required
 									fullWidth
 									labelWidth={90}
 									inputProps={{
-										name: "user_type",
-										id: "user_type",
+										name: "designation",
+										id: "designation",
 									}}
 								>
 									<option aria-label="None" value="" />
@@ -313,15 +335,17 @@ export default function SignIn({ classes }) {
 									<option value={"Hod"}>Hod</option>
 								</Select>
 							</FormControl>
-							{typeError && (
+							{designationError && (
 								<List
 									dense
 									disablePadding
 									className={classes.field}
-									style={{ margin: ".5em auto" }}
+									style={{ margin: ".5rem auto" }}
 									aria-label="type validation hints"
 								>
-									<ListItem style={{ padding: ".25em .5em" }}>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
 										<span
 											className="material-icons md-18"
 											style={{ color: "#f44336", marginRight: ".5em" }}
@@ -356,7 +380,7 @@ export default function SignIn({ classes }) {
 						<List aria-label="user info" style={{ marginTop: "1rem" }}>
 							<ListItem>
 								<ListItemIcon>
-									<span className="material-icons-outlined">mail_outline</span>
+									<span className="material-icons-outlined">email</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
 									{user.email}
@@ -375,7 +399,7 @@ export default function SignIn({ classes }) {
 									<span className="material-icons-outlined">account_box</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
-									{user.user_type}
+									{user.designation}
 								</Typography>
 							</ListItem>
 							<ListItem>

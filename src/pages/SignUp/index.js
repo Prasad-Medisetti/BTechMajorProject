@@ -23,12 +23,14 @@ export default function SignUp({ classes }) {
 		user: {
 			name: "",
 			email: "",
+			gender: "",
 			password: "",
-			user_type: "",
+			designation: "",
 			showPassword: false,
 		},
 		nameError: false,
 		emailError: false,
+		genderError: false,
 		passwordError: {
 			error: false,
 			minLen: false,
@@ -43,6 +45,7 @@ export default function SignUp({ classes }) {
 	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
 	const [user, setUser] = useState(initialState.user);
 	const [nameError, setNameError] = useState(initialState.nameError);
+	const [genderError, setGenderError] = useState(initialState.genderError);
 	const [emailError, setEmailError] = useState(initialState.emailError);
 	const [passwordError, setPasswordError] = useState(
 		initialState.passwordError,
@@ -55,6 +58,10 @@ export default function SignUp({ classes }) {
 
 	const validateName = () => {
 		setNameError(user.name === "" || user.name.length <= 2);
+	};
+
+	const validateGender = () => {
+		setGenderError(user.gender === "");
 	};
 
 	const validateEmail = () => {
@@ -77,8 +84,8 @@ export default function SignUp({ classes }) {
 		});
 	};
 
-	const validateType = () => {
-		setDesignationError(user.user_type === "");
+	const validateDesignation = () => {
+		setDesignationError(user.designation === "");
 	};
 
 	const onChange = (e) => {
@@ -105,14 +112,16 @@ export default function SignUp({ classes }) {
 		e.preventDefault();
 		// console.log(!emailError && !passwordError.error && !designationError);
 		validateName();
+		validateGender();
 		validateEmail();
 		validatePassword();
-		validateType();
+		validateDesignation();
 
 		setIsSubmitted(
 			user.email !== "" &&
+				user.gender !== "" &&
 				user.password !== "" &&
-				user.user_type !== "" &&
+				user.designation !== "" &&
 				!emailError &&
 				!passwordError.error &&
 				!designationError,
@@ -175,10 +184,12 @@ export default function SignUp({ classes }) {
 									dense
 									disablePadding
 									className={classes.field}
-									style={{ margin: ".5em auto" }}
+									style={{ margin: ".5rem auto" }}
 									aria-label="password validation hints"
 								>
-									<ListItem style={{ padding: ".25em .5em" }}>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
 										<span
 											className="material-icons md-18"
 											style={{ color: "#f44336", marginRight: ".5em" }}
@@ -187,6 +198,58 @@ export default function SignUp({ classes }) {
 										</span>
 										<Typography variant="body2" color="error">
 											Please enter your full name.
+										</Typography>
+									</ListItem>
+								</List>
+							)}
+							<FormControl
+								variant="outlined"
+								required
+								className={classes.field}
+								error={genderError}
+								size="small"
+							>
+								<InputLabel htmlFor="gender">Gender</InputLabel>
+								<Select
+									native
+									value={user.gender}
+									onChange={onChange}
+									onBlur={validateGender}
+									error={genderError}
+									variant="outlined"
+									required
+									fullWidth
+									labelWidth={100}
+									inputProps={{
+										name: "gender",
+										id: "gender",
+									}}
+								>
+									<option aria-label="None" value="" />
+									<option value={"Female"}>Female</option>
+									<option value={"Male"}>Male</option>
+									<option value={"Others"}>Others</option>
+								</Select>
+							</FormControl>
+							{genderError && (
+								<List
+									dense
+									disablePadding
+									className={classes.field}
+									style={{ margin: ".5rem auto" }}
+									aria-label="gender validation hints"
+								>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
+										<span
+											className="material-icons md-18"
+											style={{ color: "#f44336", marginRight: ".5em" }}
+										>
+											error_outline
+										</span>
+										<Typography variant="body2" color="error">
+											Please choose choose your gender.
 										</Typography>
 									</ListItem>
 								</List>
@@ -210,10 +273,12 @@ export default function SignUp({ classes }) {
 									dense
 									disablePadding
 									className={classes.field}
-									style={{ margin: ".5em auto" }}
+									style={{ margin: ".5rem auto" }}
 									aria-label="password validation hints"
 								>
-									<ListItem style={{ padding: ".25em .5em" }}>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
 										<span
 											className="material-icons md-18"
 											style={{ color: "#f44336", marginRight: ".5em" }}
@@ -268,7 +333,9 @@ export default function SignUp({ classes }) {
 									aria-label="password validation hints"
 								>
 									{passwordError.minLen && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -281,7 +348,9 @@ export default function SignUp({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.lowerCh && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -295,7 +364,9 @@ export default function SignUp({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.upperCh && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -309,7 +380,9 @@ export default function SignUp({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.digits && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -322,7 +395,9 @@ export default function SignUp({ classes }) {
 										</ListItem>
 									)}
 									{passwordError.specialSym && (
-										<ListItem style={{ padding: ".25em .5em" }}>
+										<ListItem
+											style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+										>
 											<span
 												className="material-icons md-18"
 												style={{ color: "#f44336", marginRight: ".5em" }}
@@ -344,20 +419,20 @@ export default function SignUp({ classes }) {
 								error={designationError}
 								size="small"
 							>
-								<InputLabel htmlFor="user_type">Designation</InputLabel>
+								<InputLabel htmlFor="designation">Designation</InputLabel>
 								<Select
 									native
-									value={user.user_type}
+									value={user.designation}
 									onChange={onChange}
-									onBlur={validateType}
+									onBlur={validateDesignation}
 									error={designationError}
 									variant="outlined"
 									required
 									fullWidth
 									labelWidth={100}
 									inputProps={{
-										name: "user_type",
-										id: "user_type",
+										name: "designation",
+										id: "designation",
 									}}
 								>
 									<option aria-label="None" value="" />
@@ -371,10 +446,12 @@ export default function SignUp({ classes }) {
 									dense
 									disablePadding
 									className={classes.field}
-									style={{ margin: ".5em auto" }}
+									style={{ margin: ".5rem auto" }}
 									aria-label="type validation hints"
 								>
-									<ListItem style={{ padding: ".25em .5em" }}>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
 										<span
 											className="material-icons md-18"
 											style={{ color: "#f44336", marginRight: ".5em" }}
@@ -382,7 +459,7 @@ export default function SignUp({ classes }) {
 											error_outline
 										</span>
 										<Typography variant="body2" color="error">
-											Please choose an option.
+											Please choose your designation.
 										</Typography>
 									</ListItem>
 								</List>
@@ -398,7 +475,7 @@ export default function SignUp({ classes }) {
 										person_add_alt
 									</span>
 								}
-								style={{ margin: ".5em auto" }}
+								style={{ margin: ".5rem auto" }}
 							>
 								Sign Up
 							</Button>
@@ -413,7 +490,7 @@ export default function SignUp({ classes }) {
 						<List aria-label="user info" style={{ marginTop: "1rem" }}>
 							<ListItem>
 								<ListItemIcon>
-									<span className="material-icons-outlined">face</span>
+									<span className="material-icons-outlined">badge</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
 									{user.name
@@ -424,7 +501,15 @@ export default function SignUp({ classes }) {
 							</ListItem>
 							<ListItem>
 								<ListItemIcon>
-									<span className="material-icons-outlined">mail_outline</span>
+									<span className="material-icons-outlined">person</span>
+								</ListItemIcon>
+								<Typography variant="body1" color="textPrimary">
+									{user.gender}
+								</Typography>
+							</ListItem>
+							<ListItem>
+								<ListItemIcon>
+									<span className="material-icons-outlined">email</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
 									{user.email}
@@ -443,12 +528,12 @@ export default function SignUp({ classes }) {
 									<span className="material-icons-outlined">account_box</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
-									{user.user_type}
+									{user.designation}
 								</Typography>
 							</ListItem>
 							<ListItem>
 								<ListItemIcon
-									style={{ margin: ".5em auto" }}
+									style={{ margin: ".5rem auto" }}
 									onClick={() => {
 										setIsSubmitted(false);
 									}}
