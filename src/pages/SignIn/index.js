@@ -16,6 +16,7 @@ import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
+import MySnackbar from "../../components/Snackbar";
 
 export default function SignIn({ classes }) {
 	const initialState = {
@@ -38,6 +39,8 @@ export default function SignIn({ classes }) {
 		designationError: false,
 	};
 
+	const [toastOpen, setToastOpen] = useState(false);
+	const [toastMessage, setToastMessage] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
 	const [user, setUser] = useState(initialState.user);
 	const [emailError, setEmailError] = useState(initialState.emailError);
@@ -94,6 +97,17 @@ export default function SignIn({ classes }) {
 		setUser({ ...user, showPassword: !user.showPassword });
 	};
 
+	const handleToastClick = () => {
+		setToastOpen(true);
+		setTimeout(() => {
+			setToastOpen(false);
+		}, 6000);
+	};
+
+	const handleToastClose = () => {
+		setToastOpen(false);
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(!emailError && !passwordError.error && !designationError);
@@ -104,13 +118,19 @@ export default function SignIn({ classes }) {
 
 		setIsSubmitted(
 			user.email !== "" &&
-				user.gender !== "" &&
 				user.password !== "" &&
 				user.designation !== "" &&
 				!emailError &&
 				!passwordError.error &&
 				!designationError,
 		);
+
+		setToastMessage("Sign In Successful");
+		setToastOpen(isSubmitted);
+		setTimeout(() => {
+			setToastOpen(false);
+		}, 6000);
+
 		// if (note.title && note.details) {
 		// 	if (note._id) {
 		// 		// console.log(note._id);
@@ -134,16 +154,26 @@ export default function SignIn({ classes }) {
 
 	return (
 		<main className={classes.main}>
+			<MySnackbar
+				toastOpen={toastOpen}
+				handleToastClick={handleToastClick}
+				handleToastClose={handleToastClose}
+				toastMessage={toastMessage}
+			/>
 			<Container maxWidth="sm">
 				{isSubmitted === false && (
 					<>
 						<Typography
-							variant="h6"
+							variant="h1"
 							align="center"
 							color="inherit"
 							style={{
+								fontSize: "1.4rem",
+								fontWeight: 600,
 								textTransform: "uppercase",
+								marginBottom: "1.2rem",
 							}}
+							onClick={handleToastClick}
 						>
 							Sign In
 						</Typography>
@@ -313,7 +343,7 @@ export default function SignIn({ classes }) {
 								error={designationError}
 								size="small"
 							>
-								<InputLabel htmlFor="designation">Login As</InputLabel>
+								<InputLabel htmlFor="designation">Sign In As</InputLabel>
 								<Select
 									native
 									value={user.designation}

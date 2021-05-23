@@ -74,34 +74,36 @@ export default function Notes() {
 	};
 
 	return (
-		<Container>
-			{isLoading ? (
-				<div className={classes.block}>
-					<CircularProgress color="inherit" />
-				</div>
-			) : null}
-			{!isLoading && notes.length > 0 ? (
-				<Masonry
-					breakpointCols={breakpoints}
-					className="my-masonry-grid"
-					columnClassName="my-masonry-grid_column"
-				>
-					{notes.map((note) => (
-						<div key={note._id}>
-							<NoteCard
-								note={note}
-								handleEdit={handleEdit}
-								handleDelete={handleDelete}
-							/>
-						</div>
-					))}
-				</Masonry>
-			) : null}
-			{error ? (
-				<Paper variant="elevation" elevation={2} className={classes.block}>
-					<Typography>{error}</Typography>
-				</Paper>
-			) : null}
-		</Container>
+		<>
+			<Container>
+				{isLoading ? (
+					<div className={classes.block}>
+						<CircularProgress color="inherit" />
+					</div>
+				) : null}
+				{!isLoading && notes.length > 0 ? (
+					<Masonry
+						breakpointCols={breakpoints}
+						className="my-masonry-grid"
+						columnClassName="my-masonry-grid_column"
+					>
+						{notes.map((note) => (
+							<div key={note._id}>
+								<NoteCard
+									note={note}
+									handleEdit={handleEdit}
+									handleDelete={handleDelete}
+								/>
+							</div>
+						))}
+					</Masonry>
+				) : null}
+				{error ? (
+					<Paper variant="elevation" elevation={2} className={classes.block}>
+						<Typography>{error}</Typography>
+					</Paper>
+				) : null}
+			</Container>
+		</>
 	);
 }

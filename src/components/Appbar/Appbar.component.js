@@ -10,31 +10,34 @@ import React from "react";
 
 function Appbar({ classes, handleDrawerToggle }) {
 	return (
-		<AppBar
-			position="fixed"
-			className={classes.appBar}
-			elevation={2}
-			color="default"
-		>
-			<Toolbar>
-				<Hidden smUp implementation="css">
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						onClick={handleDrawerToggle}
-						edge="start"
-						className={classes.menuButton}
-					>
-						<MenuIcon />
-					</IconButton>
-				</Hidden>
-				<Typography className={classes.date}>
-					Today is the {format(new Date(), "do MMMM Y")}
-				</Typography>
-				<Typography>Admin</Typography>
-				<Avatar className={classes.avatar} />
-			</Toolbar>
-		</AppBar>
+		<>
+			<AppBar
+				position="sticky"
+				className={classes.appBar}
+				elevation={2}
+				color="default"
+			>
+				<Toolbar>
+					<Hidden smUp implementation="css">
+						<IconButton
+							color="inherit"
+							aria-label="open drawer"
+							onClick={handleDrawerToggle}
+							edge="start"
+							className={classes.menuButton}
+						>
+							<MenuIcon />
+						</IconButton>
+					</Hidden>
+					<Typography className={classes.date}>
+						Today is the {format(new Date(), "do MMMM Y")}
+					</Typography>
+					<Typography>Admin</Typography>
+					<Avatar className={classes.avatar} />
+				</Toolbar>
+			</AppBar>
+			<Toolbar id="back-to-top-anchor" />
+		</>
 	);
 }
 

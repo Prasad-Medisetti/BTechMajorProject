@@ -153,11 +153,14 @@ export default function SignUp({ classes }) {
 				{isSubmitted === false && (
 					<>
 						<Typography
-							variant="h6"
+							variant="h1"
 							align="center"
 							color="inherit"
 							style={{
+								fontSize: "1.4rem",
+								fontWeight: 600,
 								textTransform: "uppercase",
+								marginBottom: "1.2rem",
 							}}
 						>
 							Sign Up

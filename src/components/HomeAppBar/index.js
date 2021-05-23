@@ -25,14 +25,50 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 			<div className={classes.root}>
 				{/* app bar */}
 				<AppBar position="sticky" className={classes.appBar} color="default">
-					<Toolbar className={classes.toolbar}>
-						<Link
-							className={classes.title}
-							onClick={() => history.replace("/")}
+					<Hidden mdUp implementation="css">
+						<Toolbar
+							className={classes.toolbar}
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignContent: "center",
+							}}
 						>
-							Online Notice Board
-						</Link>
-						<Hidden smDown implementation="css">
+							<Link
+								className={classes.title}
+								onClick={() => history.replace("/")}
+							>
+								Online Notice Board
+							</Link>
+							<IconButton
+								edge="start"
+								className={classes.menuButton}
+								color="inherit"
+								onClick={() => {
+									handleDrawerToggle(true);
+								}}
+								aria-label="menu"
+							>
+								<MenuIcon />
+							</IconButton>
+						</Toolbar>
+					</Hidden>
+
+					<Hidden smDown implementation="css">
+						<Toolbar
+							className={classes.toolbar}
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignContent: "center",
+							}}
+						>
+							<Link
+								className={classes.title}
+								onClick={() => history.replace("/")}
+							>
+								Online Notice Board
+							</Link>
 							<ButtonGroup
 								orientation="horizontal"
 								variant="text"
@@ -56,21 +92,8 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 									</Button>
 								))}
 							</ButtonGroup>
-						</Hidden>
-						<Hidden mdUp implementation="css">
-							<IconButton
-								edge="start"
-								className={classes.menuButton}
-								color="inherit"
-								onClick={() => {
-									handleDrawerToggle(true);
-								}}
-								aria-label="menu"
-							>
-								<MenuIcon />
-							</IconButton>
-						</Hidden>
-					</Toolbar>
+						</Toolbar>
+					</Hidden>
 				</AppBar>
 				<TemporaryDrawer
 					anchor="right"

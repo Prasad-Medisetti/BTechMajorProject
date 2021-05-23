@@ -9,6 +9,7 @@ body {
 	overflow: auto;
 	user-select: none;
 	font-family: "Quicksand", "Roboto", sans-serif;
+	scroll-behavior: smooth;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-tap-highlight-color: transparent;
