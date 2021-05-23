@@ -11,6 +11,7 @@ import {
 import black from "@material-ui/core/colors/grey";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
+import { useHistory } from "react-router";
 import clgUpdates from "../../assets/images/undraw_Online_information_re_erks.svg";
 import emailUpdates from "../../assets/images/undraw_Personal_text_re_vqj3.svg";
 import auth from "../../assets/images/undraw_secure_login_pdn4.svg";
@@ -18,6 +19,7 @@ import privacy from "../../assets/images/undraw_security_o890.svg";
 import styles from "./Landing.module.css";
 
 export default function HomePage({ classes }) {
+	const history = useHistory();
 	return (
 		<>
 			<main className={classes.main}>
@@ -53,7 +55,9 @@ export default function HomePage({ classes }) {
 							style={{
 								backgroundColor: "#37474f",
 								color: black[100],
-								padding: "1rem auto",
+							}}
+							onClick={() => {
+								history.replace("signup");
 							}}
 							endIcon={<Icon>arrow_forward</Icon>}
 						>
@@ -71,7 +75,7 @@ export default function HomePage({ classes }) {
 					</Typography>
 					<Grid
 						container
-						spacing={4}
+						spacing={2}
 						direction="row"
 						justify="center"
 						alignItems="center"
@@ -81,7 +85,7 @@ export default function HomePage({ classes }) {
 						<Grid
 							container
 							item
-							spacing={4}
+							spacing={2}
 							direction="row"
 							justify="center"
 							alignItems="center"
@@ -89,7 +93,7 @@ export default function HomePage({ classes }) {
 							wrap="wrap"
 						>
 							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "320px" }}>
+								<Card variant="outlined" style={{ minWidth: "232px" }}>
 									<CardActionArea>
 										<CardMedia
 											component="img"
@@ -123,7 +127,7 @@ export default function HomePage({ classes }) {
 								</Card>
 							</Grid>
 							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "320px" }}>
+								<Card variant="outlined" style={{ minWidth: "232px" }}>
 									<CardActionArea>
 										<CardMedia
 											component="img"
@@ -168,7 +172,7 @@ export default function HomePage({ classes }) {
 							wrap="wrap"
 						>
 							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "320px" }}>
+								<Card variant="outlined" style={{ minWidth: "232px" }}>
 									<CardActionArea>
 										<CardMedia
 											component="img"
@@ -202,7 +206,7 @@ export default function HomePage({ classes }) {
 								</Card>
 							</Grid>
 							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "320px" }}>
+								<Card variant="outlined" style={{ minWidth: "232px" }}>
 									<CardActionArea>
 										<CardMedia
 											component="img"

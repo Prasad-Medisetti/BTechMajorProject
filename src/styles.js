@@ -46,7 +46,7 @@ export const useStyles = makeStyles((theme) => ({
 		minHeight: "84vh",
 		// background: "#000000",
 		// color: "#78909c",
-		margin: theme.spacing(4, 2),
+		margin: theme.spacing(4, 1),
 		display: "flex",
 		flexWrap: "wrap",
 		// flexDirection: "column",
