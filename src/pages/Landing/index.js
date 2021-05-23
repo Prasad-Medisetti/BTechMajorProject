@@ -75,7 +75,7 @@ export default function HomePage({ classes }) {
 					</Typography>
 					<Grid
 						container
-						spacing={2}
+						spacing={3}
 						direction="row"
 						justify="center"
 						alignItems="center"
@@ -85,7 +85,7 @@ export default function HomePage({ classes }) {
 						<Grid
 							container
 							item
-							spacing={2}
+							spacing={3}
 							direction="row"
 							justify="center"
 							alignItems="center"
@@ -100,7 +100,8 @@ export default function HomePage({ classes }) {
 											alt="Contemplative Reptile"
 											image={clgUpdates}
 											style={{
-												height: "160px",
+												width: "100%",
+												height: "208px",
 												objectFit: "contain",
 											}}
 											title="Contemplative Reptile"
@@ -134,7 +135,8 @@ export default function HomePage({ classes }) {
 											alt="Contemplative Reptile"
 											image={emailUpdates}
 											style={{
-												height: "200px",
+												width: "100%",
+												height: "208px",
 												objectFit: "contain",
 											}}
 											title="Contemplative Reptile"
@@ -179,7 +181,8 @@ export default function HomePage({ classes }) {
 											alt="Contemplative Reptile"
 											image={auth}
 											style={{
-												height: "200px",
+												width: "100%",
+												height: "208px",
 												objectFit: "contain",
 											}}
 											title="Contemplative Reptile"
@@ -213,7 +216,8 @@ export default function HomePage({ classes }) {
 											alt="Contemplative Reptile"
 											image={privacy}
 											style={{
-												height: "200px",
+												width: "100%",
+												height: "208px",
 												objectFit: "contain",
 											}}
 											title="Contemplative Reptile"
