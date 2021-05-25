@@ -1,10 +1,10 @@
 /* her section styles */
 .landing_hero_section {
-	padding: 4rem 1rem;
-	margin: 4rem auto;
+	padding: 2.4rem 1rem;
+	margin: 8rem auto;
 }
 .landing_hero_section .landing_hero_section__heading1 {
-	font-size: 2.4rem;
+	font-size: 2em;
 	margin-bottom: 1rem;
 }
 .landing_hero_section .landing_hero_section__para {
@@ -18,8 +18,19 @@
 	margin: 4rem auto 1rem;
 }
 .landing_features_section .landing_features_section__heading1 {
-	font-size: 2rem;
+	font-size: 1.6rem;
 	margin-bottom: 2rem;
+}
+
+@media (max-width: 360px) {
+	.landing_hero_section {
+		max-width: 360px;
+		margin: 4em auto;
+	}
+	.landing_features_section {
+		max-width: 360px;
+		margin: 8em auto;
+	}
 }
 
 @media (min-width: 600px) {

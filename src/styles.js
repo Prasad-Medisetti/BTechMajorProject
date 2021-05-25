@@ -4,18 +4,6 @@ import { purple } from "@material-ui/core/colors";
 export const useStyles = makeStyles((theme) => ({
 	root: {},
 	menuButton: {},
-	drawerTitle: {
-		flexGrow: 1,
-		letterSpacing: 0,
-		textDecoration: "none",
-		color: "#000000DE",
-		textTransform: "uppercase",
-		transition: "all .4s",
-		"&:hover": {
-			color: purple[900],
-			filter: "drop-shadow(0px 0px 1px inherit)",
-		},
-	},
 	title: {
 		letterSpacing: 0,
 		display: "inline-block",
@@ -32,12 +20,12 @@ export const useStyles = makeStyles((theme) => ({
 			filter: "drop-shadow(0px 0px 1px inherit)",
 			textDecoration: "none",
 		},
-		fontSize: theme.typography.fontSize * 1.5,
+		fontSize: theme.typography.fontSize * 1.25,
 	},
 	appBar: {
 		// padding: theme.spacing(0),
 		minHeight: "4vh",
-		padding: theme.spacing(0.5),
+		padding: "5em auto",
 		// marginLeft: theme.spacing(1),
 		// background: "#000000",
 		// color: "#78909c",

@@ -1,11 +1,4 @@
-import {
-	Button,
-	Divider,
-	IconButton,
-	Link,
-	Toolbar,
-	Typography,
-} from "@material-ui/core";
+import { Button, Divider, IconButton, Link, Toolbar } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Hidden from "@material-ui/core/Hidden";
@@ -22,138 +15,127 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 
 	return (
 		<>
-			<div className={classes.root}>
-				{/* app bar */}
-				<AppBar position="sticky" className={classes.appBar} color="default">
-					<Hidden mdUp implementation="css">
-						<Toolbar
-							className={classes.toolbar}
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignContent: "center",
-							}}
+			{/* app bar */}
+			<AppBar position="sticky" className={classes.appBar} color="default">
+				<Hidden mdUp implementation="css">
+					<Toolbar
+						className={classes.toolbar}
+						style={{
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+						}}
+					>
+						<Link
+							className={classes.title}
+							onClick={() => history.replace("/")}
 						>
-							<Link
-								className={classes.title}
-								onClick={() => history.replace("/")}
-							>
-								Online Notice Board
-							</Link>
-							<IconButton
-								edge="start"
-								className={classes.menuButton}
-								color="inherit"
-								onClick={() => {
-									handleDrawerToggle(true);
-								}}
-								aria-label="menu"
-							>
-								<MenuIcon />
-							</IconButton>
-						</Toolbar>
-					</Hidden>
+							Online Notice Board
+						</Link>
+						<IconButton
+							edge="start"
+							className={classes.menuButton}
+							color="inherit"
+							onClick={() => {
+								handleDrawerToggle(true);
+							}}
+							aria-label="menu"
+						>
+							<MenuIcon />
+						</IconButton>
+					</Toolbar>
+				</Hidden>
 
-					<Hidden smDown implementation="css">
-						<Toolbar
-							className={classes.toolbar}
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignContent: "center",
-							}}
+				<Hidden smDown implementation="css">
+					<Toolbar
+						className={classes.toolbar}
+						style={{
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+						}}
+					>
+						<Link className={classes.title}>Online Notice Board</Link>
+						<ButtonGroup
+							orientation="horizontal"
+							variant="text"
+							color="inherit"
+							size="large"
+							aria-label="vertical contained primary button group"
 						>
-							<Link
-								className={classes.title}
-								onClick={() => history.replace("/")}
-							>
-								Online Notice Board
-							</Link>
-							<ButtonGroup
-								orientation="horizontal"
-								variant="text"
-								color="inherit"
-								size="large"
-								aria-label="vertical contained primary button group"
-							>
-								{menuItems.map((item, index) => (
-									<Button
-										key={index}
-										className={
-											location.pathname === item.path ? classes.active : null
-										}
-										variant="text"
-										color="inherit"
-										fullWidth
-										endIcon={item.icon}
-										onClick={() => history.replace(item.path)}
-									>
-										{item.text}
-									</Button>
-								))}
-							</ButtonGroup>
-						</Toolbar>
-					</Hidden>
-				</AppBar>
-				<TemporaryDrawer
-					anchor="right"
-					style={{ width: "50vw" }}
-					open={mobileOpen}
-					onClose={() => {
-						handleDrawerToggle(false);
-					}}
-				>
-					<List>
-						<ListItem key="title" button>
-							<Typography
-								className={classes.drawerTitle}
-								variant="h6"
-								component="h4"
-								children="Online Notice Board"
-								onClick={() => history.replace("/")}
-							/>
-						</ListItem>
+							{menuItems.map((item, index) => (
+								<Button
+									key={index}
+									className={
+										location.pathname === item.path ? classes.active : null
+									}
+									variant="text"
+									color="inherit"
+									fullWidth
+									endIcon={item.icon}
+									onClick={() => history.replace(item.path)}
+								>
+									{item.text}
+								</Button>
+							))}
+						</ButtonGroup>
+					</Toolbar>
+				</Hidden>
+			</AppBar>
+			<TemporaryDrawer
+				anchor="top"
+				open={mobileOpen}
+				onClose={() => {
+					handleDrawerToggle(false);
+				}}
+			>
+				<List>
+					<ListItem
+						key="title"
+						onClick={() => history.replace("/")}
+						style={{ display: "block", textAlign: "center" }}
+					>
+						<Link className={classes.title}>Online Notice Board</Link>
+					</ListItem>
 
-						<Divider />
-						<ListItem
-							style={{
-								minHeight: "80vh",
-								display: "flex",
-								flexDirection: "column",
-								justifyContent: "center",
-								alignItems: "center",
-							}}
+					<Divider style={{ margin: ".5em auto" }} />
+					<ListItem
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							justifyContent: "center",
+							alignItems: "center",
+						}}
+					>
+						<ButtonGroup
+							orientation="vertical"
+							variant="text"
+							fullWidth
+							aria-label="vertical contained primary button group"
 						>
-							<ButtonGroup
-								orientation="vertical"
-								variant="text"
-								fullWidth
-								aria-label="vertical contained primary button group"
-							>
-								{menuItems.map((item, index) => (
-									<Button
-										key={index}
-										variant="text"
-										color="inherit"
-										fullWidth
-										startIcon={item.icon}
-										className={
-											location.pathname === item.path ? classes.active : null
-										}
-										style={{ justifyContent: "flex-start" }}
-										onClick={() => {
-											history.replace(item.path);
-											handleDrawerToggle(false);
-										}}
-									>
-										{item.text}
-									</Button>
-								))}
-							</ButtonGroup>
-						</ListItem>
-					</List>
-				</TemporaryDrawer>
-			</div>
+							{menuItems.map((item, index) => (
+								<Button
+									key={index}
+									variant="text"
+									color="inherit"
+									fullWidth
+									startIcon={item.icon}
+									className={
+										location.pathname === item.path ? classes.active : null
+									}
+									onClick={() => {
+										history.replace(item.path);
+										handleDrawerToggle(false);
+									}}
+									style={{ minWidth: "" }}
+								>
+									{item.text}
+								</Button>
+							))}
+						</ButtonGroup>
+					</ListItem>
+				</List>
+			</TemporaryDrawer>
 		</>
 	);
 }

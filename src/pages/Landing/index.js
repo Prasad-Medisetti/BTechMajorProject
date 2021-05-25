@@ -12,10 +12,11 @@ import black from "@material-ui/core/colors/grey";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
 import { useHistory } from "react-router";
+import emailUpdates from "../../assets/images/undraw_Mailbox_re_dvds.svg";
 import clgUpdates from "../../assets/images/undraw_Online_information_re_erks.svg";
-import emailUpdates from "../../assets/images/undraw_Personal_text_re_vqj3.svg";
 import auth from "../../assets/images/undraw_secure_login_pdn4.svg";
 import privacy from "../../assets/images/undraw_security_o890.svg";
+import branchUpdates from "../../assets/images/undraw_Work_chat_re_qes4.svg";
 import styles from "./Landing.module.css";
 
 export default function HomePage({ classes }) {
@@ -57,7 +58,7 @@ export default function HomePage({ classes }) {
 								color: black[100],
 							}}
 							onClick={() => {
-								history.replace("signup");
+								history.replace("/signup");
 							}}
 							endIcon={<Icon>arrow_forward</Icon>}
 						>
@@ -92,71 +93,101 @@ export default function HomePage({ classes }) {
 							alignContent="center"
 							wrap="wrap"
 						>
-							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "232px" }}>
+							<Grid item sm>
+								<Card
+									variant="elevation"
+									style={{ minWidth: "232px", textAlign: "center" }}
+								>
 									<CardActionArea>
 										<CardMedia
 											component="img"
 											alt="Contemplative Reptile"
 											image={clgUpdates}
 											style={{
-												width: "100%",
-												height: "208px",
+												height: "160px",
 												objectFit: "contain",
+												marginTop: "1rem",
 											}}
 											title="Contemplative Reptile"
 										/>
-										<CardContent>
-											<Typography gutterBottom variant="h5" component="h2">
+										<CardContent
+											style={{
+												fontSize: "1.25rem",
+												margin: "auto .5rem",
+											}}
+										>
+											<Typography
+												gutterBottom
+												variant="h5"
+												component="h6"
+												style={{
+													fontSize: "1.25rem",
+													margin: ".5rem auto .5rem",
+												}}
+											>
 												College Updates
 											</Typography>
 											<Typography
-												variant="body1"
-												align="justify"
+												variant="body2"
 												style={{
 													hyphens: "auto",
+													minHeight: "4.8rem",
 												}}
 											>
-												Lorem ipsum dolor sit amet consectetur adipisicing elit.
-												Nemo inventore explicabo magni exercitationem
-												consectetur, quasi, fuga ducimus tempora iusto possimus
-												voluptate. Recusandae minus, iste laboriosam minima
-												consectetur nostrum itaque sit!
+												The updates from the college related to exams, exam
+												timetables, fee payments, workshop registrations,
+												college fests, etc ... will be displayed in the
+												respective user's dashboard.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
 								</Card>
 							</Grid>
-							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "232px" }}>
+							<Grid item sm>
+								<Card
+									variant="elevation"
+									style={{ minWidth: "232px", textAlign: "center" }}
+								>
 									<CardActionArea>
 										<CardMedia
 											component="img"
 											alt="Contemplative Reptile"
-											image={emailUpdates}
+											image={branchUpdates}
 											style={{
-												width: "100%",
-												height: "208px",
+												height: "160px",
 												objectFit: "contain",
+												marginTop: "1rem",
 											}}
 											title="Contemplative Reptile"
 										/>
-										<CardContent>
-											<Typography gutterBottom variant="h5" component="h2">
-												Email Updates
-											</Typography>
+										<CardContent
+											style={{
+												fontSize: "1.25rem",
+												margin: "auto .5rem",
+											}}
+										>
 											<Typography
-												variant="body1"
-												align="justify"
+												gutterBottom
+												variant="h5"
+												component="h6"
 												style={{
-													hyphens: "auto",
+													fontSize: "1.25rem",
+													margin: ".5rem auto .5rem",
 												}}
 											>
-												Lorem ipsum dolor sit amet consectetur adipisicing elit.
-												Nemo inventore explicabo magni exercitationem
-												consectetur, quasi, fuga ducimus tempora iusto possimus
-												voluptate. Recusandae minus, iste laboriosam minima
-												consectetur nostrum itaque sit!
+												Branch Wise Updates
+											</Typography>
+											<Typography
+												variant="body2"
+												style={{
+													hyphens: "auto",
+													minHeight: "4.8rem",
+												}}
+											>
+												Lorem ipsum dolor sit amet consectetur, adipisicing
+												elit. Nobis inventore natus omnis numquam in facere.
+												Impedit quo minus earum explicabo sint suscipit ipsam
+												nesciunt tenetur.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
@@ -173,71 +204,158 @@ export default function HomePage({ classes }) {
 							alignContent="center"
 							wrap="wrap"
 						>
-							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "232px" }}>
+							<Grid item sm>
+								<Card
+									variant="elevation"
+									style={{ minWidth: "232px", textAlign: "center" }}
+								>
+									<CardActionArea>
+										<CardMedia
+											component="img"
+											alt="Contemplative Reptile"
+											image={emailUpdates}
+											style={{
+												height: "160px",
+												objectFit: "contain",
+												marginTop: "1rem",
+											}}
+											title="Contemplative Reptile"
+										/>
+										<CardContent
+											style={{
+												fontSize: "1.25rem",
+												margin: "auto .5rem",
+											}}
+										>
+											<Typography
+												gutterBottom
+												variant="h5"
+												component="h6"
+												style={{
+													fontSize: "1.25rem",
+													margin: ".5rem auto .5rem",
+												}}
+											>
+												Email Updates
+											</Typography>
+											<Typography
+												variant="body2"
+												style={{
+													hyphens: "auto",
+													minHeight: "4.8rem",
+												}}
+											>
+												The users will get email updates when they have new
+												updates and those email updates will be delivered to the
+												email addresses which they have given for registration.
+											</Typography>
+										</CardContent>
+									</CardActionArea>
+								</Card>
+							</Grid>
+							<Grid item sm>
+								<Card
+									variant="elevation"
+									style={{ minWidth: "232px", textAlign: "center" }}
+								>
 									<CardActionArea>
 										<CardMedia
 											component="img"
 											alt="Contemplative Reptile"
 											image={auth}
 											style={{
-												width: "100%",
-												height: "208px",
+												height: "160px",
 												objectFit: "contain",
+												marginTop: "1rem",
 											}}
 											title="Contemplative Reptile"
 										/>
-										<CardContent>
-											<Typography gutterBottom variant="h5" component="h2">
-												Secure Login
-											</Typography>
+										<CardContent
+											style={{
+												fontSize: "1.25rem",
+												margin: "auto .5rem",
+											}}
+										>
 											<Typography
-												variant="body1"
-												align="justify"
+												gutterBottom
+												variant="h5"
+												component="h6"
 												style={{
-													hyphens: "auto",
+													fontSize: "1.25rem",
+													margin: ".5rem auto .5rem",
 												}}
 											>
-												Lorem ipsum dolor sit amet consectetur adipisicing elit.
-												Nemo inventore explicabo magni exercitationem
-												consectetur, quasi, fuga ducimus tempora iusto possimus
-												voluptate. Recusandae minus, iste laboriosam minima
-												consectetur nostrum itaque sit!
+												Authentication
+											</Typography>
+											<Typography
+												variant="body2"
+												style={{
+													hyphens: "auto",
+													minHeight: "4.8rem",
+												}}
+											>
+												The authorized users can sign in to their accounts and
+												they will access the updates to which they are
+												authorized.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
 								</Card>
 							</Grid>
-							<Grid item xs>
-								<Card variant="outlined" style={{ minWidth: "232px" }}>
+						</Grid>
+						<Grid
+							item
+							direction="column"
+							justify="center"
+							alignItems="center"
+							alignContent="center"
+							wrap="wrap"
+							sm={6}
+						>
+							<Grid item sm>
+								<Card
+									variant="elevation"
+									style={{ minWidth: "232px", textAlign: "center" }}
+								>
 									<CardActionArea>
 										<CardMedia
 											component="img"
 											alt="Contemplative Reptile"
 											image={privacy}
 											style={{
-												width: "100%",
-												height: "208px",
+												height: "160px",
 												objectFit: "contain",
+												marginTop: "1rem",
 											}}
 											title="Contemplative Reptile"
 										/>
-										<CardContent>
-											<Typography gutterBottom variant="h5" component="h2">
+										<CardContent
+											style={{
+												fontSize: "1.25rem",
+												margin: "auto .5rem",
+											}}
+										>
+											<Typography
+												gutterBottom
+												variant="h5"
+												component="h6"
+												style={{
+													fontSize: "1.25rem",
+													margin: ".5rem auto .5rem",
+												}}
+											>
 												Privacy
 											</Typography>
 											<Typography
-												variant="body1"
-												align="justify"
+												variant="body2"
 												style={{
 													hyphens: "auto",
+													minHeight: "4.8rem",
 												}}
 											>
-												Lorem ipsum dolor sit amet consectetur adipisicing elit.
-												Nemo inventore explicabo magni exercitationem
-												consectetur, quasi, fuga ducimus tempora iusto possimus
-												voluptate. Recusandae minus, iste laboriosam minima
-												consectetur nostrum itaque sit!
+												The updates between the HOD and Staff, HOD to HOD will
+												be protected from access by other users like students or
+												faculties.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
