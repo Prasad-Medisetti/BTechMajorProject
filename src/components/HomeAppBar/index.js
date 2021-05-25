@@ -15,7 +15,7 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 
 	return (
 		<>
-			{/* app bar */}
+			{/* desktop appbar */}
 			<AppBar position="sticky" className={classes.appBar} color="default">
 				<Hidden mdUp implementation="css">
 					<Toolbar
@@ -28,7 +28,10 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 					>
 						<Link
 							className={classes.title}
-							onClick={() => history.replace("/")}
+							onClick={() => {
+								history.push("/");
+								handleDrawerToggle(false);
+							}}
 						>
 							Online Notice Board
 						</Link>
@@ -46,6 +49,7 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 					</Toolbar>
 				</Hidden>
 
+				{/* mobile appbar */}
 				<Hidden smDown implementation="css">
 					<Toolbar
 						className={classes.toolbar}
@@ -55,7 +59,15 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 							alignItems: "center",
 						}}
 					>
-						<Link className={classes.title}>Online Notice Board</Link>
+						<Link
+							className={classes.title}
+							onClick={() => {
+								history.push("/");
+								handleDrawerToggle(false);
+							}}
+						>
+							Online Notice Board
+						</Link>
 						<ButtonGroup
 							orientation="horizontal"
 							variant="text"
@@ -92,10 +104,14 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 				<List>
 					<ListItem
 						key="title"
-						onClick={() => history.replace("/")}
 						style={{ display: "block", textAlign: "center" }}
 					>
-						<Link className={classes.title}>Online Notice Board</Link>
+						<Link
+							className={classes.title}
+							onClick={() => history.replace("/")}
+						>
+							Online Notice Board
+						</Link>
 					</ListItem>
 
 					<Divider style={{ margin: ".5em auto" }} />

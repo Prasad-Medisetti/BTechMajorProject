@@ -58,7 +58,7 @@ export default function HomePage({ classes }) {
 								color: black[100],
 							}}
 							onClick={() => {
-								history.replace("/signup");
+								history.push("/signup");
 							}}
 							endIcon={<Icon>arrow_forward</Icon>}
 						>
@@ -134,10 +134,9 @@ export default function HomePage({ classes }) {
 													minHeight: "4.8rem",
 												}}
 											>
-												The updates from the college related to exams, exam
-												timetables, fee payments, workshop registrations,
-												college fests, etc ... will be displayed in the
-												respective user's dashboard.
+												The updates from the college related to exams, fee
+												payments, workshop registrations, college fests, etc ...
+												will be displayed in the respective user's dashboard.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
@@ -154,7 +153,7 @@ export default function HomePage({ classes }) {
 											alt="Contemplative Reptile"
 											image={branchUpdates}
 											style={{
-												height: "160px",
+												height: "180px",
 												objectFit: "contain",
 												marginTop: "1rem",
 											}}
@@ -179,15 +178,14 @@ export default function HomePage({ classes }) {
 											</Typography>
 											<Typography
 												variant="body2"
+												className={styles.branchUpdates}
 												style={{
 													hyphens: "auto",
-													minHeight: "4.8rem",
+													minHeight: "4rem",
 												}}
 											>
-												Lorem ipsum dolor sit amet consectetur, adipisicing
-												elit. Nobis inventore natus omnis numquam in facere.
-												Impedit quo minus earum explicabo sint suscipit ipsam
-												nesciunt tenetur.
+												Sending branch-wise updates to every user who belongs to
+												the respective branch.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
@@ -236,7 +234,7 @@ export default function HomePage({ classes }) {
 													margin: ".5rem auto .5rem",
 												}}
 											>
-												Email Updates
+												Email Alerts
 											</Typography>
 											<Typography
 												variant="body2"
@@ -245,9 +243,8 @@ export default function HomePage({ classes }) {
 													minHeight: "4.8rem",
 												}}
 											>
-												The users will get email updates when they have new
-												updates and those email updates will be delivered to the
-												email addresses which they have given for registration.
+												Users will receive email alerts if any new updates are
+												posted on the website.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
@@ -294,9 +291,8 @@ export default function HomePage({ classes }) {
 													minHeight: "4.8rem",
 												}}
 											>
-												The authorized users can sign in to their accounts and
-												they will access the updates to which they are
-												authorized.
+												Only authorized users are allowed to log in and access
+												the updates to which they are authorized.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
@@ -304,6 +300,7 @@ export default function HomePage({ classes }) {
 							</Grid>
 						</Grid>
 						<Grid
+							container
 							item
 							direction="column"
 							justify="center"

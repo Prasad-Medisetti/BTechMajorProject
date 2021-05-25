@@ -252,7 +252,7 @@ export default function SignUp({ classes }) {
 											error_outline
 										</span>
 										<Typography variant="body2" color="error">
-											Please choose choose your gender.
+											Please choose your gender.
 										</Typography>
 									</ListItem>
 								</List>

@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme) => ({
 	appBar: {
 		// padding: theme.spacing(0),
 		minHeight: "4vh",
-		padding: "5em auto",
+		// padding: "5em auto",
 		// marginLeft: theme.spacing(1),
 		// background: "#000000",
 		// color: "#78909c",
@@ -70,12 +70,11 @@ export const useStyles = makeStyles((theme) => ({
 		color: "#0a0a0a",
 	},
 	formControl: {
-		// margin: theme.spacing(1),
-		padding: 0,
-		// minWidth: 120,
+		minWidth: 150,
 	},
 	selectEmpty: {
-		marginTop: theme.spacing(2),
+		// marginTop: theme.spacing(2),
+		paddingRight: 0,
 	},
 	listItem: {
 		display: "flex",

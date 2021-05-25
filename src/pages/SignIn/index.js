@@ -5,12 +5,13 @@ import {
 	ListItem,
 	ListItemIcon,
 	Select,
-	TextField,
+	TextField
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
@@ -343,9 +344,10 @@ export default function SignIn({ classes }) {
 								error={designationError}
 								size="small"
 							>
-								<InputLabel htmlFor="designation">Sign In As</InputLabel>
+								<InputLabel id="demo-simple-select-outlined-label">
+									Sign In As
+								</InputLabel>
 								<Select
-									native
 									value={user.designation}
 									onChange={onChange}
 									onBlur={validateDesignation}
@@ -359,7 +361,42 @@ export default function SignIn({ classes }) {
 										id: "designation",
 									}}
 								>
-									<option aria-label="None" value="" />
+									<MenuItem value="">
+										<em>None</em>
+									</MenuItem>
+									<MenuItem value={"Student"}>Student</MenuItem>
+									<MenuItem value={"Faculty"}>Faculty</MenuItem>
+									<MenuItem value={"Hod"}>Hod</MenuItem>
+								</Select>
+							</FormControl>
+							{JSON.stringify(user.designation)}
+							<FormControl
+								variant="outlined"
+								required
+								className={classes.field}
+								error={designationError}
+								size="small"
+							>
+								<InputLabel htmlFor="designation">Sign In As</InputLabel>
+								<Select
+									native
+									value={user.designation}
+									onChange={onChange}
+									onBlur={validateDesignation}
+									error={designationError}
+									variant="outlined"
+									required
+									fullWidth
+									label='Sign In As'
+									labelWidth={90}
+									inputProps={{
+										name: "designation",
+										id: "designation",
+									}}
+								>
+									<option aria-label="None" value="">
+										None
+									</option>
 									<option value={"Student"}>Student</option>
 									<option value={"Faculty"}>Faculty</option>
 									<option value={"Hod"}>Hod</option>
