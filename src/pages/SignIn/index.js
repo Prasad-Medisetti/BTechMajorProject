@@ -337,7 +337,7 @@ export default function SignIn({ classes }) {
 									)}
 								</List>
 							)}
-							<FormControl
+							{/* <FormControl
 								variant="outlined"
 								required
 								className={classes.field}
@@ -368,8 +368,7 @@ export default function SignIn({ classes }) {
 									<MenuItem value={"Faculty"}>Faculty</MenuItem>
 									<MenuItem value={"Hod"}>Hod</MenuItem>
 								</Select>
-							</FormControl>
-							{JSON.stringify(user.designation)}
+							</FormControl> */}
 							<FormControl
 								variant="outlined"
 								required
@@ -394,9 +393,7 @@ export default function SignIn({ classes }) {
 										id: "designation",
 									}}
 								>
-									<option aria-label="None" value="">
-										None
-									</option>
+								{user.designation===''&&	<option aria-label="None" value=""/>}
 									<option value={"Student"}>Student</option>
 									<option value={"Faculty"}>Faculty</option>
 									<option value={"Hod"}>Hod</option>
