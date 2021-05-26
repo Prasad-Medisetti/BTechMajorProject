@@ -5,13 +5,12 @@ import {
 	ListItem,
 	ListItemIcon,
 	Select,
-	TextField
+	TextField,
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
@@ -386,14 +385,16 @@ export default function SignIn({ classes }) {
 									variant="outlined"
 									required
 									fullWidth
-									label='Sign In As'
+									label="Sign In As"
 									labelWidth={90}
 									inputProps={{
 										name: "designation",
 										id: "designation",
 									}}
 								>
-								{user.designation===''&&	<option aria-label="None" value=""/>}
+									{user.designation === "" && (
+										<option aria-label="None" value="" />
+									)}
 									<option value={"Student"}>Student</option>
 									<option value={"Faculty"}>Faculty</option>
 									<option value={"Hod"}>Hod</option>
