@@ -1,44 +1,40 @@
-import { makeStyles } from "@material-ui/core/styles";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Zoom from "@material-ui/core/Zoom";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useWindowScroll } from "react-use";
+import styles from "./index.module.css";
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		position: "fixed",
-		bottom: theme.spacing(4),
-		right: theme.spacing(4),
-	},
-}));
+const ScrollToTop = () => {
+	const scrollToTopRef = useRef(null);
+	const { y: pageYOffset } = useWindowScroll();
+	const [visible, setVisiblity] = useState(false);
 
-export default function ScrollTop(props) {
-	const { children, window } = props;
-	const classes = useStyles();
-	// Note that you normally won't need to set the window ref as useScrollTrigger
-	// will default to window.
-	// This is only being set here because the demo is in an iframe.
-	const trigger = useScrollTrigger({
-		target: window ? window() : undefined,
-		disableHysteresis: true,
-		threshold: 30,
-	});
-
-	const handleClick = (event) => {
-		const anchor = (event.target.ownerDocument || document).querySelector(
-			"#back-to-top-anchor",
-		);
-
-		if (anchor) {
-			console.log(anchor);
-			anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+	useEffect(() => {
+		if (pageYOffset > 50) {
+			setVisiblity(true);
+		} else {
+			setVisiblity(false);
 		}
+	}, [pageYOffset]);
+
+	const scrollToTop = () => {
+		window.scrollTo({ top: 0 });
 	};
 
+	if (!visible) {
+		return false;
+	}
+
 	return (
-		<Zoom in={trigger}>
-			<div onClick={handleClick} role="presentation" className={classes.root}>
-				{children}
-			</div>
-		</Zoom>
+		<div
+			className={styles.scroll_to_top}
+			ref={scrollToTopRef}
+			onFocus={() => {
+				console.log(scrollToTopRef.current);
+			}}
+			onClick={scrollToTop}
+		>
+			<i className="material-icons">keyboard_arrow_up</i>
+		</div>
 	);
-}
+};
+
+export default ScrollToTop;

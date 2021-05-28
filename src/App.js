@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Footer from "./components/Footer/Footer.component";
 import HomeAppBar from "./components/HomeAppBar";
 import DashboardPage from "./components/Layout";
+import ScrollToTop from "./components/ScrollToTop";
 import { dashboardMenuItems, menuItems } from "./constants";
 import HomePage from "./pages/Landing";
 import NotFoundPage from "./pages/NotFound";
@@ -72,6 +73,8 @@ function App() {
 						</Route>
 					</Switch>
 				</Router>
+
+				<ScrollToTop />
 			</ThemeProvider>
 		</>
 	);
