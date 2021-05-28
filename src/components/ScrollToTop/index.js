@@ -1,39 +1,50 @@
-import React, { useEffect, useRef, useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import Fab from "@material-ui/core/Fab";
+import Zoom from "@material-ui/core/Zoom";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import React, { useEffect, useState } from "react";
 import { useWindowScroll } from "react-use";
-import styles from "./index.module.css";
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		position: "fixed",
+		bottom: theme.spacing(4),
+		right: theme.spacing(4),
+		background: "#37474f",
+		color: "#fafafa",
+		"&:hover": {
+			background: "#37474fcc",
+		},
+	},
+}));
 
 const ScrollToTop = () => {
-	const scrollToTopRef = useRef(null);
+	const classes = useStyles();
+
 	const { y: pageYOffset } = useWindowScroll();
-	const [visible, setVisiblity] = useState(false);
+	const [visibility, setVisibilty] = useState(false);
 
 	useEffect(() => {
-		if (pageYOffset > 50) {
-			setVisiblity(true);
-		} else {
-			setVisiblity(false);
-		}
+		setVisibilty(pageYOffset > 30);
 	}, [pageYOffset]);
 
-	const scrollToTop = () => {
-		window.scrollTo({ top: 0 });
+	const backToTop = () => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
-	if (!visible) {
-		return false;
-	}
-
 	return (
-		<div
-			className={styles.scroll_to_top}
-			ref={scrollToTopRef}
-			onFocus={() => {
-				console.log(scrollToTopRef.current);
-			}}
-			onClick={scrollToTop}
-		>
-			<i className="material-icons">keyboard_arrow_up</i>
-		</div>
+		<Zoom in={visibility}>
+			<Fab
+				color="inherit"
+				size="small"
+				aria-label="scroll back to top"
+				onClick={backToTop}
+				role="presentation"
+				className={classes.root}
+			>
+				<KeyboardArrowUpIcon />
+			</Fab>
+		</Zoom>
 	);
 };
 
