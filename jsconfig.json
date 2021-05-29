@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"module": "commonjs",
+		"jsx": "preserve",
+		"checkJs": true,
+		"target": "es6",
+		"paths": {
+			"components/*": ["./src/components/*"],
+			"configs/*": ["./src/configs/*"],
+			"constants/*": ["./src/constants/*"],
+			"pages/*": ["./src/pages/*"],
+			"assets/*": ["./src/assets/*"]
+		}
+	},
+	"include": ["src"],
+	"exclude": [
+		"node_modules",
+		"**/node_modules/*",
+		"build",
+		"dist",
+		".vscode",
+		"coverage",
+		".npm",
+		".yarn"
+	]
+}
