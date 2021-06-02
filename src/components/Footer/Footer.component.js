@@ -8,11 +8,11 @@ import { titleCase } from "../../utils";
 
 function Copyright() {
 	return (
-		<Typography variant="body1" color="textSecondary">
+		<Typography variant="body1" color="textSecondary" align='center'>
 			{"Copyright © "}
 			<Link color="inherit" href="/">
 				{titleCase(LOGO_TEXT)}
-			</Link>{" "}
+			</Link>{' '}
 			{new Date().getFullYear()}
 			{"."}
 		</Typography>

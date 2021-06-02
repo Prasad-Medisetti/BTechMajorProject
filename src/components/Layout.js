@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { Link, makeStyles } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
@@ -15,6 +15,8 @@ import {
 	useHistory,
 	useLocation,
 } from "react-router-dom";
+import Footer from "../components/Footer/Footer.component";
+import { LOGO_TEXT } from "../constants";
 import Create from "../pages/Create";
 import Edit from "../pages/Edit";
 import Appbar from "./Appbar/Appbar.component";
@@ -26,9 +28,14 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 	},
-	page: {
-		background: "#f9f9f9",
-		padding: theme.spacing(2, 0),
+	main: {
+		minHeight: "80vh",
+		margin: theme.spacing(2),
+		display: "flex",
+		flexWrap: "wrap",
+		// flexDirection: "column",
+		justifyContent: "center",
+		alignContent: "center",
 		[theme.breakpoints.up("sm")]: {
 			width: `calc(100% - ${drawerWidth}px)`,
 			marginLeft: drawerWidth,
@@ -46,17 +53,17 @@ const useStyles = makeStyles((theme) => ({
 			width: `calc(100% - ${drawerWidth}px)`,
 			marginLeft: drawerWidth,
 		},
-		margin: theme.spacing(0),
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
 		minHeight: "4vh",
-		padding: theme.spacing(2, 0, 2, 0),
 		backgroundColor:
 			theme.palette.type === "light"
 				? theme.palette.grey[200]
 				: theme.palette.grey[800],
+		// backgroundColor: "#000000",
+		// color: "#78909c",
 	},
 	// necessary for content to be below app bar
 	drawer: {
@@ -73,15 +80,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		display: "block",
-		margin: theme.spacing(2),
+		padding: theme.spacing(3,1,2,1),
 		flexGrow: 1,
-		fontSize: 22,
+		fontSize: "1rem",
+		fontWeight: 600,
 		textDecoration: "none",
 		color: "#000000DE",
 		transition: ".4s",
 		"&:hover": {
 			color: purple[900],
-			filter: "drop-shadow(0px 0px 1px inherit)",
+			filter: "drop-shadow(1px 1px 2px inherit)",
 		},
 	},
 	date: {
@@ -128,9 +136,12 @@ export default function Layout({ children, dashboardMenuItems }) {
 						}}
 					>
 						<div>
-							<RouterLink className={classes.title} variant="h6" to="/">
-								Online Notice Board
-							</RouterLink>
+							<Link
+								className={classes.title}
+								onClick={() => history.replace("/")}
+							>
+								{LOGO_TEXT}
+							</Link>
 						</div>
 
 						{/* links/list section */}
@@ -164,7 +175,7 @@ export default function Layout({ children, dashboardMenuItems }) {
 					>
 						<div>
 							<RouterLink className={classes.title} variant="h6" to="/">
-								Online Notice Board
+								{LOGO_TEXT}
 							</RouterLink>
 						</div>
 
@@ -191,9 +202,8 @@ export default function Layout({ children, dashboardMenuItems }) {
 			</nav>
 
 			{/* main content */}
-			<main className={classes.page}>
-				<div className={classes.toolbar}></div>
-				{children}
+			<main className={classes.main}>
+				HELLO WORLD...
 				<Router>
 					<Switch>
 						<Route path="/create">
@@ -205,6 +215,8 @@ export default function Layout({ children, dashboardMenuItems }) {
 					</Switch>
 				</Router>
 			</main>
+
+			<Footer classes={classes} />
 		</div>
 	);
 }
