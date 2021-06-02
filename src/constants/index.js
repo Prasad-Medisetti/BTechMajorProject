@@ -1,6 +1,10 @@
 import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
 import React from "react";
 
+/* ------------------------------ PROJECT TITLE ----------------------------- */
+export const LOGO_TEXT = "ACADEMIC BULLETIN BOARD";
+
+/* ------------------------- Home App Bar Menu Items------------------------ */
 export const menuItems = [
 	{
 		text: "HOME",
@@ -23,6 +27,8 @@ export const menuItems = [
 	// 	path: "/dashboard",
 	// },
 ];
+
+/* ------------------------- Dashboard App Bar Menu Items ------------------------ */
 export const dashboardMenuItems = [
 	{
 		text: "My Posts",

@@ -17,10 +17,13 @@ import clgUpdates from "../../assets/images/undraw_Online_information_re_erks.sv
 import auth from "../../assets/images/undraw_secure_login_pdn4.svg";
 import privacy from "../../assets/images/undraw_security_o890.svg";
 import branchUpdates from "../../assets/images/undraw_Work_chat_re_qes4.svg";
+import { LOGO_TEXT } from "../../constants";
+import { titleCase } from "../../utils";
 import styles from "./Landing.module.css";
 
 export default function HomePage({ classes }) {
 	const history = useHistory();
+
 	return (
 		<>
 			<main className={classes.main}>
@@ -31,15 +34,15 @@ export default function HomePage({ classes }) {
 						align="center"
 						className={styles.landing_hero_section__heading1}
 					>
-						What is Online Notice Board?
+						What is {titleCase(LOGO_TEXT)} ?
 					</Typography>
 					<Typography
 						className={styles.landing_hero_section__para}
 						align="center"
 					>
-						{
-							"Online Notice Board is a web application which is to provide up to date notices & other information for all the users or students associated with particular campus or department."
-						}
+						{titleCase(LOGO_TEXT)} is a web application which is to provide up
+						to date notices & other information for all the users or students
+						associated with particular campus or department.
 					</Typography>
 					<Grid
 						container
@@ -72,7 +75,7 @@ export default function HomePage({ classes }) {
 						align="center"
 						className={styles.landing_features_section__heading1}
 					>
-						Online Notice Board offers the following features...
+						{titleCase(LOGO_TEXT)} offers the following features...
 					</Typography>
 					<Grid
 						container

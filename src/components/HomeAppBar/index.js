@@ -8,6 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import TemporaryDrawer from "../../components/TemporaryDrawer/TemporaryDrawer";
+import { LOGO_TEXT } from "../../constants";
 
 function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 	const location = useLocation();
@@ -33,7 +34,7 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 								handleDrawerToggle(false);
 							}}
 						>
-							Online Notice Board
+							{LOGO_TEXT}
 						</Link>
 						<IconButton
 							edge="start"
@@ -66,7 +67,7 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 								handleDrawerToggle(false);
 							}}
 						>
-							Online Notice Board
+							{LOGO_TEXT}
 						</Link>
 						<ButtonGroup
 							orientation="horizontal"
@@ -84,7 +85,7 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 									variant="text"
 									color="inherit"
 									fullWidth
-									endIcon={item.icon}
+									startIcon={item.icon}
 									onClick={() => history.replace(item.path)}
 								>
 									{item.text}
@@ -110,7 +111,7 @@ function HomeAppBar({ classes, menuItems, mobileOpen, handleDrawerToggle }) {
 							className={classes.title}
 							onClick={() => history.replace("/")}
 						>
-							Online Notice Board
+							{LOGO_TEXT}
 						</Link>
 					</ListItem>
 
