@@ -2,7 +2,11 @@ import axios from "axios";
 
 //local, dev, sit, uat
 const instance = axios.create({
-	baseURL: "http://210.212.210.86/reactcurd",
+	baseURL: "https://academic-bulletin-board.herokuapp.com/",
+  	headers: {
+    		'Access-Control-Allow-Origin' : '*',
+    		'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    	}
 });
 
 export default instance;

@@ -10,34 +10,37 @@ function TransitionDown(props) {
 }
 
 export default function MySnackbar(props) {
+
+	// console.log(`toast`, props.toast)
+
 	return (
-		<>
-			<Snackbar
-				open={props.toastOpen}
-				style={{ margin: "4.5rem auto" }}
-				anchorOrigin={{ vertical: "top", horizontal: "center" }}
-				TransitionComponent={TransitionDown}
-				key="down"
+		<Snackbar
+			open={props.toast.toastOpen}
+			style={{ margin: "4.5rem auto" }}
+			anchorOrigin={{ vertical: "top", horizontal: "center" }}
+			TransitionComponent={TransitionDown}
+			key="down"
+		>
+			<Alert
+				variant={props.toast.toastVariant}
+				severity={props.toast.toastColor}
+				action={
+					<IconButton
+						key="close"
+						aria-label="close"
+						color="inherit"
+						size="small"
+						onClick={props.toast.handleToastClose}
+					>
+						<CloseIcon />
+					</IconButton>
+				}
+				onClose={props.toast.handleToastClose}
 			>
-				<Alert
-					variant="standard"
-					color="success"
-					action={
-						<IconButton
-							key="close"
-							aria-label="close"
-							color="inherit"
-							size="small"
-							onClick={props.handleToastClose}
-						>
-							<CloseIcon />
-						</IconButton>
-					}
-					onClose={props.handleToastClose}
-				>
-					{props.toastMessage !== "" ? props.toastMessage : "This is a toast"}
-				</Alert>
-			</Snackbar>
-		</>
+				{props.toast.toastMessage !== ""
+					? props.toast.toastMessage
+					: "This is a toast"}
+			</Alert>
+		</Snackbar>
 	);
 }

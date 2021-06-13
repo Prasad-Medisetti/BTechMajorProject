@@ -16,19 +16,21 @@ import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
+import axios from "../../configs/axios";
 
-export default function SignUp({ classes }) {
+export default function SignUp({ classes, toast }) {
+	// /* ------------------------------ Initial State ----------------------------- */
 	const initialState = {
 		isSubmitted: false,
 		user: {
-			name: "",
+			full_name: "",
 			email: "",
 			gender: "",
 			password: "",
 			designation: "",
 			showPassword: false,
 		},
-		nameError: false,
+		fullNameError: false,
 		emailError: false,
 		genderError: false,
 		passwordError: {
@@ -44,7 +46,9 @@ export default function SignUp({ classes }) {
 
 	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
 	const [user, setUser] = useState(initialState.user);
-	const [nameError, setNameError] = useState(initialState.nameError);
+	const [fullNameError, setFullNameError] = useState(
+		initialState.fullNameError,
+	);
 	const [genderError, setGenderError] = useState(initialState.genderError);
 	const [emailError, setEmailError] = useState(initialState.emailError);
 	const [passwordError, setPasswordError] = useState(
@@ -56,8 +60,8 @@ export default function SignUp({ classes }) {
 
 	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-	const validateName = () => {
-		setNameError(user.name === "" || user.name.length <= 2);
+	const validateFullName = () => {
+		setFullNameError(user.full_name === "" || user.full_name.length <= 2);
 	};
 
 	const validateGender = () => {
@@ -111,40 +115,44 @@ export default function SignUp({ classes }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(!emailError && !passwordError.error && !designationError);
-		validateName();
+		validateFullName();
 		validateGender();
 		validateEmail();
 		validatePassword();
 		validateDesignation();
 
-		setIsSubmitted(
-			user.email !== "" &&
-				user.gender !== "" &&
-				user.password !== "" &&
-				user.designation !== "" &&
-				!emailError &&
-				!passwordError.error &&
-				!designationError,
-		);
-		// if (note.title && note.details) {
-		// 	if (note._id) {
-		// 		// console.log(note._id);
-		// 		fetch(
-		// 			"https://onlinenoticeboard-server.herokuapp.com/notes" + note._id,
-		// 			{
-		// 				method: "PUT",
-		// 				headers: { "Content-type": "application/json" },
-		// 				body: JSON.stringify({ ...note }),
-		// 			},
-		// 		).then(() => history.push("/"));
-		// 	} else {
-		// 		fetch("https://onlinenoticeboard-server.herokuapp.com/notes", {
-		// 			method: "POST",
-		// 			headers: { "Content-type": "application/json" },
-		// 			body: JSON.stringify({ ...note }),
-		// 		}).then(() => history.push("/dashboard"));
-		// 	}
-		// }
+		let { showPassword, ...newUser } = user;
+		axios
+			.post("/api/auth/signup", newUser)
+			.then((res) => {
+				toast.handleToastClick({
+					toastOpen: true,
+					toastMessage: "Signup successfull...",
+					toastVariant: "standard",
+					toastColor: "success"
+				})
+				setIsSubmitted(
+					user.email !== "" &&
+						user.gender !== "" &&
+						user.password !== "" &&
+						user.designation !== "" &&
+						!emailError &&
+						!passwordError.error &&
+						!designationError,
+				);
+			})
+			.catch((err) => {
+				if (err.response)  {
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: err.response.data.error,
+						toastVariant: "standard",
+						toastColor: "error"
+					})
+					console.error(err.response.data.error);
+				}
+				else console.error(err);
+			});
 	};
 
 	return (
@@ -171,18 +179,18 @@ export default function SignUp({ classes }) {
 								onChange={(e) => {
 									onChange(e);
 								}}
-								onBlur={validateName}
+								onBlur={validateFullName}
 								label="Full Name"
 								variant="outlined"
 								fullWidth
 								type="text"
-								name="name"
-								value={user.name}
+								name="full_name"
+								value={user.full_name}
 								required
-								error={nameError}
+								error={fullNameError}
 								size="small"
 							/>
-							{nameError && (
+							{fullNameError && (
 								<List
 									dense
 									disablePadding
@@ -444,6 +452,7 @@ export default function SignUp({ classes }) {
 									<option value={"Student"}>Student</option>
 									<option value={"Faculty"}>Faculty</option>
 									<option value={"Hod"}>Hod</option>
+									<option value={"Principal"}>Principal</option>
 								</Select>
 							</FormControl>
 							{designationError && (
@@ -498,7 +507,7 @@ export default function SignUp({ classes }) {
 									<span className="material-icons-outlined">badge</span>
 								</ListItemIcon>
 								<Typography variant="body1" color="textPrimary">
-									{user.name
+									{user.full_name
 										.split(" ")
 										.map((w) => w[0].toUpperCase() + w.substr(1).toLowerCase())
 										.join(" ")}

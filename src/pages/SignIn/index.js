@@ -16,9 +16,9 @@ import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
-import MySnackbar from "../../components/Snackbar";
+import axios from "../../configs/axios";
 
-export default function SignIn({ classes }) {
+export default function SignIn({ classes, toast }) {
 	const initialState = {
 		isSubmitted: false,
 		user: {
@@ -39,8 +39,6 @@ export default function SignIn({ classes }) {
 		designationError: false,
 	};
 
-	const [toastOpen, setToastOpen] = useState(false);
-	const [toastMessage, setToastMessage] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
 	const [user, setUser] = useState(initialState.user);
 	const [emailError, setEmailError] = useState(initialState.emailError);
@@ -97,16 +95,6 @@ export default function SignIn({ classes }) {
 		setUser({ ...user, showPassword: !user.showPassword });
 	};
 
-	const handleToastClick = () => {
-		setToastOpen(true);
-		setTimeout(() => {
-			setToastOpen(false);
-		}, 6000);
-	};
-
-	const handleToastClose = () => {
-		setToastOpen(false);
-	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -116,50 +104,41 @@ export default function SignIn({ classes }) {
 		validatePassword();
 		validateDesignation();
 
-		setIsSubmitted(
-			user.email !== "" &&
-				user.password !== "" &&
-				user.designation !== "" &&
-				!emailError &&
-				!passwordError.error &&
-				!designationError,
-		);
-
-		setToastMessage("Sign In Successful");
-		setToastOpen(isSubmitted);
-		setTimeout(() => {
-			setToastOpen(false);
-		}, 6000);
-
-		// if (note.title && note.details) {
-		// 	if (note._id) {
-		// 		// console.log(note._id);
-		// 		fetch(
-		// 			"https://onlinenoticeboard-server.herokuapp.com/notes" + note._id,
-		// 			{
-		// 				method: "PUT",
-		// 				headers: { "Content-type": "application/json" },
-		// 				body: JSON.stringify({ ...note }),
-		// 			},
-		// 		).then(() => history.push("/"));
-		// 	} else {
-		// 		fetch("https://onlinenoticeboard-server.herokuapp.com/notes", {
-		// 			method: "POST",
-		// 			headers: { "Content-type": "application/json" },
-		// 			body: JSON.stringify({ ...note }),
-		// 		}).then(() => history.push("/dashboard"));
-		// 	}
-		// }
+		let { showPassword, ...newUser } = user;
+		axios
+			.post("/api/auth/signin", newUser)
+			.then((res) => {
+				toast.handleToastClick({
+					toastOpen: true,
+					toastMessage: "Signin successfull...",
+					toastVariant: "standard",
+					toastColor: "success"
+				})
+				setIsSubmitted(
+					user.email !== "" &&
+					user.password !== "" &&
+					user.designation !== "" &&
+					!emailError &&
+					!passwordError.error &&
+					!designationError,
+				);
+			})
+			.catch((err) => {
+				if (err.response)  {
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: err.response.data.error,
+						toastVariant: "standard",
+						toastColor: "error"
+					})
+					console.error(err.response.data.error);
+				}
+				else console.error(err);
+			});
 	};
 
 	return (
 		<main className={classes.main}>
-			<MySnackbar
-				toastOpen={toastOpen}
-				handleToastClick={handleToastClick}
-				handleToastClose={handleToastClose}
-				toastMessage={toastMessage}
-			/>
 			<Container maxWidth="sm">
 				{isSubmitted === false && (
 					<>
@@ -173,7 +152,6 @@ export default function SignIn({ classes }) {
 								textTransform: "uppercase",
 								marginBottom: "1.2rem",
 							}}
-							onClick={handleToastClick}
 						>
 							Sign In
 						</Typography>
