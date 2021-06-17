@@ -4,7 +4,6 @@ import {
   Grid,
   List,
   ListItem,
-  ListItemIcon,
   Select,
   TextField
 } from "@material-ui/core";
@@ -19,8 +18,14 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
 import axios from "../../configs/axios";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
+import { useHistory } from "react-router-dom";
 
-export default function SignIn({ classes, toast }) {
+export default function SignIn(props) {
+  // console.log("signin props", props);
+  const { classes, toast, setLoggedUser } = props;
+  const history = useHistory();
+
+  /* ------------------------------ Initial State ----------------------------- */
   const initialState = {
     isSubmitted: false,
     user: {
@@ -132,48 +137,55 @@ export default function SignIn({ classes, toast }) {
     axios
       .post("/api/auth/signin", newUser)
       .then((res) => {
-        toast.handleToastClick({
-          toastOpen: true,
-          toastMessage: "Signin successfull...",
-          toastVariant: "standard",
-          toastColor: "success"
-        });
-        setIsSubmitted(
-          user.email !== "" &&
-            user.password !== "" &&
-            user.designation !== "" &&
-            !emailError &&
-            !passwordError.error &&
-            !designationError
-        );
+        const user = res.data;
+        localStorage.setItem("token", user.token);
+        setLoggedUser(user);
+
+        // toast.handleToastClick({
+        //   toastOpen: true,
+        //   toastMessage: "Signin successfull...",
+        //   toastVariant: "standard",
+        //   toastColor: "success"
+        // });
+        // toast.handleToastClick({
+        //   toastOpen: true,
+        //   toastMessage: `Hello ${user.full_name}`,
+        //   toastVariant: "standard",
+        //   toastColor: "success"
+        // });
+        history.push("/dashboard");
       })
-      .catch((err) => {
-        if (err.response) {
+      .catch((error) => {
+        if (error.response) {
           // client received an error response (5xx, 4xx)
+          console.log("error.response.data", error.response.data);
+          console.log("error.response.status", error.response.status);
+          console.log("error.response.headers", error.response.headers);
           toast.handleToastClick({
             toastOpen: true,
-            toastMessage: err.response.data.error,
+            toastMessage: error.response.data.error,
             toastVariant: "standard",
             toastColor: "error"
           });
-        } else if (err.request) {
+        } else if (error.request) {
           // client never received a response, or request never left
-          console.log(err.message);
+          console.log("error.request", error.request);
           toast.handleToastClick({
             toastOpen: true,
-            toastMessage: err.message,
+            toastMessage: error.message,
             toastVariant: "standard",
             toastColor: "error"
           });
         } else {
           // anything else
-          console.error(err);
+          console.log("Error", error.message);
           toast.handleToastClick({
             toastOpen: true,
-            toastMessage: err.message,
+            toastMessage: error.message,
             toastVariant: "standard",
             toastColor: "error"
           });
+          console.log("error.request", error.config);
         }
       });
   };
@@ -359,6 +371,7 @@ export default function SignIn({ classes, toast }) {
                   <option value={"Student"}>Student</option>
                   <option value={"Faculty"}>Faculty</option>
                   <option value={"Hod"}>Hod</option>
+                  <option value={"Principal"}>Principal</option>
                 </Select>
               </FormControl>
               <ShowWithAnimation isMounted={designationError}>
@@ -395,14 +408,26 @@ export default function SignIn({ classes, toast }) {
               >
                 Sign In
               </Button>
-              <Grid container style={{ margin: ".5em auto" }}>
-                <Grid item xs>
-                  <Button href="#" variant="body2">
+              <Grid container justify="center" style={{ margin: ".5em auto" }}>
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    variant="text"
+                    fullWidth
+                    onClick={() => {
+                      history.push("/forgot");
+                    }}
+                  >
                     Forgot password?
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button href="#" variant="body2">
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    variant="text"
+                    fullWidth
+                    onClick={() => {
+                      history.push("/signup");
+                    }}
+                  >
                     {"Don't have an account? Sign Up"}
                   </Button>
                 </Grid>
@@ -410,7 +435,7 @@ export default function SignIn({ classes, toast }) {
             </form>
           </>
         )}
-        {isSubmitted === true && (
+        {/* {isSubmitted === true && (
           <>
             <Typography variant="h5" color="inherit">
               Details you have submitted are ...
@@ -454,7 +479,7 @@ export default function SignIn({ classes, toast }) {
               </ListItem>
             </List>
           </>
-        )}
+        )} */}
       </Container>
     </main>
   );

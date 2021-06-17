@@ -8,7 +8,7 @@ import {
 	Icon,
 	Typography,
 } from "@material-ui/core";
-import black from "@material-ui/core/colors/grey";
+import grey from "@material-ui/core/colors/grey";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
 import { useHistory } from "react-router";
@@ -58,7 +58,7 @@ export default function HomePage({ classes }) {
 							color="inherit"
 							style={{
 								backgroundColor: "#37474f",
-								color: black[100],
+								color: grey[100],
 							}}
 							onClick={() => {
 								history.push("/signup");

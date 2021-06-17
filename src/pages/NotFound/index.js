@@ -1,67 +1,54 @@
-import { IconButton, Typography } from "@material-ui/core";
-import Slide from "@material-ui/core/Slide";
-import Snackbar from "@material-ui/core/Snackbar";
-import CloseIcon from "@material-ui/icons/CloseOutlined";
-import { Alert } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import NotFoundImg from "../../assets/images/undraw_page_not_found_su7k.svg";
+import Grid from '@material-ui/core/Grid';
+import grey from "@material-ui/core/colors/grey";
+import { useHistory } from "react-router";
 
-function SlideTransition(props) {
-	return <Slide {...props} direction="up" />;
-}
+export default function NotFound(props) {
+  const history = useHistory();
+  const { classes } = props;
 
-export default function NotFound({ classes }) {
-	const location = useLocation();
+  // useScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.1.1/gsap.min.js')
 
-	const [path, setPath] = useState("");
-	const [open, setOpen] = useState(null);
-
-	useEffect(() => {
-		setPath(location.pathname);
-		setOpen(true);
-		console.log(location.pathname);
-	}, [location.pathname]);
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-
-	return (
-		<>
-			<main className={classes.main}>
-				<Typography variant="h6" color="error">
-					<code>{path}</code> is Not Found
-				</Typography>
-				<Snackbar
-					open={open}
-					className={classes.root}
-					TransitionComponent={SlideTransition}
-					autoHideDuration={10000}
-					onClose={handleClose}
-				>
-					<Alert
-						variant="standard"
-						color="error"
-						action={
-							<IconButton
-								aria-label="close"
-								color="inherit"
-								size="small"
-								onClick={handleClose}
-							>
-								<CloseIcon color="inherit" fontSize="inherit" />
-							</IconButton>
-						}
-						icon={
-							<span className="material-icons-outlined">error_outline</span>
-						}
-						onClose={handleClose}
-						severity="error"
-					>
-						<code>{path}</code> is Not Found
-					</Alert>
-				</Snackbar>
-			</main>
-		</>
-	);
+  return (
+    <>
+      <main className={classes.main}>
+      <Grid container>
+        <Grid item container justify="center">
+          <img
+          alt="NotFound"
+          style={{width:'80%', margin:"auto auto 4rem"}}
+          src={NotFoundImg}
+        />
+        </Grid>
+        <Grid item container justify="center" 
+          style={{margin:"auto 2em"}}>
+          <Typography gutterBottom variant="h4" align="center" >
+            Page not found :(
+          </Typography>
+          <Typography gutterBottom variant="body1" align="center">
+            The page you are looking for does not exist. But you can click the button below to go back to the
+            homepage.
+          </Typography>
+          <Button
+              size="large"
+              variant="outlined"
+              style={{
+                backgroundColor: "#37474f",
+                color: grey[100],
+                marginTop:"2em"
+              }}
+              onClick={() => {
+                history.push("/");
+              }}
+            >
+              Go home
+            </Button>
+        </Grid> 
+      </Grid>
+      </main>
+    </>
+  );
 }

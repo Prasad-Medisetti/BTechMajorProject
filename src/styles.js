@@ -96,9 +96,6 @@ export const useStyles = makeStyles((theme) => ({
 		backgroundColor: "rgba(0, 0, 0, 0.08)",
 	},
 	avatar: {
-		marginLeft: theme.spacing(1),
-		width: theme.spacing(3),
-		height: theme.spacing(3),
 	},
 	toolbar: { display: "flex" },
 }));

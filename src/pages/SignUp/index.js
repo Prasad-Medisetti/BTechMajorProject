@@ -19,9 +19,13 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
 import axios from "../../configs/axios";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
+import { useHistory } from "react-router-dom";
 
-export default function SignUp({ classes, toast }) {
-  // /* ------------------------------ Initial State ----------------------------- */
+export default function SignUp(props) {
+  const { classes, toast } = props;
+  const history = useHistory();
+
+  /* ------------------------------ Initial State ----------------------------- */
   const initialState = {
     isSubmitted: false,
     user: {
@@ -166,33 +170,37 @@ export default function SignUp({ classes, toast }) {
             !designationError
         );
       })
-      .catch((err) => {
-        if (err.response) {
+      .catch((error) => {
+        if (error.response) {
           // client received an error response (5xx, 4xx)
+          console.log("error.response.data", error.response.data);
+          console.log("error.response.status", error.response.status);
+          console.log("error.response.headers", error.response.headers);
           toast.handleToastClick({
             toastOpen: true,
-            toastMessage: err.response.data.error,
+            toastMessage: error.response.data.error,
             toastVariant: "standard",
             toastColor: "error"
           });
-        } else if (err.request) {
+        } else if (error.request) {
           // client never received a response, or request never left
-          console.log(err.message);
+          console.log("error.request", error.request);
           toast.handleToastClick({
             toastOpen: true,
-            toastMessage: err.message,
+            toastMessage: error.message,
             toastVariant: "standard",
             toastColor: "error"
           });
         } else {
           // anything else
-          console.error(err);
+          console.log("Error", error.message);
           toast.handleToastClick({
             toastOpen: true,
-            toastMessage: err.message,
+            toastMessage: error.message,
             toastVariant: "standard",
             toastColor: "error"
           });
+          console.log("error.request", error.config);
         }
       });
   };
@@ -479,7 +487,12 @@ export default function SignUp({ classes, toast }) {
               </Button>
               <Grid container justify="center" style={{ margin: ".5em auto" }}>
                 <Grid item>
-                  <Button href="#" variant="body2">
+                  <Button
+                    variant="body2"
+                    onClick={() => {
+                      history.push("/signin");
+                    }}
+                  >
                     {"Already have an account? Sign in"}
                   </Button>
                 </Grid>
