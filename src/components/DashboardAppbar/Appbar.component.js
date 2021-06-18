@@ -31,56 +31,55 @@ function Appbar(props) {
   };
 
   return (
-    <>
-      <AppBar
-        position="sticky"
-        className={classes.appBar}
-        elevation={2}
-        color="default"
-      >
-        <Toolbar>
-          <Hidden smUp implementation="css">
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerToggle}
-              edge="start"
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Hidden>
-          <Typography className={classes.date}>
-            Welcome {loggedUser.full_name}!
-            {/*Today is the {format(new Date(), "do MMMM Y")}*/}
-          </Typography>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleClick}
-            color="inherit"
-          >
-            <AccountCircleIcon/>
-          </IconButton>
-          <span>
-          </span>
-           <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={logout}>Logout</MenuItem>
-            </Menu>
-        </Toolbar>
-      </AppBar>
-      <Toolbar id="back-to-top-anchor" />
-    </>
-  );
+		<>
+			<AppBar
+				position="sticky"
+				className={classes.appBar}
+				elevation={2}
+				color="default"
+			>
+				<Toolbar>
+					<Hidden smUp implementation="css">
+						<IconButton
+							color="inherit"
+							aria-label="open drawer"
+							onClick={handleDrawerToggle}
+							edge="start"
+							className={classes.menuButton}
+						>
+							<MenuIcon />
+						</IconButton>
+					</Hidden>
+					<Typography className={classes.date}>
+						{loggedUser !== null ? `Welcome ${loggedUser.full_name}!` : null}
+						{/*Today is the {format(new Date(), "do MMMM Y")}*/}
+					</Typography>
+					<IconButton
+						aria-label="account of current user"
+						aria-controls="menu-appbar"
+						aria-haspopup="true"
+						onClick={handleClick}
+						color="inherit"
+					>
+						<AccountCircleIcon />
+					</IconButton>
+					<span></span>
+					<Menu
+						id="simple-menu"
+						anchorEl={anchorEl}
+						keepMounted
+						open={Boolean(anchorEl)}
+						onClose={handleClose}
+					>
+						<MenuItem onClick={handleClose}>Profile</MenuItem>
+						<MenuItem onClick={handleClose}>My account</MenuItem>
+						<MenuItem onClick={logout}>Logout</MenuItem>
+					</Menu>
+				</Toolbar>
+			</AppBar>
+			<Toolbar id="back-to-top-anchor" />
+		</>
+	);
 }
 
 export default Appbar;

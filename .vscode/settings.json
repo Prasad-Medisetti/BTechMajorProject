@@ -4,5 +4,6 @@
 	"zenMode.hideActivityBar": false,
 	"zenMode.hideStatusBar": false,
 	"zenMode.hideTabs": false,
-	"workbench.editor.restoreViewState": false
+	"workbench.editor.restoreViewState": false,
+	"editor.formatOnSave": true
 }
