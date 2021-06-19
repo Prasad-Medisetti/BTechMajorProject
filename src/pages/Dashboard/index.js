@@ -6,7 +6,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	BrowserRouter as Router,
 	Link as RouterLink,
@@ -106,21 +106,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard(props) {
 	const { dashboardMenuItems } = props;
-	console.info("signup props", props);
-
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-	const [loggedUser, setLoggedUser] = React.useState({});
+	const [loggedUser, setLoggedUser] = useState({});
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
 	};
 
 	useEffect(() => {
-		setLoggedUser(localStorage.getItem("user"));
-	}, [location.pathname]);
+		const data = JSON.parse(localStorage.getItem("user"));
+		if (data !== null) {
+			setLoggedUser(data);
+		}
+	}, [history]);
+
+	// useEffect(() => {
+	// 	localStorage.setItem("user", JSON.stringify(loggedUser));
+	// }, [loggedUser]);
 
 	if (localStorage.getItem("token") === null) {
 		<Redirect to="/signin" />;
@@ -187,7 +192,6 @@ export default function Dashboard(props) {
 							paper: classes.drawerPaper,
 						}}
 						variant="permanent"
-						close
 					>
 						<div>
 							<RouterLink className={classes.title} to="/">
@@ -219,7 +223,9 @@ export default function Dashboard(props) {
 
 			{/* main content */}
 			<main className={classes.main}>
-				{loggedUser !== null ? `Hello ${loggedUser.full_name}!` : null}
+				{Object.entries(loggedUser).length !== 0
+					? `Hello ${loggedUser.full_name}!`
+					: null}
 				<Router>
 					<Switch>
 						<Route path="/create">
