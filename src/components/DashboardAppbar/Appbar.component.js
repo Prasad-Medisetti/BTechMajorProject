@@ -1,36 +1,36 @@
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from "@material-ui/core/AppBar";
 // import Avatar from "@material-ui/core/Avatar";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/MenuOutlined";
 // import { format } from "date-fns";
 import React from "react";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
 
 function Appbar(props) {
-  const { classes, handleDrawerToggle, loggedUser } = props;
-  const history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+	const { classes, handleDrawerToggle, loggedUser } = props;
+	const history = useHistory();
+	const [isMenuOpen, setIsMenuOpen] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+	const handleClick = (event) => {
+		setIsMenuOpen(event.currentTarget);
+	};
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+	const handleClose = () => {
+		setIsMenuOpen(null);
+	};
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    history.push('/signin')
-  };
+	const logout = () => {
+		localStorage.clear();
+		history.push("/signin");
+	};
 
-  return (
+	return (
 		<>
 			<AppBar
 				position="sticky"
@@ -51,7 +51,9 @@ function Appbar(props) {
 						</IconButton>
 					</Hidden>
 					<Typography className={classes.date}>
-						{loggedUser !== null ? `Welcome ${loggedUser.full_name}!` : null}
+						{Object.entries(loggedUser).length !== 0
+							? `Welcome ${loggedUser.full_name}!`
+							: null}
 						{/*Today is the {format(new Date(), "do MMMM Y")}*/}
 					</Typography>
 					<IconButton
@@ -66,9 +68,8 @@ function Appbar(props) {
 					<span></span>
 					<Menu
 						id="simple-menu"
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
+						anchorEl={isMenuOpen}
+						open={Boolean(isMenuOpen)}
 						onClose={handleClose}
 					>
 						<MenuItem onClick={handleClose}>Profile</MenuItem>

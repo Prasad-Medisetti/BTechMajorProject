@@ -6,18 +6,18 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	BrowserRouter as Router,
 	Link as RouterLink,
-	Redirect,
 	Route,
 	Switch,
 	useHistory,
-	useLocation
+	useLocation,
 } from "react-router-dom";
 import Appbar from "../../components/DashboardAppbar/Appbar.component";
 import Footer from "../../components/Footer/Footer.component";
+import axios from "../../configs/axios";
 import { LOGO_TEXT } from "../../constants";
 import Create from "../Create";
 import Edit from "../Edit";
@@ -105,26 +105,70 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard(props) {
-	const { dashboardMenuItems } = props;
-	console.info("signup props", props);
-
+	const { dashboardMenuItems, toast } = props;
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const [loggedUser, setLoggedUser] =  useState(() => {
-  const user = localStorage.getItem("user");
-  return user !== null;
-}));
+	const [loggedUser, setLoggedUser] = useState(() => {
+		const user = localStorage.getItem("user");
+		return user !== null;
+	});
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
 	};
 
+	useEffect(() => {
+		axios
+			.get("/api/auth/user")
+			.then((res) => {
+				const user = res.data;
+				setLoggedUser(user);
+				localStorage.setItem("user", JSON.stringify(user));
+			})
+			.catch((error) => {
+				if (error.response) {
+					// client received an error response (5xx, 4xx)
+					console.log("error.response.data", error.response.data);
+					console.log("error.response.status", error.response.status);
+					console.log("error.response.headers", error.response.headers);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: error.response.data.error,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+				} else if (error.request) {
+					// client never received a response, or request never left
+					console.log("error.request", error.request);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: error.message,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+				} else {
+					// anything else
+					console.log("Error", error.message);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: error.message,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+					console.log("error.request", error.config);
+				}
+			});
+		const data = JSON.parse(localStorage.getItem("user"));
+		if (data !== null) {
+			setLoggedUser(data);
+		} else {
+			setLoggedUser(null);
+			history.replace("/signin");
+		}
+	}, [history, toast]);
 
-	if (localStorage.getItem("token") === null) {
-		<Redirect to="/signin" />;
-	}
 	return (
 		<div className={classes.root}>
 			{/* app bar */}
@@ -187,7 +231,6 @@ export default function Dashboard(props) {
 							paper: classes.drawerPaper,
 						}}
 						variant="permanent"
-						close
 					>
 						<div>
 							<RouterLink className={classes.title} to="/">
@@ -219,7 +262,9 @@ export default function Dashboard(props) {
 
 			{/* main content */}
 			<main className={classes.main}>
-				{loggedUser !== null ? `Hello ${loggedUser.full_name}!` : null}
+				{Object.entries(loggedUser).length !== 0
+					? `Hello ${loggedUser.full_name}!`
+					: null}
 				<Router>
 					<Switch>
 						<Route path="/create">

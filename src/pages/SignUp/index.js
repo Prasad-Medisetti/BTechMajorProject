@@ -4,7 +4,6 @@ import {
 	Grid,
 	List,
 	ListItem,
-	ListItemIcon,
 	Select,
 	TextField,
 } from "@material-ui/core";
@@ -16,7 +15,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Typography from "@material-ui/core/Typography";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
 import axios from "../../configs/axios";
@@ -27,7 +26,7 @@ export default function SignUp(props) {
 
 	/* ------------------------------ Initial State ----------------------------- */
 	const initialState = {
-		isSubmitted: false,
+		isFormFilled: false,
 		user: {
 			full_name: "",
 			email: "",
@@ -50,7 +49,7 @@ export default function SignUp(props) {
 		designationError: false,
 	};
 
-	const [isSubmitted, setIsSubmitted] = useState(initialState.isSubmitted);
+	const [isFormFilled, setIsFormFilled] = useState(initialState.isFormFilled);
 	const [user, setUser] = useState(initialState.user);
 	const [fullNameError, setFullNameError] = useState(
 		initialState.fullNameError,
@@ -160,15 +159,8 @@ export default function SignUp(props) {
 					toastVariant: "standard",
 					toastColor: "success",
 				});
-				setIsSubmitted(
-					user.email !== "" &&
-						user.gender !== "" &&
-						user.password !== "" &&
-						user.designation !== "" &&
-						!emailError &&
-						!passwordError.error &&
-						!designationError,
-				);
+				setUser(initialState.user);
+				history.push("/signin");
 			})
 			.catch((error) => {
 				if (error.response) {
@@ -205,364 +197,323 @@ export default function SignUp(props) {
 			});
 	};
 
+	useEffect(() => {
+		setIsFormFilled(
+			user.full_name !== "" &&
+				!fullNameError &&
+				user.email !== "" &&
+				!emailError &&
+				user.gender !== "" &&
+				!genderError &&
+				user.password !== "" &&
+				!passwordError.error &&
+				user.designation !== "" &&
+				!designationError,
+		);
+		// console.log(
+		// 	"isformfilled",
+		// 	user.full_name !== "" &&
+		// 		!fullNameError &&
+		// 		user.email !== "" &&
+		// 		!emailError &&
+		// 		user.gender !== "" &&
+		// 		!genderError &&
+		// 		user.password !== "" &&
+		// 		!passwordError.error &&
+		// 		user.designation !== "" &&
+		// 		!designationError,
+		// );
+	}, [
+		isFormFilled,
+		designationError,
+		emailError,
+		fullNameError,
+		genderError,
+		passwordError,
+		user,
+	]);
+
 	return (
 		<main className={classes.main}>
 			<Container maxWidth="sm">
-				{isSubmitted === false && (
-					<>
-						<Typography
-							variant="h1"
-							align="center"
-							color="inherit"
-							style={{
-								fontSize: "1.4rem",
-								fontWeight: 600,
-								textTransform: "uppercase",
-								marginBottom: "1.2rem",
-							}}
+				<Typography
+					variant="h1"
+					align="center"
+					color="inherit"
+					style={{
+						fontSize: "1.4rem",
+						fontWeight: 600,
+						textTransform: "uppercase",
+						marginBottom: "1.2rem",
+					}}
+				>
+					Sign Up
+				</Typography>
+				<form noValidate autoComplete="off" onSubmit={handleSubmit}>
+					<TextField
+						className={classes.field}
+						onChange={(e) => {
+							onChange(e);
+						}}
+						onBlur={validateFullName}
+						label="Full Name"
+						variant="outlined"
+						fullWidth
+						type="text"
+						name="full_name"
+						value={user.full_name}
+						required
+						error={fullNameError}
+						size="small"
+					/>
+					<ShowWithAnimation isMounted={fullNameError}>
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5rem auto" }}
+							aria-label="full name validation hints"
 						>
-							Sign Up
-						</Typography>
-						<form noValidate autoComplete="off" onSubmit={handleSubmit}>
-							<TextField
-								className={classes.field}
-								onChange={(e) => {
-									onChange(e);
-								}}
-								onBlur={validateFullName}
-								label="Full Name"
-								variant="outlined"
-								fullWidth
-								type="text"
-								name="full_name"
-								value={user.full_name}
-								required
-								error={fullNameError}
-								size="small"
-							/>
-							<ShowWithAnimation isMounted={fullNameError}>
-								<List
-									dense
-									disablePadding
-									className={classes.field}
-									style={{ margin: ".5rem auto" }}
-									aria-label="full name validation hints"
+							<ListItem style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
 								>
-									<ListItem
-										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
-									>
-										<span
-											className="material-icons md-18"
-											style={{ color: "#f44336", marginRight: ".5em" }}
-										>
-											error_outline
-										</span>
-										<Typography variant="body2" color="error">
-											Please enter your full name.
-										</Typography>
-									</ListItem>
-								</List>
-							</ShowWithAnimation>
-							<FormControl
-								variant="outlined"
-								required
-								className={classes.field}
-								error={genderError}
-								size="small"
-							>
-								<InputLabel htmlFor="gender">Gender</InputLabel>
-								<Select
-									native
-									value={user.gender}
-									onChange={onChange}
-									onBlur={validateGender}
-									error={genderError}
-									variant="outlined"
-									required
-									fullWidth
-									labelWidth={100}
-									inputProps={{
-										name: "gender",
-										id: "gender",
-									}}
-								>
-									{user.gender === "" && <option aria-label="None" value="" />}
-									<option value={"Female"}>Female</option>
-									<option value={"Male"}>Male</option>
-									<option value={"Others"}>Others</option>
-								</Select>
-							</FormControl>
-							<ShowWithAnimation isMounted={genderError}>
-								<List
-									dense
-									disablePadding
-									className={classes.field}
-									style={{ margin: ".5rem auto" }}
-									aria-label="gender validation hints"
-								>
-									<ListItem
-										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
-									>
-										<span
-											className="material-icons md-18"
-											style={{ color: "#f44336", marginRight: ".5em" }}
-										>
-											error_outline
-										</span>
-										<Typography variant="body2" color="error">
-											Please choose your gender.
-										</Typography>
-									</ListItem>
-								</List>
-							</ShowWithAnimation>
-							<TextField
-								className={classes.field}
-								onChange={(e) => onChange(e)}
-								onBlur={validateEmail}
-								label="Email"
-								variant="outlined"
-								fullWidth
-								type="email"
-								name="email"
-								value={user.email}
-								required
-								error={emailError}
-								size="small"
-							/>
-							<ShowWithAnimation isMounted={emailError}>
-								<List
-									dense
-									disablePadding
-									className={classes.field}
-									style={{ margin: ".5rem auto" }}
-									aria-label="password validation hints"
-								>
-									<ListItem
-										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
-									>
-										<span
-											className="material-icons md-18"
-											style={{ color: "#f44336", marginRight: ".5em" }}
-										>
-											error_outline
-										</span>
-										<Typography variant="body2" color="error">
-											Please enter your email address.
-										</Typography>
-									</ListItem>
-								</List>
-							</ShowWithAnimation>
-							<FormControl
-								className={classes.field}
-								variant="outlined"
-								required
-								size="small"
-								error={passwordError.error}
-							>
-								<InputLabel htmlFor="user_password">Password</InputLabel>
-								<OutlinedInput
-									name="password"
-									id="user_password"
-									type={user.showPassword ? "text" : "password"}
-									value={user.password}
-									labelWidth={90}
-									required
-									fullWidth
-									onChange={handleChange("password")}
-									onBlur={validatePassword}
-									endAdornment={
-										<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												onClick={handleClickShowPassword}
-												onMouseDown={handleMouseDownPassword}
-												edge="end"
-											>
-												{user.showPassword ? <Visibility /> : <VisibilityOff />}
-											</IconButton>
-										</InputAdornment>
-									}
-								/>
-							</FormControl>
-							{/* {<pre>{JSON.stringify(passwordError, null, 4)}</pre>} */}
-							<ShowWithAnimation isMounted={passwordError.error}>
-								<List
-									dense
-									disablePadding
-									className={classes.field}
-									style={{ margin: ".25em auto" }}
-									aria-label="password validation hints"
-								>
-									{passwordErrors.map((error, id) => (
-										<ShowWithAnimation
-											isMounted={passwordError[error.exp]}
-											key={id}
-										>
-											<ListItem
-												style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
-											>
-												<span
-													className="material-icons md-18"
-													style={{ color: "#f44336", marginRight: ".5em" }}
-												>
-													error_outline
-												</span>
-												<Typography variant="body2" color="error">
-													{error.message}
-												</Typography>
-											</ListItem>
-										</ShowWithAnimation>
-									))}
-								</List>
-							</ShowWithAnimation>
-							<FormControl
-								variant="outlined"
-								required
-								className={classes.field}
-								error={designationError}
-								size="small"
-							>
-								<InputLabel htmlFor="designation">Designation</InputLabel>
-								<Select
-									native
-									value={user.designation}
-									onChange={onChange}
-									onBlur={validateDesignation}
-									error={designationError}
-									variant="outlined"
-									required
-									fullWidth
-									labelWidth={100}
-									inputProps={{
-										name: "designation",
-										id: "designation",
-									}}
-								>
-									{user.designation === "" && (
-										<option aria-label="None" value="" />
-									)}
-									<option value={"Student"}>Student</option>
-									<option value={"Faculty"}>Faculty</option>
-									<option value={"Hod"}>Hod</option>
-									<option value={"Principal"}>Principal</option>
-								</Select>
-							</FormControl>
-							<ShowWithAnimation isMounted={designationError}>
-								<List
-									dense
-									disablePadding
-									className={classes.field}
-									style={{ margin: ".5rem auto" }}
-									aria-label="designation validation hints"
-								>
-									<ListItem
-										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
-									>
-										<span
-											className="material-icons md-18"
-											style={{ color: "#f44336", marginRight: ".5em" }}
-										>
-											error_outline
-										</span>
-										<Typography variant="body2" color="error">
-											Please choose an option.
-										</Typography>
-									</ListItem>
-								</List>
-							</ShowWithAnimation>
-							<Button
-								type="submit"
-								variant="contained"
-								color="primary"
-								fullWidth
-								size="large"
-								endIcon={
-									<span className="material-icons-outlined">
-										person_add_alt
-									</span>
-								}
-								style={{ margin: ".5rem auto" }}
-							>
-								Sign Up
-							</Button>
-							<Grid container justify="center" style={{ margin: ".5em auto" }}>
-								<Grid item>
-									<Button
-										onClick={() => {
-											history.push("/signin");
-										}}
-									>
-										{"Already have an account? Sign in"}
-									</Button>
-								</Grid>
-							</Grid>
-						</form>
-					</>
-				)}
-				{isSubmitted === true && (
-					<>
-						<Typography variant="h5" color="inherit">
-							Details you have submitted are ...
-						</Typography>
-						<List aria-label="user info" style={{ marginTop: "1rem" }}>
-							<ListItem>
-								<ListItemIcon>
-									<span className="material-icons-outlined">badge</span>
-								</ListItemIcon>
-								<Typography variant="body1" color="textPrimary">
-									{user.full_name
-										.split(" ")
-										.map((w) => w[0].toUpperCase() + w.substr(1).toLowerCase())
-										.join(" ")}
+									error_outline
+								</span>
+								<Typography variant="body2" color="error">
+									Please enter your full name.
 								</Typography>
-							</ListItem>
-							<ListItem>
-								<ListItemIcon>
-									<span className="material-icons-outlined">person</span>
-								</ListItemIcon>
-								<Typography variant="body1" color="textPrimary">
-									{user.gender}
-								</Typography>
-							</ListItem>
-							<ListItem>
-								<ListItemIcon>
-									<span className="material-icons-outlined">email</span>
-								</ListItemIcon>
-								<Typography variant="body1" color="textPrimary">
-									{user.email}
-								</Typography>
-							</ListItem>
-							<ListItem>
-								<ListItemIcon>
-									<span className="material-icons-outlined">password</span>
-								</ListItemIcon>
-								<Typography variant="body1" color="textPrimary">
-									{user.password}
-								</Typography>
-							</ListItem>
-							<ListItem>
-								<ListItemIcon>
-									<span className="material-icons-outlined">account_box</span>
-								</ListItemIcon>
-								<Typography variant="body1" color="textPrimary">
-									{user.designation}
-								</Typography>
-							</ListItem>
-							<ListItem>
-								<ListItemIcon
-									style={{ margin: ".5rem auto" }}
-									onClick={() => {
-										setIsSubmitted(false);
-									}}
-								>
-									<IconButton aria-label="delete" color="primary">
-										<span className="material-icons-outlined">arrow_back</span>
-									</IconButton>
-								</ListItemIcon>
 							</ListItem>
 						</List>
-					</>
-				)}
+					</ShowWithAnimation>
+					<FormControl
+						variant="outlined"
+						required
+						className={classes.field}
+						error={genderError}
+						size="small"
+					>
+						<InputLabel htmlFor="gender">Gender</InputLabel>
+						<Select
+							native
+							value={user.gender}
+							onChange={onChange}
+							onBlur={validateGender}
+							error={genderError}
+							variant="outlined"
+							required
+							fullWidth
+							labelWidth={100}
+							inputProps={{
+								name: "gender",
+								id: "gender",
+							}}
+						>
+							{user.gender === "" && <option aria-label="None" value="" />}
+							<option value={"Female"}>Female</option>
+							<option value={"Male"}>Male</option>
+							<option value={"Others"}>Others</option>
+						</Select>
+					</FormControl>
+					<ShowWithAnimation isMounted={genderError}>
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5rem auto" }}
+							aria-label="gender validation hints"
+						>
+							<ListItem style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
+								>
+									error_outline
+								</span>
+								<Typography variant="body2" color="error">
+									Please choose your gender.
+								</Typography>
+							</ListItem>
+						</List>
+					</ShowWithAnimation>
+					<TextField
+						className={classes.field}
+						onChange={(e) => onChange(e)}
+						onBlur={validateEmail}
+						label="Email"
+						variant="outlined"
+						fullWidth
+						type="email"
+						name="email"
+						value={user.email}
+						required
+						error={emailError}
+						size="small"
+					/>
+					<ShowWithAnimation isMounted={emailError}>
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5rem auto" }}
+							aria-label="password validation hints"
+						>
+							<ListItem style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
+								>
+									error_outline
+								</span>
+								<Typography variant="body2" color="error">
+									Please enter your email address.
+								</Typography>
+							</ListItem>
+						</List>
+					</ShowWithAnimation>
+					<FormControl
+						className={classes.field}
+						variant="outlined"
+						required
+						size="small"
+						error={passwordError.error}
+					>
+						<InputLabel htmlFor="user_password">Password</InputLabel>
+						<OutlinedInput
+							name="password"
+							id="user_password"
+							type={user.showPassword ? "text" : "password"}
+							value={user.password}
+							labelWidth={90}
+							required
+							fullWidth
+							onChange={handleChange("password")}
+							onBlur={validatePassword}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+										edge="end"
+									>
+										{user.showPassword ? <Visibility /> : <VisibilityOff />}
+									</IconButton>
+								</InputAdornment>
+							}
+						/>
+					</FormControl>
+					{/* {<pre>{JSON.stringify(passwordError, null, 4)}</pre>} */}
+					<ShowWithAnimation isMounted={passwordError.error}>
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".25em auto" }}
+							aria-label="password validation hints"
+						>
+							{passwordErrors.map((error, id) => (
+								<ShowWithAnimation
+									isMounted={passwordError[error.exp]}
+									key={id}
+								>
+									<ListItem
+										style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}
+									>
+										<span
+											className="material-icons md-18"
+											style={{ color: "#f44336", marginRight: ".5em" }}
+										>
+											error_outline
+										</span>
+										<Typography variant="body2" color="error">
+											{error.message}
+										</Typography>
+									</ListItem>
+								</ShowWithAnimation>
+							))}
+						</List>
+					</ShowWithAnimation>
+					<FormControl
+						variant="outlined"
+						required
+						className={classes.field}
+						error={designationError}
+						size="small"
+					>
+						<InputLabel htmlFor="designation">Designation</InputLabel>
+						<Select
+							native
+							value={user.designation}
+							onChange={onChange}
+							onBlur={validateDesignation}
+							error={designationError}
+							variant="outlined"
+							required
+							fullWidth
+							labelWidth={100}
+							inputProps={{
+								name: "designation",
+								id: "designation",
+							}}
+						>
+							{user.designation === "" && <option aria-label="None" value="" />}
+							<option value={"Student"}>Student</option>
+							<option value={"Faculty"}>Faculty</option>
+							<option value={"Hod"}>Hod</option>
+							<option value={"Principal"}>Principal</option>
+						</Select>
+					</FormControl>
+					<ShowWithAnimation isMounted={designationError}>
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5rem auto" }}
+							aria-label="designation validation hints"
+						>
+							<ListItem style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
+								>
+									error_outline
+								</span>
+								<Typography variant="body2" color="error">
+									Please choose an option.
+								</Typography>
+							</ListItem>
+						</List>
+					</ShowWithAnimation>
+					<Button
+						type="submit"
+						variant="contained"
+						color="primary"
+						fullWidth
+						size="large"
+						disableElevation
+						disabled={!isFormFilled}
+						endIcon={
+							<span className="material-icons-outlined">person_add_alt</span>
+						}
+						style={{ margin: ".5rem auto" }}
+					>
+						Sign Up
+					</Button>
+					<Grid container justify="center" style={{ margin: ".5em auto" }}>
+						<Grid item xs={12} sm={12}>
+							<Button
+								fullWidth
+								onClick={() => {
+									history.push("/signin");
+								}}
+							>
+								{"Already have an account? Sign in"}
+							</Button>
+						</Grid>
+					</Grid>
+				</form>
 			</Container>
 		</main>
 	);
