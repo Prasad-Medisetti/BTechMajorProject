@@ -6,7 +6,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
 	BrowserRouter as Router,
 	Link as RouterLink,
@@ -14,7 +14,7 @@ import {
 	Route,
 	Switch,
 	useHistory,
-	useLocation,
+	useLocation
 } from "react-router-dom";
 import Appbar from "../../components/DashboardAppbar/Appbar.component";
 import Footer from "../../components/Footer/Footer.component";
@@ -111,16 +111,16 @@ export default function Dashboard(props) {
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
-	const [mobileOpen, setMobileOpen] = React.useState(false);
-	const [loggedUser, setLoggedUser] = React.useState({});
+	const [mobileOpen, setMobileOpen] = useState(false);
+	const [loggedUser, setLoggedUser] =  useState(() => {
+  const user = localStorage.getItem("user");
+  return user !== null;
+}));
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
 	};
 
-	useEffect(() => {
-		setLoggedUser(localStorage.getItem("user"));
-	}, [location.pathname]);
 
 	if (localStorage.getItem("token") === null) {
 		<Redirect to="/signin" />;

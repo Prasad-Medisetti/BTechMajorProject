@@ -147,7 +147,7 @@ export default function SignIn(props) {
 				// );
 				const user = res.data;
 				localStorage.setItem("token", user.token);
-				localStorage.setItem("user", user);
+				localStorage.setItem("user", JSON.stringify(user));
 
 				// toast.handleToastClick({
 				//   toastOpen: true,
