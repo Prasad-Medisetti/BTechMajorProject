@@ -30,7 +30,6 @@ function App() {
 		toastVariant: "standard",
 		toastColor: "",
 	});
-	localStorage.getItem("token");
 
 	const handleDrawerToggle = (open) => {
 		setMobileOpen(open);
@@ -56,9 +55,9 @@ function App() {
 					{/* main content */}
 					<Switch>
 						<Route exact path="/">
-							{localStorage.getItem("token") !== null ? (
+							{localStorage.getItem("token") !== null && (
 								<Redirect to="/dashboard" />
-							) : null}
+							)}
 							<HomeAppBar
 								classes={classes}
 								menuItems={menuItems}
@@ -79,9 +78,9 @@ function App() {
 							<Footer classes={classes} />
 						</Route>
 						<Route path="/signin">
-							{localStorage.getItem("token") !== null ? (
+							{localStorage.getItem("token") !== null && (
 								<Redirect to="/dashboard" />
-							) : null}
+							)}
 							<HomeAppBar
 								classes={classes}
 								toast={{
@@ -107,9 +106,9 @@ function App() {
 							<Footer classes={classes} />
 						</Route>
 						<Route path="/signup">
-							{localStorage.getItem("token") !== null ? (
+							{localStorage.getItem("token") !== null && (
 								<Redirect to="/dashboard" />
-							) : null}
+							)}
 							<HomeAppBar
 								classes={classes}
 								menuItems={menuItems}

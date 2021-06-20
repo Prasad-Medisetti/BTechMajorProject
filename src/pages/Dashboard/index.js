@@ -123,13 +123,6 @@ export default function Dashboard(props) {
 		}
 	}, [history]);
 
-	// useEffect(() => {
-	// 	localStorage.setItem("user", JSON.stringify(loggedUser));
-	// }, [loggedUser]);
-
-	if (localStorage.getItem("token") === null) {
-		<Redirect to="/signin" />;
-	}
 	return (
 		<div className={classes.root}>
 			{/* app bar */}

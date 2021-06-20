@@ -7,6 +7,7 @@ import {
 	Select,
 	TextField
 } from "@material-ui/core";
+import {Redirect} from "react-router-dom";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -217,6 +218,10 @@ export default function SignIn(props) {
 		// 		!designationError,
 		// );
 	}, [isFormFilled, designationError, emailError, passwordError, user]);
+
+	if (localStorage.getItem("token") !== null) {
+		<Redirect to="/dashboard" />;
+	}
 
 	return (
 		<main className={classes.main}>
