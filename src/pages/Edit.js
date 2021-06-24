@@ -10,6 +10,8 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
+import axios from "../configs/axios";
+
 
 const useStyles = makeStyles({
 	container: {
@@ -22,7 +24,6 @@ const useStyles = makeStyles({
 	},
 });
 
-const uri = "https://onlinenoticeboard-server.herokuapp.com/notes";
 // const uri =
 // 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
 
@@ -42,9 +43,8 @@ export default function Edit(props) {
 	useEffect(() => {
 		const _id = params.id;
 		console.log(params.id);
-		fetch(uri + _id)
-			.then((res) => res.json())
-			.then((data) => setNote(data))
+		axios.get('/api/notes/' + _id)
+			.then((res) => setNote(res.data))
 			.catch((error) => console.log(error));
 	}, [params.id]);
 
@@ -67,26 +67,28 @@ export default function Edit(props) {
 		if (note.details === "") {
 			setDetailsError(true);
 		}
-		if (note.title && note.details) {
-			if (note._id) {
-				// console.log(note._id);
-				fetch(
-					"https://onlinenoticeboard-server.herokuapp.com/notes" + note._id,
-					{
-						method: "PUT",
-						headers: { "Content-type": "application/json" },
-						body: JSON.stringify({ ...note }),
-					},
-				).then(() => history.push("/"));
-			} else {
-				fetch("https://onlinenoticeboard-server.herokuapp.com/notes", {
-					method: "POST",
-					headers: { "Content-type": "application/json" },
-					body: JSON.stringify({ ...note }),
-				}).then(() => history.push("/"));
-			}
-		}
-	};
+		 if (note.title && note.details) {
+		 	let {_id,date,__v, ...newNote} = note
+			axios.patch("/api/notes/"+_id,newNote )
+		 		.then(() => history.push("/dashboard")).catch((error) => {
+	        if (error.response) {
+	          // client received an error response (5xx, 4xx)
+	          console.log("error.response.data", error.response.data);
+	          console.log("error.response.status", error.response.status);
+	          console.log("error.response.headers", error.response.headers);
+
+	          history.push("/dashboard")
+	        } else if (error.request) {
+	          // client never received a response, or request never left
+	          console.log("error.request", error.request);
+	        } else {
+	          // anything else
+	          console.log("Error", error.message);
+	          console.log("error.request", error.config);
+	        }
+	      });
+	    }
+	}
 
 	return (
 		<Container maxWidth="sm">

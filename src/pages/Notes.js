@@ -5,8 +5,7 @@ import React, { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
 import { useHistory } from "react-router-dom";
 import NoteCard from "../components/NoteCard";
-
-// import axios from "axios";
+import axios from "../configs/axios";
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -22,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const uri = "https://onlinenoticeboard-server.herokuapp.com/notes";
-
 export default function Notes() {
 	const classes = useStyles();
 	const history = useHistory();
@@ -31,39 +28,50 @@ export default function Notes() {
 	const [error, setError] = useState(null);
 	const [notes, setNotes] = useState([]);
 
-	const fetchPosts = (URI) => {
-		fetch(uri)
-			.then((res) => res.json())
-			.then((data) => {
-				if (Array.isArray(data)) {
+	const fetchPosts = () => {
+		axios
+			.get("/api/notes")
+			.then((res) => {
+				if (Array.isArray(res.data)) {
 					setError(null);
-					setNotes(data);
+					setNotes(res.data);
 				} else {
-					setError(data.error);
+					setError(res.data);
 					setNotes([]);
 				}
 			})
-			.catch((err) => setError(JSON.stringify(err)));
+			.catch((error) => {
+				if (error.response) {
+					// client received an error response (5xx, 4xx)
+					console.log("error.response.data", error.response.data);
+					console.log("error.response.status", error.response.status);
+					console.log("error.response.headers", error.response.headers);
+				} else if (error.request) {
+					// client never received a response, or request never left
+					console.log("error.request", error.request);
+				} else {
+					// anything else
+					console.log("Error", error.message);
+
+					console.log("error.request", error.config);
+				}
+			});
 	};
 
 	useEffect(() => {
 		setLoading(true);
 		setError(null);
-		fetchPosts(uri);
+		fetchPosts();
 		setLoading(false);
 	}, [setError, setLoading]);
 
 	const handleDelete = async (_id) => {
-		// console.log(_id);
-		await fetch(uri + _id, {
-			method: "DELETE",
-		});
+		axios.delete('/api/notes/' + _id);
 		const newNotes = notes.filter((note) => note._id !== _id);
 		setNotes(newNotes);
 	};
 
-	const handleEdit = async (_id) => {
-		history.push("/dashboard/edit/" + _id);
+	const handleEdit = async (_id) => {	history.replace("/dashboard/edit/" + _id);
 	};
 
 	const breakpoints = {

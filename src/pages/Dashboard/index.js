@@ -8,19 +8,22 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import React, { useEffect, useState } from "react";
 import {
-	BrowserRouter as Router,
 	Link as RouterLink,
 	Route,
 	Switch,
 	useHistory,
 	useLocation,
+  useParams,
+  useRouteMatch
 } from "react-router-dom";
+import RouteWithSubRoutes from "src/utils/RouteWithSubRoutes";
 import Appbar from "../../components/DashboardAppbar/Appbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import axios from "../../configs/axios";
 import { LOGO_TEXT } from "../../constants";
 import Create from "../Create";
 import Edit from "../Edit";
+import Notes from "../Notes";
 
 const drawerWidth = 240;
 
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 			width: `calc(100% - ${drawerWidth}px)`,
 			marginLeft: drawerWidth,
 		},
+		padding: theme.spacing(2, 0),
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
@@ -65,6 +69,12 @@ const useStyles = makeStyles((theme) => ({
 				: theme.palette.grey[800],
 		// backgroundColor: "#000000",
 		// color: "#78909c",
+	},
+	footer_link: {
+		color: "inherit",
+		textDecoration: "none",
+		cursor: "pointer",
+		"&:hover": { textDecoration: "underline" },
 	},
 	// necessary for content to be below app bar
 	drawer: {
@@ -109,6 +119,7 @@ export default function Dashboard(props) {
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
+	 let { path, url } = useRouteMatch();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(() => {
 		const user = localStorage.getItem("user");
@@ -191,9 +202,9 @@ export default function Dashboard(props) {
 						classes={{
 							paper: classes.drawerPaper,
 						}}
-						ModalProps={{
-							keepMounted: true, // Better open performance on mobile.
-						}}
+						// ModalProps={{
+						// 	keepMounted: true, // Better open performance on mobile.
+						// }}
 					>
 						<div>
 							<Link
@@ -262,19 +273,17 @@ export default function Dashboard(props) {
 
 			{/* main content */}
 			<main className={classes.main}>
-				{Object.entries(loggedUser).length !== 0
-					? `Hello ${loggedUser.full_name}!`
-					: null}
-				<Router>
-					<Switch>
-						<Route path="/create">
-							<Create />
-						</Route>
-						<Route path="/edit/:id">
-							<Edit />
-						</Route>
-					</Switch>
-				</Router>
+				<Switch>
+					<Route exact path="/dashboard">
+						<Notes />
+					</Route>
+					<Route path="/dashboard/create">
+						<Create />
+					</Route>
+					<Route path="/dashboard/edit/:id">
+						<Edit />
+					</Route>
+				</Switch>
 			</main>
 
 			<Footer classes={classes} />

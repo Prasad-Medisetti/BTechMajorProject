@@ -70,7 +70,6 @@ export default function NoteCard({ note, handleEdit, handleDelete }) {
 								<Menu
 									id="card-menu"
 									anchorEl={cardMenu}
-									keepMounted
 									open={Boolean(cardMenu)}
 									onClose={handleClose}
 								>

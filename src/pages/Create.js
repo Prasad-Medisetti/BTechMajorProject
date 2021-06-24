@@ -5,11 +5,13 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "../configs/axios";
 
 const useStyles = makeStyles({
   container: {
@@ -64,23 +66,28 @@ export default function Edit(props) {
       setDetailsError(true);
     }
     if (note.title && note.details) {
-      if (note._id) {
-        // console.log(note._id);
-        fetch(
-          "https://onlinenoticeboard-server.herokuapp.com/notes" + note._id,
-          {
-            method: "PUT",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({ ...note })
-          }
-        ).then(() => history.push("/"));
-      } else {
-        fetch("https://onlinenoticeboard-server.herokuapp.com/notes", {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ ...note })
-        }).then(() => history.push("/dashboard"));
-      }
+      axios
+      .post("/api/notes",note )
+      .then((res) => {
+        history.push("/dashboard")
+      })
+      .catch((error) => {
+        if (error.response) {
+          // client received an error response (5xx, 4xx)
+          console.log("error.response.data", error.response.data);
+          console.log("error.response.status", error.response.status);
+          console.log("error.response.headers", error.response.headers);
+
+          history.push("/dashboard")
+        } else if (error.request) {
+          // client never received a response, or request never left
+          console.log("error.request", error.request);
+        } else {
+          // anything else
+          console.log("Error", error.message);
+          console.log("error.request", error.config);
+        }
+      });
     }
   };
 
@@ -132,30 +139,14 @@ export default function Edit(props) {
             value={note.category}
             onChange={(e) => onChange(e)}
           >
-            <FormControl
-              required
-              value="money"
-              control={<Radio />}
-              label="Money"
-            />
-            <FormControl
-              required
-              value="todos"
-              control={<Radio />}
-              label="Todos"
-            />
-            <FormControl
-              required
+            <FormControlLabel value="money" control={<Radio />} label="Money" />
+            <FormControlLabel value="todos" control={<Radio />} label="Todos" />
+            <FormControlLabel
               value="reminders"
               control={<Radio />}
               label="Reminders"
             />
-            <FormControl
-              required
-              value="work"
-              control={<Radio />}
-              label="Work"
-            />
+            <FormControlLabel value="work" control={<Radio />} label="Work" />
           </RadioGroup>
         </div>
 

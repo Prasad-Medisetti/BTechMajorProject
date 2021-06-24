@@ -32,12 +32,12 @@ export const menuItems = [
 export const dashboardMenuItems = [
 	{
 		text: "My Posts",
-		icon: <SubjectOutlined color="secondary" />,
+		icon: <SubjectOutlined />,
 		path: "/dashboard",
 	},
 	{
 		text: "Create Post",
-		icon: <AddCircleOutlineOutlined color="secondary" />,
+		icon: <AddCircleOutlineOutlined />,
 		path: "/dashboard/create",
 	},
 ];
