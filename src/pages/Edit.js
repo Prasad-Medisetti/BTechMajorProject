@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
-import { makeStyles } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "../configs/axios";
-
 
 const useStyles = makeStyles({
 	container: {
@@ -43,7 +42,8 @@ export default function Edit(props) {
 	useEffect(() => {
 		const _id = params.id;
 		console.log(params.id);
-		axios.get('/api/notes/' + _id)
+		axios
+			.get("/api/notes/" + _id)
 			.then((res) => setNote(res.data))
 			.catch((error) => console.log(error));
 	}, [params.id]);
@@ -67,28 +67,30 @@ export default function Edit(props) {
 		if (note.details === "") {
 			setDetailsError(true);
 		}
-		 if (note.title && note.details) {
-		 	let {_id,date,__v, ...newNote} = note
-			axios.patch("/api/notes/"+_id,newNote )
-		 		.then(() => history.push("/dashboard")).catch((error) => {
-	        if (error.response) {
-	          // client received an error response (5xx, 4xx)
-	          console.log("error.response.data", error.response.data);
-	          console.log("error.response.status", error.response.status);
-	          console.log("error.response.headers", error.response.headers);
+		if (note.title && note.details) {
+			let { _id, date, __v, ...newNote } = note;
+			axios
+				.patch("/api/notes/" + _id, newNote)
+				.then(() => history.push("/dashboard"))
+				.catch((error) => {
+					if (error.response) {
+						// client received an error response (5xx, 4xx)
+						console.log("error.response.data", error.response.data);
+						console.log("error.response.status", error.response.status);
+						console.log("error.response.headers", error.response.headers);
 
-	          history.push("/dashboard")
-	        } else if (error.request) {
-	          // client never received a response, or request never left
-	          console.log("error.request", error.request);
-	        } else {
-	          // anything else
-	          console.log("Error", error.message);
-	          console.log("error.request", error.config);
-	        }
-	      });
-	    }
-	}
+						history.push("/dashboard");
+					} else if (error.request) {
+						// client never received a response, or request never left
+						console.log("error.request", error.request);
+					} else {
+						// anything else
+						console.log("Error", error.message);
+						console.log("error.request", error.config);
+					}
+				});
+		}
+	};
 
 	return (
 		<Container maxWidth="sm">
@@ -96,6 +98,7 @@ export default function Edit(props) {
 				variant="h6"
 				color="textSecondary"
 				component="h2"
+				align="center"
 				gutterBottom
 			>
 				Edit Post
@@ -113,6 +116,7 @@ export default function Edit(props) {
 					value={note.title}
 					required
 					error={titleError}
+					size="small"
 				/>
 				<TextField
 					className={classes.field}
@@ -125,6 +129,7 @@ export default function Edit(props) {
 					fullWidth
 					name="details"
 					value={note.details}
+					size="small"
 					required
 					error={detailsError}
 				/>
@@ -136,15 +141,28 @@ export default function Edit(props) {
 						aria-label="category"
 						value={note.category}
 						onChange={(e) => onChange(e)}
+						style={{ marginLeft: ".75rem" }}
 					>
-						<FormControlLabel value="money" control={<Radio />} label="Money" />
-						<FormControlLabel value="todos" control={<Radio />} label="Todos" />
+						<FormControlLabel
+							value="money"
+							control={<Radio size="small" />}
+							label="Money"
+						/>
+						<FormControlLabel
+							value="todos"
+							control={<Radio size="small" />}
+							label="Todos"
+						/>
 						<FormControlLabel
 							value="reminders"
-							control={<Radio />}
+							control={<Radio size="small" />}
 							label="Reminders"
 						/>
-						<FormControlLabel value="work" control={<Radio />} label="Work" />
+						<FormControlLabel
+							value="work"
+							control={<Radio size="small" />}
+							label="Work"
+						/>
 					</RadioGroup>
 				</div>
 

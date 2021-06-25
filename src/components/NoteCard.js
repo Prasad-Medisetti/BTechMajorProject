@@ -1,18 +1,18 @@
-import React from "react";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-// import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import { yellow, green, pink, blue } from "@material-ui/core/colors";
-import { EditOutlined, MoreVertOutlined } from "@material-ui/icons";
+import Card from "@material-ui/core/Card";
+// import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import { blue, green, pink, yellow } from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
 // import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Typography from "@material-ui/core/Typography";
+import { EditOutlined, MoreVertOutlined } from "@material-ui/icons";
+import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
+import React from "react";
 
 const useStyles = makeStyles({
 	avatar: {
@@ -48,7 +48,7 @@ export default function NoteCard({ note, handleEdit, handleDelete }) {
 	};
 
 	return (
-		<div>
+		<>
 			{note ? (
 				<Card elevation={1} variant="outlined">
 					<CardHeader
@@ -92,6 +92,6 @@ export default function NoteCard({ note, handleEdit, handleDelete }) {
 					</CardContent>
 				</Card>
 			) : null}
-		</div>
+		</>
 	);
 }

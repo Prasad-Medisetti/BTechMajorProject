@@ -1,8 +1,7 @@
-import { CircularProgress, Paper, Typography } from "@material-ui/core";
+import { CircularProgress, Grid, Paper, Typography } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
-import Masonry from "react-masonry-css";
 import { useHistory } from "react-router-dom";
 import NoteCard from "../components/NoteCard";
 import axios from "../configs/axios";
@@ -66,45 +65,35 @@ export default function Notes() {
 	}, [setError, setLoading]);
 
 	const handleDelete = async (_id) => {
-		axios.delete('/api/notes/' + _id);
+		axios.delete("/api/notes/" + _id);
 		const newNotes = notes.filter((note) => note._id !== _id);
 		setNotes(newNotes);
 	};
 
-	const handleEdit = async (_id) => {	history.replace("/dashboard/edit/" + _id);
-	};
-
-	const breakpoints = {
-		default: 3,
-		1100: 2,
-		768: 1,
-		// 500: 1,
+	const handleEdit = async (_id) => {
+		history.replace("/dashboard/edit/" + _id);
 	};
 
 	return (
 		<>
-			<Container>
+			<Container maxWidth="md">
 				{isLoading ? (
 					<div className={classes.block}>
 						<CircularProgress color="inherit" />
 					</div>
 				) : null}
 				{!isLoading && notes.length > 0 ? (
-					<Masonry
-						breakpointCols={breakpoints}
-						className="my-masonry-grid"
-						columnClassName="my-masonry-grid_column"
-					>
+					<Grid container spacing={3}>
 						{notes.map((note) => (
-							<div key={note._id}>
+							<Grid item xs={12} key={note._id}>
 								<NoteCard
 									note={note}
 									handleEdit={handleEdit}
 									handleDelete={handleDelete}
 								/>
-							</div>
+							</Grid>
 						))}
-					</Masonry>
+					</Grid>
 				) : null}
 				{error ? (
 					<Paper variant="elevation" elevation={2} className={classes.block}>

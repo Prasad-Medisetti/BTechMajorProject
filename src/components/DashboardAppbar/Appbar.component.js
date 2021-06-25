@@ -37,9 +37,8 @@ function Appbar(props) {
 						</IconButton>
 					</Hidden>
 					<Typography className={classes.date}>
-						{Object.entries(loggedUser).length !== 0
-							? `Welcome ${loggedUser.full_name}!`
-							: null}
+						{/* {console.log(loggedUser)} */}
+						{loggedUser ? `Welcome ${loggedUser.firstName}!` : null}
 						{/*Today is the {format(new Date(), "do MMMM Y")}*/}
 					</Typography>
 					<Hidden xsDown>

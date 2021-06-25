@@ -28,14 +28,16 @@ export default function SignUp(props) {
 	const initialState = {
 		isFormFilled: false,
 		user: {
-			full_name: "",
+			firstName: "",
+			lastName: "",
 			email: "",
 			gender: "",
 			password: "",
 			designation: "",
 			showPassword: false,
 		},
-		fullNameError: false,
+		firstNameError: false,
+		lastNameError: false,
 		emailError: false,
 		genderError: false,
 		passwordError: {
@@ -51,8 +53,11 @@ export default function SignUp(props) {
 
 	const [isFormFilled, setIsFormFilled] = useState(initialState.isFormFilled);
 	const [user, setUser] = useState(initialState.user);
-	const [fullNameError, setFullNameError] = useState(
-		initialState.fullNameError,
+	const [firstNameError, setFirstNameError] = useState(
+		initialState.firstNameError,
+	);
+	const [lastNameError, setLastNameError] = useState(
+		initialState.lastNameError,
 	);
 	const [genderError, setGenderError] = useState(initialState.genderError);
 	const [emailError, setEmailError] = useState(initialState.emailError);
@@ -88,8 +93,12 @@ export default function SignUp(props) {
 
 	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-	const validateFullName = () => {
-		setFullNameError(user.full_name === "" || user.full_name.length <= 2);
+	const validateFirstName = () => {
+		setFirstNameError(user.firstName === "" || user.firstName.length <= 2);
+	};
+
+	const validateLastName = () => {
+		setLastNameError(user.lastName === "" || user.lastName.length <= 2);
 	};
 
 	const validateGender = () => {
@@ -143,7 +152,8 @@ export default function SignUp(props) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// console.log(!emailError && !passwordError.error && !designationError);
-		validateFullName();
+		validateFirstName();
+		validateLastName();
 		validateGender();
 		validateEmail();
 		validatePassword();
@@ -199,8 +209,10 @@ export default function SignUp(props) {
 
 	useEffect(() => {
 		setIsFormFilled(
-			user.full_name !== "" &&
-				!fullNameError &&
+			user.firstName !== "" &&
+				!firstNameError &&
+				user.lastName !== "" &&
+				!lastNameError &&
 				user.email !== "" &&
 				!emailError &&
 				user.gender !== "" &&
@@ -227,7 +239,8 @@ export default function SignUp(props) {
 		isFormFilled,
 		designationError,
 		emailError,
-		fullNameError,
+		firstNameError,
+		lastNameError,
 		genderError,
 		passwordError,
 		user,
@@ -255,24 +268,24 @@ export default function SignUp(props) {
 						onChange={(e) => {
 							onChange(e);
 						}}
-						onBlur={validateFullName}
-						label="Full Name"
+						onBlur={validateFirstName}
+						label="First Name"
 						variant="outlined"
 						fullWidth
 						type="text"
-						name="full_name"
-						value={user.full_name}
+						name="firstName"
+						value={user.firstName}
 						required
-						error={fullNameError}
+						error={firstNameError}
 						size="small"
 					/>
-					<ShowWithAnimation isMounted={fullNameError}>
+					<ShowWithAnimation isMounted={firstNameError}>
 						<List
 							dense
 							disablePadding
 							className={classes.field}
 							style={{ margin: ".5rem auto" }}
-							aria-label="full name validation hints"
+							aria-label="first name validation hints"
 						>
 							<ListItem style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}>
 								<span
@@ -282,7 +295,44 @@ export default function SignUp(props) {
 									error_outline
 								</span>
 								<Typography variant="body2" color="error">
-									Please enter your full name.
+									Please enter your first name.
+								</Typography>
+							</ListItem>
+						</List>
+					</ShowWithAnimation>
+					<TextField
+						className={classes.field}
+						onChange={(e) => {
+							onChange(e);
+						}}
+						onBlur={validateLastName}
+						label="Last Name"
+						variant="outlined"
+						fullWidth
+						type="text"
+						name="lastName"
+						value={user.lastName}
+						required
+						error={lastNameError}
+						size="small"
+					/>
+					<ShowWithAnimation isMounted={lastNameError}>
+						<List
+							dense
+							disablePadding
+							className={classes.field}
+							style={{ margin: ".5rem auto" }}
+							aria-label="last name validation hints"
+						>
+							<ListItem style={{ padding: "0 .24rem", margin: ".5rem .5rem" }}>
+								<span
+									className="material-icons md-18"
+									style={{ color: "#f44336", marginRight: ".5em" }}
+								>
+									error_outline
+								</span>
+								<Typography variant="body2" color="error">
+									Please enter your last name.
 								</Typography>
 							</ListItem>
 						</List>

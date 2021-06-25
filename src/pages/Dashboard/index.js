@@ -13,10 +13,8 @@ import {
 	Switch,
 	useHistory,
 	useLocation,
-  useParams,
-  useRouteMatch
+	useRouteMatch,
 } from "react-router-dom";
-import RouteWithSubRoutes from "src/utils/RouteWithSubRoutes";
 import Appbar from "../../components/DashboardAppbar/Appbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import axios from "../../configs/axios";
@@ -119,7 +117,7 @@ export default function Dashboard(props) {
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
-	 let { path, url } = useRouteMatch();
+	let { path, url } = useRouteMatch();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(() => {
 		const user = localStorage.getItem("user");
@@ -144,6 +142,11 @@ export default function Dashboard(props) {
 					console.log("error.response.data", error.response.data);
 					console.log("error.response.status", error.response.status);
 					console.log("error.response.headers", error.response.headers);
+
+					if (error.response.status === 401) {
+						localStorage.clear();
+						history.replace("/signin");
+					}
 					toast.handleToastClick({
 						toastOpen: true,
 						toastMessage: error.response.data.error,
@@ -171,13 +174,6 @@ export default function Dashboard(props) {
 					console.log("error.request", error.config);
 				}
 			});
-		const data = JSON.parse(localStorage.getItem("user"));
-		if (data !== null) {
-			setLoggedUser(data);
-		} else {
-			setLoggedUser(null);
-			history.replace("/signin");
-		}
 	}, [history, toast]);
 
 	return (
