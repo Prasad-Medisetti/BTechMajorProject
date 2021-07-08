@@ -1,12 +1,17 @@
 import { ThemeProvider } from "@material-ui/styles";
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch,
+	useHistory,
+} from "react-router-dom";
 // import "./assets/font/material-icons.css";
 import Footer from "./components/Footer/Footer.component";
 import HomeAppBar from "./components/HomeAppBar";
 import ScrollToTop from "./components/ScrollToTop";
 import MySnackbar from "./components/Snackbar";
-import { dashboardMenuItems, menuItems } from "./constants";
+import { menuItems } from "./constants";
 import DashboardPage from "./pages/Dashboard";
 import HomePage from "./pages/Landing";
 import NotFoundPage from "./pages/NotFound";
@@ -16,6 +21,7 @@ import { theme, useStyles } from "./styles";
 
 function App() {
 	const classes = useStyles();
+	const history = useHistory();
 	const initialState = { mobileOpen: false };
 	const [mobileOpen, setMobileOpen] = useState(initialState.mobileOpen);
 	const [toast, setToast] = useState({
@@ -24,6 +30,10 @@ function App() {
 		toastVariant: "standard",
 		toastColor: "",
 	});
+
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}, [history]);
 
 	const handleDrawerToggle = (open) => {
 		setMobileOpen(open);
@@ -120,7 +130,6 @@ function App() {
 									handleToastClick,
 									handleToastClose,
 								}}
-								dashboardMenuItems={dashboardMenuItems}
 							/>
 						</Route>
 						<Route path="*">

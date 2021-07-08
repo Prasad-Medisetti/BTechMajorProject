@@ -5,7 +5,7 @@ import {
 	List,
 	ListItem,
 	Select,
-	TextField,
+	TextField
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
@@ -17,6 +17,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import Loading from "../../components/Loading";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
 import axios from "../../configs/axios";
 
@@ -51,6 +52,7 @@ export default function SignUp(props) {
 		designationError: false,
 	};
 
+	const [isLoading, setIsLoading] = useState(false);
 	const [isFormFilled, setIsFormFilled] = useState(initialState.isFormFilled);
 	const [user, setUser] = useState(initialState.user);
 	const [firstNameError, setFirstNameError] = useState(
@@ -150,6 +152,7 @@ export default function SignUp(props) {
 	};
 
 	const handleSubmit = (e) => {
+		setIsLoading(true);
 		e.preventDefault();
 		// console.log(!emailError && !passwordError.error && !designationError);
 		validateFirstName();
@@ -205,6 +208,10 @@ export default function SignUp(props) {
 					console.log("error.request", error.config);
 				}
 			});
+
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 3000);
 	};
 
 	useEffect(() => {
@@ -248,6 +255,7 @@ export default function SignUp(props) {
 
 	return (
 		<main className={classes.main}>
+			{isLoading ? <Loading isLoading={isLoading} /> : null}
 			<Container maxWidth="sm">
 				<Typography
 					variant="h1"
@@ -516,8 +524,7 @@ export default function SignUp(props) {
 						</Select>
 					</FormControl>
 					<ShowWithAnimation isMounted={designationError}>
-						<List
-							dense
+						<List dense
 							disablePadding
 							className={classes.field}
 							style={{ margin: ".5rem auto" }}

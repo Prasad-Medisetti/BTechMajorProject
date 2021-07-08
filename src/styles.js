@@ -55,6 +55,12 @@ export const useStyles = makeStyles((theme) => ({
 		// backgroundColor: "#000000",
 		// color: "#78909c",
 	},
+	footer_link: {
+		color: "inherit",
+		textDecoration: "none",
+		cursor: "pointer",
+		"&:hover": { textDecoration: "underline" },
+	},
 	circularProgress: {
 		padding: theme.spacing(1.25),
 		opacity: 0.8,
@@ -95,8 +101,7 @@ export const useStyles = makeStyles((theme) => ({
 		opacity: 0.9,
 		backgroundColor: "rgba(0, 0, 0, 0.08)",
 	},
-	avatar: {
-	},
+	avatar: {},
 	toolbar: { display: "flex" },
 }));
 

@@ -18,11 +18,16 @@ import {
 import Appbar from "../../components/DashboardAppbar/Appbar.component";
 import Footer from "../../components/Footer/Footer.component";
 import axios from "../../configs/axios";
-import { LOGO_TEXT } from "../../constants";
+import {
+	dashboardMenuItems,
+	dashboardMenuItemsAdmin,
+	LOGO_TEXT,
+} from "../../constants";
 import Create from "../Create";
 import Edit from "../Edit";
 import Notes from "../Notes";
-
+import Profile from "../Profile";
+import ChangePassword from "../ChangePassword";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -32,10 +37,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	main: {
 		minHeight: "80vh",
-		margin: theme.spacing(2),
+		margin: theme.spacing(3),
 		display: "flex",
 		flexWrap: "wrap",
-		// flexDirection: "column",
+		flexDirection: "column",
 		justifyContent: "center",
 		alignContent: "center",
 		[theme.breakpoints.up("sm")]: {
@@ -113,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard(props) {
-	const { dashboardMenuItems, toast } = props;
+	const { toast } = props;
 	const classes = useStyles();
 	const history = useHistory();
 	const location = useLocation();
@@ -121,7 +126,7 @@ export default function Dashboard(props) {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(() => {
 		const user = localStorage.getItem("user");
-		return user !== null;
+		return JSON.parse(user);
 	});
 
 	const handleDrawerToggle = () => {
@@ -145,14 +150,14 @@ export default function Dashboard(props) {
 
 					if (error.response.status === 401) {
 						localStorage.clear();
+						toast.handleToastClick({
+							toastOpen: true,
+							toastMessage: error.response.data.error,
+							toastVariant: "standard",
+							toastColor: "error",
+						});
 						history.replace("/signin");
 					}
-					toast.handleToastClick({
-						toastOpen: true,
-						toastMessage: error.response.data.error,
-						toastVariant: "standard",
-						toastColor: "error",
-					});
 				} else if (error.request) {
 					// client never received a response, or request never left
 					console.log("error.request", error.request);
@@ -174,7 +179,7 @@ export default function Dashboard(props) {
 					console.log("error.request", error.config);
 				}
 			});
-	}, [history, toast]);
+	}, [localStorage]);
 
 	return (
 		<div className={classes.root}>
@@ -213,22 +218,41 @@ export default function Dashboard(props) {
 
 						{/* links/list section */}
 						<List>
-							{dashboardMenuItems.map((item) => (
-								<ListItem
-									button
-									key={item.text}
-									onClick={() => {
-										history.push(item.path);
-										handleDrawerToggle();
-									}}
-									className={
-										location.pathname === item.path ? classes.active : null
-									}
-								>
-									<ListItemIcon>{item.icon}</ListItemIcon>
-									<ListItemText primary={item.text} />
-								</ListItem>
-							))}
+							{loggedUser.role === "user" &&
+								dashboardMenuItems.map((item) => (
+									<ListItem
+										button
+										key={item.text}
+										onClick={() => {
+											history.push(item.path);
+											handleDrawerToggle();
+										}}
+										className={
+											location.pathname === item.path ? classes.active : null
+										}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText primary={item.text} />
+									</ListItem>
+								))}
+
+							{loggedUser.role === "admin" &&
+								dashboardMenuItemsAdmin.map((item) => (
+									<ListItem
+										button
+										key={item.text}
+										onClick={() => {
+											history.push(item.path);
+											handleDrawerToggle();
+										}}
+										className={
+											location.pathname === item.path ? classes.active : null
+										}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText primary={item.text} />
+									</ListItem>
+								))}
 						</List>
 					</Drawer>
 				</Hidden>
@@ -247,21 +271,38 @@ export default function Dashboard(props) {
 
 						{/* links/list section */}
 						<List>
-							{dashboardMenuItems.map((item) => (
-								<ListItem
-									button
-									key={item.text}
-									onClick={() => {
-										history.push(item.path);
-									}}
-									className={
-										location.pathname === item.path ? classes.active : null
-									}
-								>
-									<ListItemIcon>{item.icon}</ListItemIcon>
-									<ListItemText primary={item.text} />
-								</ListItem>
-							))}
+							{loggedUser.role === "user" &&
+								dashboardMenuItems.map((item) => (
+									<ListItem
+										button
+										key={item.text}
+										onClick={() => {
+											history.push(item.path);
+										}}
+										className={
+											location.pathname === item.path ? classes.active : null
+										}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText primary={item.text} />
+									</ListItem>
+								))}
+							{loggedUser.role === "admin" &&
+								dashboardMenuItemsAdmin.map((item) => (
+									<ListItem
+										button
+										key={item.text}
+										onClick={() => {
+											history.push(item.path);
+										}}
+										className={
+											location.pathname === item.path ? classes.active : null
+										}
+									>
+										<ListItemIcon>{item.icon}</ListItemIcon>
+										<ListItemText primary={item.text} />
+									</ListItem>
+								))}
 						</List>
 					</Drawer>
 				</Hidden>
@@ -271,13 +312,23 @@ export default function Dashboard(props) {
 			<main className={classes.main}>
 				<Switch>
 					<Route exact path="/dashboard">
-						<Notes />
+						<Notes loggedUser={loggedUser} toast={toast} />
+					</Route>
+					<Route path="/dashboard/profile">
+						<Profile
+							loggedUser={loggedUser}
+							setLoggedUser={setLoggedUser}
+							toast={toast}
+						/>
 					</Route>
 					<Route path="/dashboard/create">
-						<Create />
+						<Create loggedUser={loggedUser} toast={toast} />
 					</Route>
 					<Route path="/dashboard/edit/:id">
-						<Edit />
+						<Edit loggedUser={loggedUser} toast={toast} />
+					</Route>
+					<Route path="/dashboard/change_password">
+						<ChangePassword loggedUser={loggedUser} toast={toast} />
 					</Route>
 				</Switch>
 			</main>

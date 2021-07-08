@@ -1,4 +1,3 @@
-import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
 import React from "react";
 
 /* ------------------------------ PROJECT TITLE ----------------------------- */
@@ -31,13 +30,41 @@ export const menuItems = [
 /* ------------------------- Dashboard App Bar Menu Items ------------------------ */
 export const dashboardMenuItems = [
 	{
-		text: "My Posts",
-		icon: <SubjectOutlined />,
+		text: "Posts",
+		icon: <span className="material-icons-outlined">notes</span>,
+		path: "/dashboard",
+	},
+	{
+		text: "Profile",
+		icon: <span className="material-icons-outlined">account_circle</span>,
+		path: "/dashboard/profile",
+	},
+	{
+		text: "Change password",
+		icon: <span className="material-icons-outlined">password</span>,
+		path: "/dashboard/change_password",
+	},
+];
+
+export const dashboardMenuItemsAdmin = [
+	{
+		text: "Posts",
+		icon: <span className="material-icons-outlined">notes</span>,
 		path: "/dashboard",
 	},
 	{
 		text: "Create Post",
-		icon: <AddCircleOutlineOutlined />,
+		icon: <span className="material-icons-outlined">post_add</span>,
 		path: "/dashboard/create",
+	},
+	{
+		text: "Profile",
+		icon: <span className="material-icons-outlined">account_circle</span>,
+		path: "/dashboard/profile",
+	},
+	{
+		text: "Change password",
+		icon: <span className="material-icons-outlined">password</span>,
+		path: "/dashboard/change_password",
 	},
 ];

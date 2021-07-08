@@ -17,6 +17,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import React, { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
+import Loading from "../../components/Loading";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
 import axios from "../../configs/axios";
 
@@ -47,6 +48,7 @@ export default function SignIn(props) {
 	};
 
 	const [isFormFilled, setIsFormFilled] = useState(initialState.isFormFilled);
+	const [isLoading, setIsLoading] = useState(false);
 	const [user, setUser] = useState(initialState.user);
 	const [emailError, setEmailError] = useState(initialState.emailError);
 	const [passwordError, setPasswordError] = useState(
@@ -126,6 +128,7 @@ export default function SignIn(props) {
 	};
 
 	const handleSubmit = (e) => {
+		setIsLoading(true);
 		e.preventDefault();
 		// console.log(!emailError && !passwordError.error && !designationError);
 
@@ -148,17 +151,10 @@ export default function SignIn(props) {
 				const user = res.data;
 				localStorage.setItem("token", user.token);
 				localStorage.setItem("user", JSON.stringify(user));
-				console.log(`user`, user);
 				history.push("/dashboard");
 				// toast.handleToastClick({
 				//   toastOpen: true,
 				//   toastMessage: "Signin successfull...",
-				//   toastVariant: "standard",
-				//   toastColor: "success"
-				// });
-				// toast.handleToastClick({
-				//   toastOpen: true,
-				//   toastMessage: `Hello ${user.full_name}`,
 				//   toastVariant: "standard",
 				//   toastColor: "success"
 				// });
@@ -196,6 +192,10 @@ export default function SignIn(props) {
 					console.log("error.request", error.config);
 				}
 			});
+
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 3000);
 	};
 
 	useEffect(() => {
@@ -224,6 +224,7 @@ export default function SignIn(props) {
 
 	return (
 		<main className={classes.main}>
+			{isLoading ? <Loading isLoading={isLoading} /> : null}
 			<Container maxWidth="sm">
 				<Typography
 					variant="h1"

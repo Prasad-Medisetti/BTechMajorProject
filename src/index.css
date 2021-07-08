@@ -214,3 +214,6 @@ code {
 .orange600 {
 	color: #fb8c00;
 }
+div.MuiListItemIcon-root {
+	min-width: 2em;
+}
