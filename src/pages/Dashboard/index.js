@@ -218,7 +218,7 @@ export default function Dashboard(props) {
 
 						{/* links/list section */}
 						<List>
-							{loggedUser.role === "user" &&
+							{loggedUser && loggedUser.role === "user" &&
 								dashboardMenuItems.map((item) => (
 									<ListItem
 										button
@@ -236,7 +236,7 @@ export default function Dashboard(props) {
 									</ListItem>
 								))}
 
-							{loggedUser.role === "admin" &&
+							{loggedUser &&loggedUser.role === "admin" &&
 								dashboardMenuItemsAdmin.map((item) => (
 									<ListItem
 										button
@@ -271,7 +271,7 @@ export default function Dashboard(props) {
 
 						{/* links/list section */}
 						<List>
-							{loggedUser.role === "user" &&
+							{loggedUser &&loggedUser.role === "user" &&
 								dashboardMenuItems.map((item) => (
 									<ListItem
 										button
@@ -287,7 +287,7 @@ export default function Dashboard(props) {
 										<ListItemText primary={item.text} />
 									</ListItem>
 								))}
-							{loggedUser.role === "admin" &&
+							{loggedUser && loggedUser.role === "admin" &&
 								dashboardMenuItemsAdmin.map((item) => (
 									<ListItem
 										button
