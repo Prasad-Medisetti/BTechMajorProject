@@ -136,7 +136,7 @@ export default function NoteCard({
 						}
 						subheader={
 							<Typography variant="caption" component="span">
-								{titleCase(formatDistance(new Date(note.updatedAt), new Date(), {addSuffix: true}))}, {new Date(note.updatedAt).toLocaleString()}
+								{titleCase(formatDistance(new Date(note.updatedAt), new Date(), {addSuffix: true}))}
 							</Typography>
 						}
 					/>
