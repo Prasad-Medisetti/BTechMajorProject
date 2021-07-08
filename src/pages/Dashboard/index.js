@@ -143,7 +143,6 @@ export default function Dashboard(props) {
 			.get("/api/auth/user")
 			.then((res) => {
 				const user = res.data;
-				if (user!==""||user!==null) localStorage.clear()
 				setLoggedUser(user);
 				localStorage.setItem("user", JSON.stringify(user));
 			})
