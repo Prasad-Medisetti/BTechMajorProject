@@ -26,8 +26,11 @@ import {
 } from "@material-ui/core";
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	avatar: {
+		marginRight:"4px",
+    width: '1.8rem',
+    height: '1.8rem',
 		backgroundColor: (note) => {
 			if (note.postedBy.designation === "Principal") {
 				return yellow[700];
@@ -41,10 +44,18 @@ const useStyles = makeStyles({
 			return blue[500];
 		},
 	},
+	small: {
+    width: '1.8rem',
+    height: '1.8rem',
+  },
+  large: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+  },
 	cardMenu: {
 		marginRight: 8,
 	},
-});
+}));
 
 export default function NoteCard({
 	loggedUser,
@@ -71,8 +82,9 @@ export default function NoteCard({
 			{note ? (
 				<Card elevation={1} variant="outlined">
 					<CardHeader
+					style={{marginRight:'8px'}}
 						avatar={
-							<Avatar className={classes.avatar}>
+							<Avatar className={`${classes.avatar} ${classes.small}`}>
 								{note.postedBy.designation[0].toUpperCase()}
 							</Avatar>
 						}
@@ -82,6 +94,7 @@ export default function NoteCard({
 									<IconButton
 										aria-label="settings"
 										aria-haspopup="true"
+										size="small"
 										onClick={showCardMenu}
 										className={classes.cardMenu}
 									>
@@ -115,15 +128,15 @@ export default function NoteCard({
 						}
 						title={
 							<>
-								<Typography variant="subtitle1" component="div" style={{display: 'flex',alignItems: 'center',}}>
+								<Typography variant="body2" style={{display: 'flex',alignItems: 'center', fontWeight:"600"}}>
 									{titleCase(note.postedBy.firstName+" "+note.postedBy.lastName)}
-									<Chip label={note.postedBy.designation} variant="outlined" component="span" size="small" style={{marginLeft:'.5rem'}}/>
+									<Chip label={note.postedBy.designation} variant="outlined" size="small" style={{marginLeft:'.25rem',fontSize:'.8rem',fontWeight:"500"}}/>
 								</Typography>
 							</>
 						}
 						subheader={
 							<Typography variant="caption" component="span">
-								{titleCase(formatDistance(new Date(note.updatedAt), new Date(), {addSuffix: true}))}
+								{titleCase(formatDistance(new Date(note.updatedAt), new Date(), {addSuffix: true}))}, {new Date(note.updatedAt).toLocaleString()}
 							</Typography>
 						}
 					/>

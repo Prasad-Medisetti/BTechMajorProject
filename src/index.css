@@ -217,3 +217,11 @@ code {
 div.MuiListItemIcon-root {
 	min-width: 2em;
 }
+
+div.MuiCardHeader-root {
+	margin:0
+}
+
+div.MuiCardHeader-avatar {
+  margin-right: 0;
+}

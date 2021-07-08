@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme) => ({
 			filter: "drop-shadow(0px 0px 1px inherit)",
 			textDecoration: "none",
 		},
-		fontSize: theme.typography.fontSize * 1.25,
+		fontSize: '1.05rem',
 	},
 	appBar: {
 		// padding: theme.spacing(0),

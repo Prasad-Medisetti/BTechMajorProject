@@ -130,12 +130,12 @@ export default function Notes({ toast, loggedUser }) {
 						))}
 					</Grid>
 				) : (
-					<Typography variant="h6" align="center">
+					<Typography variant="subtitle1" align="center">
 						There are no posts...
 					</Typography>
 				)}
 				{!isLoading && error ? (
-					<Typography variant="h5" align="center">
+					<Typography variant="subtitle1" align="center">
 						{error}
 					</Typography>
 				) : null}

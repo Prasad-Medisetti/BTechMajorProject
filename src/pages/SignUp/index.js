@@ -253,6 +253,9 @@ export default function SignUp(props) {
 		user,
 	]);
 
+
+	if(localStorage.getItem("token")!==null) history.replace("/dashboard")
+
 	return (
 		<main className={classes.main}>
 			{isLoading ? <Loading isLoading={isLoading} /> : null}

@@ -218,9 +218,7 @@ export default function SignIn(props) {
 		// );
 	}, [isFormFilled, designationError, emailError, passwordError, user]);
 
-	if (localStorage.getItem("token") !== null) {
-		<Redirect to="/dashboard" />;
-	}
+	if(localStorage.getItem("token")!==null) history.replace("/dashboard")
 
 	return (
 		<main className={classes.main}>

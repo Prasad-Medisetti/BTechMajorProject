@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	main: {
 		minHeight: "80vh",
-		margin: theme.spacing(3),
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(3),
 		display: "flex",
 		flexWrap: "wrap",
 		flexDirection: "column",
@@ -125,8 +126,12 @@ export default function Dashboard(props) {
 	let { path, url } = useRouteMatch();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(() => {
-		const user = localStorage.getItem("user");
-		return JSON.parse(user);
+		if (localStorage.getItem("user")!==""||localStorage.getItem("user")!==null) {
+			const user = localStorage.getItem("user");
+			return JSON.parse(user);
+		} else{
+			localStorage.clear()
+		}
 	});
 
 	const handleDrawerToggle = () => {
@@ -138,6 +143,7 @@ export default function Dashboard(props) {
 			.get("/api/auth/user")
 			.then((res) => {
 				const user = res.data;
+				if (user!==""||user!==null) localStorage.clear()
 				setLoggedUser(user);
 				localStorage.setItem("user", JSON.stringify(user));
 			})
@@ -148,11 +154,11 @@ export default function Dashboard(props) {
 					console.log("error.response.status", error.response.status);
 					console.log("error.response.headers", error.response.headers);
 
-					if (error.response.status === 401) {
+					if (error.response.status === 401||error.response.status === 403) {
 						localStorage.clear();
 						toast.handleToastClick({
 							toastOpen: true,
-							toastMessage: error.response.data.error,
+							toastMessage: 'Please login...',
 							toastVariant: "standard",
 							toastColor: "error",
 						});

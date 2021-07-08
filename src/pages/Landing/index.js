@@ -24,6 +24,8 @@ import styles from "./Landing.module.css";
 export default function HomePage({ classes }) {
 	const history = useHistory();
 
+	if(localStorage.getItem("token")!==null) history.replace("/dashboard")
+
 	return (
 		<>
 			<main className={classes.main}>
