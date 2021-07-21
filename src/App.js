@@ -33,6 +33,7 @@ function App() {
 
 	useEffect(() => {
 		window.scrollTo({ top: 0, behavior: "smooth" });
+		console.table(process.env);
 	}, [history]);
 
 	const handleDrawerToggle = (open) => {

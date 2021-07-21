@@ -4,7 +4,6 @@ import {
 	List,
 	ListItem,
 	ListItemIcon,
-	ListItemSecondaryAction,
 	ListItemText,
 	makeStyles,
 } from "@material-ui/core";
@@ -56,9 +55,10 @@ export default function Edit({ toast, loggedUser }) {
 		postedBy: {},
 	});
 
-  const [urlList, setUrlList] = useState([{ title: "", url: "" }]);
+	const [urlList, setUrlList] = useState([{ title: "", url: "" }]);
 
 	const [isPrivate, setIsPrivate] = useState(false);
+	const [sendEmailAlerts, setSendEmailAlerts] = useState(false);
 
 	const [access, setAccess] = useState({
 		student: false,
@@ -71,6 +71,11 @@ export default function Edit({ toast, loggedUser }) {
 		// console.log(event.target.name, event.target.checked);
 	};
 
+	const toggleSendEmailAlerts = (event) => {
+		setSendEmailAlerts(!sendEmailAlerts);
+		// console.log(event.target.name, event.target.checked);
+	};
+
 	const isAccessChange = (event) => {
 		setAccess({ ...access, [event.target.name]: event.target.checked });
 		// console.log(event.target.name, event.target.checked);
@@ -78,57 +83,47 @@ export default function Edit({ toast, loggedUser }) {
 
 	// URL handles
 	// handle url input change
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...urlList];
-    list[index][name] = value;
-    setUrlList(list);
-  };
+	const handleInputChange = (e, index) => {
+		const { name, value } = e.target;
+		const list = [...urlList];
+		list[index][name] = value;
+		setUrlList(list);
+	};
 
-  // handle url click event of the Remove button
-  const handleRemoveClick = (index) => {
-    const list = [...urlList];
-    list.splice(index, 1);
-    setUrlList(list);
-  };
+	// handle url click event of the Remove button
+	const handleRemoveClick = (index) => {
+		const list = [...urlList];
+		list.splice(index, 1);
+		setUrlList(list);
+	};
 
-  // handle url click event of the Add button
-  const handleAddClick = () => {
-    setUrlList([...urlList, { title: "", url: "" }]);
-  };
+	// handle url click event of the Add button
+	const handleAddClick = () => {
+		setUrlList([...urlList, { title: "", url: "" }]);
+	};
 
 	useEffect(() => {
-		if (isPrivate===false) {
+		if (isPrivate === false) {
 			setAccess({
 				student: false,
 				faculty: false,
 				hod: false,
-			})
+			});
 		}
 	}, [isPrivate]);
 
-	// useEffect(() => {
-	// 	const _id = params.id;
-	// 	console.log(params.id);
-	// 	fetch(uri + _id)
-	// 		.then((res) => res.json())
-	// 		.then((data) => setNote(data))
-	// 		.catch((error) => console.log(error));
-	// }, [params.id]);
+	const selectFiles = (event) => {
+		setSelectedFiles(event.target.files);
+	};
 
-	// const selectFiles = (event) => {
-	// 	setSelectedFiles(event.target.files);
-	// };
-
-
-	// useEffect(() => {
-	// 	if (selectedFiles !== undefined) {
-	// 		Array.from(selectedFiles).forEach((file) => {
-	// 			console.log(file.name);
-	// 			console.log(formatSizeUnits(file.size));
-	// 		});
-	// 	}
-	// }, [selectedFiles]);
+	useEffect(() => {
+		if (selectedFiles !== undefined) {
+			Array.from(selectedFiles).forEach((file) => {
+				console.log(file.name);
+				console.log(formatSizeUnits(file.size));
+			});
+		}
+	}, [selectedFiles]);
 
 	const onChange = (e) => {
 		const value = e.target.value;
@@ -136,6 +131,25 @@ export default function Edit({ toast, loggedUser }) {
 			...note,
 			[e.target.name]: value,
 		});
+	};
+
+	let upload = (files) => {
+		const config = {
+			onUploadProgress: function (progressEvent) {
+				var percentCompleted = Math.round(
+					(progressEvent.loaded * 100) / progressEvent.total,
+				);
+				console.log(percentCompleted);
+			},
+		};
+
+		let data = new FormData();
+		data.append("file", files[0]);
+
+		axios
+			.put("/endpoint/url", data, config)
+			.then((res) => console.log(res))
+			.catch((err) => console.log(err));
 	};
 
 	const handleSubmit = (e) => {
@@ -150,7 +164,13 @@ export default function Edit({ toast, loggedUser }) {
 			setDetailsError(true);
 		}
 		if (note.title && note.details) {
-			let newNote = { ...note,urlList, isPrivate, access, postedBy: { ...loggedUser }};
+			let newNote = {
+				...note,
+				urlList,
+				isPrivate,
+				access,
+				postedBy: { ...loggedUser },
+			};
 			axios
 				.post("/api/notes", newNote)
 				.then((res) => {
@@ -235,66 +255,154 @@ export default function Edit({ toast, loggedUser }) {
 					error={detailsError}
 				/>
 
-        {
-					<List dense style={{display: 'flex', flexDirection: "column",alignItems: "center",alignContent: "center"}}>
-					{urlList.map((item, i) => {
-						return (
-							<>
-								<ListItem key="i" disableGutters style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-evenly'}}>
-									<ListItemIcon style={{ minWidth: "2.8rem" }}>
-										<span className="material-icons-outlined">link</span>
-									</ListItemIcon>
-									<Box width="100%">
-										<Box my={1} mx="auto">
-											<TextField
-												name="title"
-												size="small"
-												fullWidth
-												variant="outlined"
-												label="Example"
-												value={item.title}
-												onChange={(e) => handleInputChange(e, i)}
-											/>
+				{
+					<List
+						dense
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+							alignContent: "center",
+						}}
+					>
+						{urlList.map((item, i) => {
+							return (
+								<>
+									<ListItem
+										key={i}
+										disableGutters
+										style={{
+											display: "flex",
+											flexDirection: "row",
+											justifyContent: "space-evenly",
+										}}
+									>
+										<Box width="100%">
+											<Box my={1} mx="auto">
+												<TextField
+													name="title"
+													size="small"
+													fullWidth
+													variant="outlined"
+													label="Example"
+													value={item.title}
+													onChange={(e) => handleInputChange(e, i)}
+												/>
+											</Box>
+											<Box my={1} mx="auto">
+												<TextField
+													name="url"
+													size="small"
+													fullWidth
+													variant="outlined"
+													label="https://example.com"
+													type="url"
+													value={item.url}
+													onChange={(e) => handleInputChange(e, i)}
+												/>
+											</Box>
 										</Box>
-										<Box my={1} mx="auto">
-											<TextField
-												name="url"
-												size="small"
-												fullWidth
-												variant="outlined"
-												label="https://example.com"
-												type="url"
-												value={item.url}
-												onChange={(e) => handleInputChange(e, i)}
-											/>
-										</Box>
-									</Box>
-									<ShowWithAnimation isMounted={urlList.length !== 1}>
+										<ShowWithAnimation isMounted={urlList.length !== 1}>
 											<IconButton
 												aria-label="delete"
 												onClick={() => handleRemoveClick(i)}
 											>
 												<span className="material-icons-outlined">clear</span>
 											</IconButton>
-									</ShowWithAnimation>
-								</ListItem>
-								<ListItem disableGutters>
-									{urlList.length - 1 === i && (
-										<Button
-										variant="outlined"
-											fullWidth
-											startIcon={<span className="material-icons-outlined">add_link</span>}
-											onClick={handleAddClick}
-										>
-											Add URL
-										</Button>
-									)}
-								</ListItem>
-							</>
-						);
-					})}
+										</ShowWithAnimation>
+									</ListItem>
+									<ListItem disableGutters key="add-link">
+										{urlList.length - 1 === i && (
+											<Button
+												variant="outlined"
+												fullWidth
+												startIcon={
+													<span className="material-icons-outlined">
+														add_link
+													</span>
+												}
+												onClick={handleAddClick}
+											>
+												Add URL
+											</Button>
+										)}
+									</ListItem>
+								</>
+							);
+						})}
 					</List>
 				}
+				{/* <div className={classes.field}>
+					<FormLabel>Post Category</FormLabel>
+					<RadioGroup
+						name="category"
+						aria-label="category"
+						value={note.category}
+						onChange={(e) => onChange(e)}
+						style={{ marginLeft: ".75rem" }}
+					>
+						<FormControlLabel
+							value="money"
+							control={<Radio color="primary" size="small" />}
+							label="Money"
+						/>
+						<FormControlLabel
+							value="todos"
+							control={<Radio color="primary" size="small" />}
+							label="Todos"
+						/>
+						<FormControlLabel
+							value="reminders"
+							control={<Radio color="primary" size="small" />}
+							label="Reminders"
+						/>
+						<FormControlLabel
+							value="work"
+							control={<Radio color="primary" size="small" />}
+							label="Work"
+						/>
+					</RadioGroup>
+				</div> */}
+				<Box className={classes.field} boxShadow={0}>
+					<input
+						type="file"
+						multiple
+						onChange={selectFiles}
+						style={{ display: "none" }}
+						id="chooseFiles"
+					/>
+					{selectedFiles && (
+						<List dense>
+							{Array.from(selectedFiles).map((file) => (
+								<ListItem>
+									<ListItemIcon className={classes.listIcon}>
+										<span className="material-icons">insert_drive_file</span>
+									</ListItemIcon>
+									<ListItemText
+										primary={file.name}
+										secondary={formatSizeUnits(file.size)}
+									/>
+									{/* <ListItemSecondaryAction>
+										<IconButton edge="end" aria-label="clear">
+											<span className="material-icons">clear</span>
+										</IconButton>
+									</ListItemSecondaryAction> */}
+								</ListItem>
+							))}
+						</List>
+					)}
+					<label htmlFor="chooseFiles">
+						<Button
+							variant="outlined"
+							fullWidth
+							component="span"
+							startIcon={<span className="material-icons">attach_file</span>}
+						>
+							Choose Files
+						</Button>
+					</label>
+				</Box>
+
 				<div className={classes.formGroup}>
 					<div component="fieldset" className={classes.field}>
 						<FormLabel component="legend">Access</FormLabel>
@@ -353,76 +461,24 @@ export default function Edit({ toast, loggedUser }) {
 						</ShowWithAnimation>
 					</div>
 				</div>
-				{/* <div className={classes.field}>
-					<FormLabel>Post Category</FormLabel>
-					<RadioGroup
-						name="category"
-						aria-label="category"
-						value={note.category}
-						onChange={(e) => onChange(e)}
-						style={{ marginLeft: ".75rem" }}
-					>
+
+				<div className={classes.formGroup}>
+					<div component="fieldset" className={classes.field}>
+						<FormLabel component="legend">Email Alerts</FormLabel>
 						<FormControlLabel
-							value="money"
-							control={<Radio color="primary" size="small" />}
-							label="Money"
+							control={
+								<SwitchBox
+									color="primary"
+									checked={sendEmailAlerts}
+									required
+									onChange={toggleSendEmailAlerts}
+									name="isPrivate"
+								/>
+							}
+							label={sendEmailAlerts ? "ON" : "OFF"}
 						/>
-						<FormControlLabel
-							value="todos"
-							control={<Radio color="primary" size="small" />}
-							label="Todos"
-						/>
-						<FormControlLabel
-							value="reminders"
-							control={<Radio color="primary" size="small" />}
-							label="Reminders"
-						/>
-						<FormControlLabel
-							value="work"
-							control={<Radio color="primary" size="small" />}
-							label="Work"
-						/>
-					</RadioGroup>
-				</div> */}
-				{/* <Box className={classes.field} boxShadow={0}>
-					<input
-						type="file"
-						multiple
-						onChange={selectFiles}
-						style={{ display: "none" }}
-						id="chooseFiles"
-					/>
-					{selectedFiles && (
-						<List dense>
-							{Array.from(selectedFiles).map((file) => (
-								<ListItem>
-									<ListItemIcon className={classes.listIcon}>
-										<span className="material-icons">insert_drive_file</span>
-									</ListItemIcon>
-									<ListItemText
-										primary={file.name}
-										secondary={formatSizeUnits(file.size)}
-									/>
-									<ListItemSecondaryAction>
-										<IconButton edge="end" aria-label="clear">
-											<span className="material-icons">clear</span>
-										</IconButton>
-									</ListItemSecondaryAction>
-								</ListItem>
-							))}
-						</List>
-					)}
-					<label htmlFor="chooseFiles">
-						<Button
-							variant="outlined"
-							fullWidth
-							component="span"
-							startIcon={<span className="material-icons">attach_file</span>}
-						>
-							Choose Files
-						</Button>
-					</label>
-				</Box> */}
+					</div>
+				</div>
 
 				<Button
 					type="submit"

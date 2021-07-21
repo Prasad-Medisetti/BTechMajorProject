@@ -84,26 +84,70 @@ export default function Notes({ toast, loggedUser }) {
 
 	const handleDelete = async (note) => {
 		// console.log(loggedUser._id, note.postedBy._id)
-		if (loggedUser._id!==note.postedBy._id) {
+		if (loggedUser._id !== note.postedBy._id) {
 			toast.handleToastClick({
 				toastOpen: true,
-				toastMessage: 'You cannot delete other users posts...',
+				toastMessage: "You cannot delete other users posts...",
 				toastVariant: "standard",
 				toastColor: "warning",
 			});
 			return;
 		}
-		axios.delete("/api/notes/" + note._id);
-		const newNotes = notes.filter((note) => note._id !== _id);
-		setNotes(newNotes);
+		axios
+			.delete("/api/notes/" + note._id)
+			.then((res) => {
+				console.log(res);
+				toast.handleToastClick({
+					toastOpen: true,
+					toastMessage: "Successfully deleled!",
+					toastVariant: "standard",
+					toastColor: "success",
+				});
+				const newNotes = notes.filter((item) => note._id !== item._id);
+				setNotes(newNotes);
+			})
+			.catch((error) => {
+				if (error.response) {
+					// client received an error response (5xx, 4xx)
+					console.log("error.response.data", error.response.data);
+					console.log("error.response.status", error.response.status);
+					console.log("error.response.headers", error.response.headers);
+					setError(error.response.data);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: error.response.data.message,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+				} else if (error.request) {
+					// client never received a response, or request never left
+					console.log("error.request", error.request);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: error.message,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+				} else {
+					// anything else
+					console.log("Error", error.message);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: error.message,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+					console.log("error.request", error.config);
+				}
+			});
 	};
 
 	const handleEdit = async (note) => {
 		// console.log(loggedUser._id, note.postedBy._id)
-		if (loggedUser._id!==note.postedBy._id) {
+		if (loggedUser._id !== note.postedBy._id) {
 			toast.handleToastClick({
 				toastOpen: true,
-				toastMessage: 'You cannot edit other users posts...',
+				toastMessage: "You cannot edit other users posts...",
 				toastVariant: "standard",
 				toastColor: "warning",
 			});

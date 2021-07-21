@@ -156,9 +156,9 @@ export default function HomePage({ classes }) {
 										<CardMedia
 											component="img"
 											alt="Contemplative Reptile"
-											image={branchUpdates}
+											image={privacy}
 											style={{
-												height: "180px",
+												height: "160px",
 												objectFit: "contain",
 												marginTop: "1rem",
 											}}
@@ -179,18 +179,18 @@ export default function HomePage({ classes }) {
 													margin: ".5rem auto .5rem",
 												}}
 											>
-												Branch Wise Updates
+												Privacy
 											</Typography>
 											<Typography
 												variant="body2"
-												className={styles.branchUpdates}
 												style={{
 													hyphens: "auto",
-													minHeight: "4rem",
+													minHeight: "4.8rem",
 												}}
 											>
-												Sending branch-wise updates to every user who belongs to
-												the respective branch.
+												The updates between the HOD and Staff, HOD to HOD will
+												be protected from access by other users like students or
+												faculties.
 											</Typography>
 										</CardContent>
 									</CardActionArea>
@@ -298,66 +298,6 @@ export default function HomePage({ classes }) {
 											>
 												Only authorized users are allowed to log in and access
 												the updates to which they are authorized.
-											</Typography>
-										</CardContent>
-									</CardActionArea>
-								</Card>
-							</Grid>
-						</Grid>
-						<Grid
-							container
-							item
-							direction="column"
-							justify="center"
-							alignItems="center"
-							alignContent="center"
-							wrap="wrap"
-							sm={6}
-						>
-							<Grid item sm>
-								<Card
-									variant="elevation"
-									style={{ minWidth: "232px", textAlign: "center" }}
-								>
-									<CardActionArea>
-										<CardMedia
-											component="img"
-											alt="Contemplative Reptile"
-											image={privacy}
-											style={{
-												height: "160px",
-												objectFit: "contain",
-												marginTop: "1rem",
-											}}
-											title="Contemplative Reptile"
-										/>
-										<CardContent
-											style={{
-												fontSize: "1.25rem",
-												margin: "auto .5rem",
-											}}
-										>
-											<Typography
-												gutterBottom
-												variant="h5"
-												component="h6"
-												style={{
-													fontSize: "1.25rem",
-													margin: ".5rem auto .5rem",
-												}}
-											>
-												Privacy
-											</Typography>
-											<Typography
-												variant="body2"
-												style={{
-													hyphens: "auto",
-													minHeight: "4.8rem",
-												}}
-											>
-												The updates between the HOD and Staff, HOD to HOD will
-												be protected from access by other users like students or
-												faculties.
 											</Typography>
 										</CardContent>
 									</CardActionArea>

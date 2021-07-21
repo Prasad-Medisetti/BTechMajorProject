@@ -1,9 +1,10 @@
 import axios from "axios";
+import configData from "./config";
 
 // Set config defaults when creating the instance
 const axiosInstance = axios.create({
-	baseURL: "https://academic-bulletin-board.herokuapp.com",
-	// baseURL: "http://localhost:4000",
+	// baseURL: "https://academic-bulletin-board.herokuapp.com",
+	baseURL: process.env.REACT_APP_SERVER_URL || configData.SERVER_URL,
 
 	// headers: {
 	//   Authorization: {

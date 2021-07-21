@@ -4,8 +4,6 @@ import {
 	List,
 	ListItem,
 	ListItemIcon,
-	ListItemSecondaryAction,
-	ListItemText,
 	makeStyles,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -19,11 +17,10 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import React, { useEffect, useState } from "react";
-import axios from "../../configs/axios";
-import { formatSizeUnits } from "../../utils";
 import { useHistory, useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
+import axios from "../../configs/axios";
 
 const useStyles = makeStyles({
 	container: {
@@ -56,12 +53,13 @@ export default function Edit({ toast, loggedUser }) {
 		postedBy: {},
 	});
 	const [isPrivate, setIsPrivate] = useState(false);
+	const [sendEmailAlerts, setSendEmailAlerts] = useState(false);
 	const [access, setAccess] = useState({
 		student: false,
 		faculty: false,
 		hod: false,
 	});
-  const [urlList, setUrlList] = useState([{ title: "", url: "" }]);
+	const [urlList, setUrlList] = useState([{ title: "", url: "" }]);
 
 	const isPrivateChange = (event) => {
 		setIsPrivate(!isPrivate);
@@ -73,39 +71,44 @@ export default function Edit({ toast, loggedUser }) {
 		// console.log(event.target.name, event.target.checked);
 	};
 
+	const toggleSendEmailAlerts = (event) => {
+		setSendEmailAlerts(!sendEmailAlerts);
+		// console.log(event.target.name, event.target.checked);
+	};
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		if (isPrivate===false) {
+		if (isPrivate === false) {
 			setAccess({
 				student: false,
 				faculty: false,
 				hod: false,
-			})
+			});
 		}
 	}, [isPrivate]);
 
 	// URL handles
 	// handle url input change
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...urlList];
-    list[index][name] = value;
-    setUrlList(list);
-  };
+	const handleInputChange = (e, index) => {
+		const { name, value } = e.target;
+		const list = [...urlList];
+		list[index][name] = value;
+		setUrlList(list);
+	};
 
-  // handle url click event of the Remove button
-  const handleRemoveClick = (index) => {
-    const list = [...urlList];
-    list.splice(index, 1);
-    setUrlList(list);
-  };
+	// handle url click event of the Remove button
+	const handleRemoveClick = (index) => {
+		const list = [...urlList];
+		list.splice(index, 1);
+		setUrlList(list);
+	};
 
-  // handle url click event of the Add button
-  const handleAddClick = () => {
-    setUrlList([...urlList, { title: "", url: "" }]);
-  };
+	// handle url click event of the Add button
+	const handleAddClick = () => {
+		setUrlList([...urlList, { title: "", url: "" }]);
+	};
 
 	// Fetch a note specific id to id
 	useEffect(() => {
@@ -120,8 +123,8 @@ export default function Edit({ toast, loggedUser }) {
 				setError(null);
 				setNote(res.data);
 				setAccess(res.data.access);
-				setUrlList(res.data.urlList)
-				if(res.data.urlList.length===0) setUrlList([{ title: "", url: "" }])
+				setUrlList(res.data.urlList);
+				if (res.data.urlList.length === 0) setUrlList([{ title: "", url: "" }]);
 				setIsPrivate(res.data.isPrivate);
 				if (Object.keys(res.data).length > 0) {
 					setError(null);
@@ -195,10 +198,11 @@ export default function Edit({ toast, loggedUser }) {
 		if (note.title && note.details) {
 			setIsLoading(true);
 			let { _id, date, createdAt, updatedAt, __v, ...newNote } = {
-				...note,urlList,
+				...note,
+				urlList,
 				isPrivate,
 				access,
-				postedBy: { ...loggedUser  },
+				postedBy: { ...loggedUser },
 			};
 			// console.log(newNote);
 
@@ -277,63 +281,82 @@ export default function Edit({ toast, loggedUser }) {
 						/>
 
 						{
-							<List dense style={{display: 'flex', flexDirection: "column",alignItems: "center",alignContent: "center"}}>
-							{urlList.map((item, i) => {
-								return (
-									<>
-										<ListItem key="i" disableGutters style={{display: 'flex',flexDirection: 'row',justifyContent: 'space-evenly'}}>
-											<ListItemIcon style={{ minWidth: "2.8rem" }}>
-												<span className="material-icons-outlined">link</span>
-											</ListItemIcon>
-											<Box width="100%">
-												<Box my={1} mx="auto">
-													<TextField
-														name="title"
-														size="small"
-														fullWidth
-														variant="outlined"
-														label="Example"
-														value={item.title}
-														onChange={(e) => handleInputChange(e, i)}
-													/>
+							<List
+								dense
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									alignItems: "center",
+									alignContent: "center",
+								}}
+							>
+								{urlList.map((item, i) => {
+									return (
+										<>
+											<ListItem
+												key={i}
+												disableGutters
+												style={{
+													display: "flex",
+													flexDirection: "row",
+													justifyContent: "space-evenly",
+												}}
+											>
+												<Box width="100%">
+													<Box my={1} mx="auto">
+														<TextField
+															name="title"
+															size="small"
+															fullWidth
+															variant="outlined"
+															label="Example"
+															value={item.title}
+															onChange={(e) => handleInputChange(e, i)}
+														/>
+													</Box>
+													<Box my={1} mx="auto">
+														<TextField
+															name="url"
+															size="small"
+															fullWidth
+															variant="outlined"
+															label="https://example.com"
+															type="url"
+															value={item.url}
+															onChange={(e) => handleInputChange(e, i)}
+														/>
+													</Box>
 												</Box>
-												<Box my={1} mx="auto">
-													<TextField
-														name="url"
-														size="small"
-														fullWidth
-														variant="outlined"
-														label="https://example.com"
-														type="url"
-														value={item.url}
-														onChange={(e) => handleInputChange(e, i)}
-													/>
-												</Box>
-											</Box>
-											<ShowWithAnimation isMounted={urlList.length !== 1}>
+												<ShowWithAnimation isMounted={urlList.length !== 1}>
 													<IconButton
 														aria-label="delete"
 														onClick={() => handleRemoveClick(i)}
 													>
-														<span className="material-icons-outlined">clear</span>
+														<span className="material-icons-outlined">
+															clear
+														</span>
 													</IconButton>
-											</ShowWithAnimation>
-										</ListItem>
-										<ListItem disableGutters>
-											{urlList.length - 1 === i && (
-												<Button
-												variant="outlined"
-													fullWidth
-													startIcon={<span className="material-icons-outlined">add_link</span>}
-													onClick={handleAddClick}
-												>
-													Add URL
-												</Button>
-											)}
-										</ListItem>
-									</>
-								);
-							})}
+												</ShowWithAnimation>
+											</ListItem>
+											<ListItem disableGutters key="addlink">
+												{urlList.length - 1 === i && (
+													<Button
+														variant="outlined"
+														fullWidth
+														startIcon={
+															<span className="material-icons-outlined">
+																add_link
+															</span>
+														}
+														onClick={handleAddClick}
+													>
+														Add URL
+													</Button>
+												)}
+											</ListItem>
+										</>
+									);
+								})}
 							</List>
 						}
 
@@ -395,6 +418,24 @@ export default function Edit({ toast, loggedUser }) {
 										/>
 									</FormGroup>
 								</ShowWithAnimation>
+							</div>
+						</div>
+
+						<div className={classes.formGroup}>
+							<div component="fieldset" className={classes.field}>
+								<FormLabel component="legend">Email Alerts</FormLabel>
+								<FormControlLabel
+									control={
+										<SwitchBox
+											color="primary"
+											checked={sendEmailAlerts}
+											required
+											onChange={toggleSendEmailAlerts}
+											name="isPrivate"
+										/>
+									}
+									label={sendEmailAlerts ? "ON" : "OFF"}
+								/>
 							</div>
 						</div>
 

@@ -23,11 +23,11 @@ import {
 	dashboardMenuItemsAdmin,
 	LOGO_TEXT,
 } from "../../constants";
+import ChangePassword from "../ChangePassword";
 import Create from "../Create";
 import Edit from "../Edit";
 import Notes from "../Notes";
 import Profile from "../Profile";
-import ChangePassword from "../ChangePassword";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -126,11 +126,15 @@ export default function Dashboard(props) {
 	let { path, url } = useRouteMatch();
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [loggedUser, setLoggedUser] = useState(() => {
-		if (localStorage.getItem("user")!==""||localStorage.getItem("user")!==null) {
+		if (
+			localStorage.getItem("user") !== "" ||
+			localStorage.getItem("user") !== null
+		) {
 			const user = localStorage.getItem("user");
 			return JSON.parse(user);
-		} else{
-			localStorage.clear()
+		} else {
+			localStorage.clear();
+			history.replace("/signin");
 		}
 	});
 
@@ -142,6 +146,7 @@ export default function Dashboard(props) {
 		axios
 			.get("/api/auth/user")
 			.then((res) => {
+				console.log(res);
 				const user = res.data;
 				setLoggedUser(user);
 				localStorage.setItem("user", JSON.stringify(user));
@@ -153,11 +158,11 @@ export default function Dashboard(props) {
 					console.log("error.response.status", error.response.status);
 					console.log("error.response.headers", error.response.headers);
 
-					if (error.response.status === 401||error.response.status === 403) {
+					if (error.response.status === 401 || error.response.status === 403) {
 						localStorage.clear();
 						toast.handleToastClick({
 							toastOpen: true,
-							toastMessage: 'Please login...',
+							toastMessage: "Please login...",
 							toastVariant: "standard",
 							toastColor: "error",
 						});
@@ -223,7 +228,8 @@ export default function Dashboard(props) {
 
 						{/* links/list section */}
 						<List>
-							{loggedUser && loggedUser.role === "user" &&
+							{loggedUser &&
+								loggedUser.role === "user" &&
 								dashboardMenuItems.map((item) => (
 									<ListItem
 										button
@@ -241,7 +247,8 @@ export default function Dashboard(props) {
 									</ListItem>
 								))}
 
-							{loggedUser &&loggedUser.role === "admin" &&
+							{loggedUser &&
+								loggedUser.role === "admin" &&
 								dashboardMenuItemsAdmin.map((item) => (
 									<ListItem
 										button
@@ -276,7 +283,8 @@ export default function Dashboard(props) {
 
 						{/* links/list section */}
 						<List>
-							{loggedUser &&loggedUser.role === "user" &&
+							{loggedUser &&
+								loggedUser.role === "user" &&
 								dashboardMenuItems.map((item) => (
 									<ListItem
 										button
@@ -292,7 +300,8 @@ export default function Dashboard(props) {
 										<ListItemText primary={item.text} />
 									</ListItem>
 								))}
-							{loggedUser && loggedUser.role === "admin" &&
+							{loggedUser &&
+								loggedUser.role === "admin" &&
 								dashboardMenuItemsAdmin.map((item) => (
 									<ListItem
 										button
