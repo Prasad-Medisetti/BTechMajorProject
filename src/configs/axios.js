@@ -22,4 +22,5 @@ axiosInstance.interceptors.request.use(function (config) {
 	config.headers.Authorization = token ? `Bearer ${token}` : null;
 	return config;
 });
+
 export default axiosInstance;

@@ -10,6 +10,14 @@ export const titleCase = (str) => {
 		.join(" ");
 };
 
+export const openInNewTab = (url) => {
+  const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+  if (newWindow) newWindow.opener = null
+}
+
+//Then add to your onClick
+// onClick={() => openInNewTab('https://stackoverflow.com')}
+
 export const formatSizeUnits = (bytes) => {
 	if (bytes >= 1073741824) {
 		bytes = (bytes / 1073741824).toFixed(2) + " GB";

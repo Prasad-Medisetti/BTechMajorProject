@@ -123,6 +123,7 @@ export default function Edit({ toast, loggedUser }) {
 				setError(null);
 				setNote(res.data);
 				setAccess(res.data.access);
+				setSendEmailAlerts(res.data.sendEmailAlerts)
 				setUrlList(res.data.urlList);
 				if (res.data.urlList.length === 0) setUrlList([{ title: "", url: "" }]);
 				setIsPrivate(res.data.isPrivate);
@@ -202,6 +203,7 @@ export default function Edit({ toast, loggedUser }) {
 				urlList,
 				isPrivate,
 				access,
+				sendEmailAlerts,
 				postedBy: { ...loggedUser },
 			};
 			// console.log(newNote);
