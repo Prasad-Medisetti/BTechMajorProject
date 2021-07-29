@@ -3,7 +3,10 @@ import {
 	IconButton,
 	List,
 	ListItem,
+	ListItemText,
 	ListItemIcon,
+	ListItemSecondaryAction,
+	ListSubheader,
 	makeStyles,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -21,6 +24,11 @@ import { useHistory, useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import ShowWithAnimation from "../../components/ShowWithAnimation";
 import axios from "../../configs/axios";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { green } from "@material-ui/core/colors";
+import { ButtonGroup } from "@material-ui/core";
+import { openInNewTab, formatSizeUnits } from "../../utils";
+import configData from "../../configs/config";
 
 const useStyles = makeStyles({
 	container: {
@@ -35,10 +43,23 @@ const useStyles = makeStyles({
 	listIcon: {
 		minWidth: "2.8em",
 	},
+	wrapper: {
+		position: "relative",
+	},
+	progress: {
+		color: green[700],
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		marginTop: -12,
+		marginLeft: -12,
+	},
 });
 
 // const uri =
 // 	"mongodb+srv://Admin:Admin@cluster0.7gwdx.mongodb.net/online-notice-board?retryWrites=true&w=majority";
+
+const API_URL = process.env.REACT_APP_SERVER_URL || configData.SERVER_URL;
 
 export default function Edit({ toast, loggedUser }) {
 	const classes = useStyles();
@@ -46,6 +67,14 @@ export default function Edit({ toast, loggedUser }) {
 	const params = useParams();
 	const [titleError, setTitleError] = useState(false);
 	const [detailsError, setDetailsError] = useState(false);
+	const [files, setFiles] = useState([]);
+	const [uploadedFiles, setUploadedFiles] = useState(() => {
+		const file = JSON.parse(localStorage.getItem("uploadedFiles"));
+		if (file === null || file === "") return [];
+		else return file;
+	});
+	const [uploadProgress, updateUploadProgress] = useState(0);
+	const [uploading, setUploading] = useState();
 
 	const [note, setNote] = useState({
 		title: "",
@@ -60,6 +89,16 @@ export default function Edit({ toast, loggedUser }) {
 		hod: false,
 	});
 	const [urlList, setUrlList] = useState([{ title: "", url: "" }]);
+
+	useEffect(() => {
+		// if (uploadedFiles !== undefined) {
+		// 	Array.from(uploadedFiles).forEach((item) => {
+		// 		console.log(item.filename);
+		// 		console.log(formatSizeUnits(item.size));
+		// 	});
+		// }
+		console.log(uploadedFiles);
+	}, [uploadedFiles]);
 
 	const isPrivateChange = (event) => {
 		setIsPrivate(!isPrivate);
@@ -123,8 +162,9 @@ export default function Edit({ toast, loggedUser }) {
 				setError(null);
 				setNote(res.data);
 				setAccess(res.data.access);
-				setSendEmailAlerts(res.data.sendEmailAlerts)
+				setSendEmailAlerts(res.data.sendEmailAlerts);
 				setUrlList(res.data.urlList);
+				setUploadedFiles([...uploadedFiles, ...res.data.files]);
 				if (res.data.urlList.length === 0) setUrlList([{ title: "", url: "" }]);
 				setIsPrivate(res.data.isPrivate);
 				if (Object.keys(res.data).length > 0) {
@@ -187,6 +227,84 @@ export default function Edit({ toast, loggedUser }) {
 		});
 	};
 
+	const handleFileUpload = (e) => {
+		e.preventDefault();
+		if (files && files.length > 0) {
+			setUploading(true);
+			const formData = new FormData();
+			let i = 0;
+			while (i < files.length) {
+				formData.append("file", files[i]);
+				i++;
+			}
+
+			axios
+				.post("api/uploads", formData, {
+					onUploadProgress: (ev) => {
+						// console.log(Math.round((ev.loaded / ev.total) * 100) + "%");
+						const progress = (ev.loaded / ev.total) * 100;
+						updateUploadProgress(Math.round(progress));
+					},
+				})
+				.then((res) => {
+					// our mocked response will always return true
+					// in practice, you would want to use the actual response object
+					setUploading(false);
+					setUploadedFiles([...uploadedFiles, ...res.data.files]);
+					localStorage.setItem("uploadedFiles", JSON.stringify(res.data.files));
+					setFiles([]);
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: res.data.message,
+						toastVariant: "standard",
+						toastColor: "success",
+					});
+					updateUploadProgress(0);
+				})
+				.catch((err) => {
+					toast.handleToastClick({
+						toastOpen: true,
+						toastMessage: err.message,
+						toastVariant: "standard",
+						toastColor: "error",
+					});
+					setUploading(false);
+				});
+		}
+	};
+	const handleFileDelete = async (file) => {
+		axios
+			.delete(API_URL + "/api/uploads/" + file.filename)
+			.then((res) => {
+				const newFiles = uploadedFiles.filter(
+					(item) => item.path !== file.path,
+				);
+				setUploadedFiles(newFiles);
+				localStorage.setItem("uploadedFiles", JSON.stringify(newFiles));
+				toast.handleToastClick({
+					toastOpen: true,
+					toastMessage: res.data.message,
+					toastVariant: "standard",
+					toastColor: "success",
+				});
+			})
+			.catch((error) => {
+				toast.handleToastClick({
+					toastOpen: true,
+					toastMessage: error.message,
+					toastVariant: "standard",
+					toastColor: "error",
+				});
+				if(error.response.status===500) {
+				const newFiles = uploadedFiles.filter(
+					(item) => item.path !== file.path,
+				);
+				setUploadedFiles(newFiles);
+				localStorage.setItem("uploadedFiles", JSON.stringify(newFiles));
+				}
+			});
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -203,6 +321,7 @@ export default function Edit({ toast, loggedUser }) {
 				urlList,
 				isPrivate,
 				access,
+				files: uploadedFiles,
 				sendEmailAlerts,
 				postedBy: { ...loggedUser },
 			};
@@ -213,6 +332,7 @@ export default function Edit({ toast, loggedUser }) {
 				.then((res) => {
 					// console.log(res)
 					history.push("/dashboard");
+					localStorage.removeItem("uploadedFiles");
 				})
 				.catch((error) => {
 					if (error.response) {
@@ -361,6 +481,124 @@ export default function Edit({ toast, loggedUser }) {
 								})}
 							</List>
 						}
+
+						<ButtonGroup
+							size="small"
+							variant="outlined"
+							fullWidth
+							style={{
+								display: "flex",
+								justifyContent: "space-evenly",
+								alignContent: "center",
+								flexDirection: "row",
+								alignItems: "center",
+								border: "1px solid rgba(0, 0, 0, 0.23)",
+							}}
+							aria-label="small outlined button group"
+						>
+							<label htmlFor="icon-button-file" fullWidth>
+								<Button component="span">
+									{files.length !== 0
+										? `${files.length} ${
+												files.length === 1 ? "file" : "files"
+										  } selected`
+										: "Choose Files"}
+								</Button>
+							</label>
+							<input
+								id="icon-button-file"
+								type="file"
+								name="files"
+								multiple
+								style={{ display: "none" }}
+								accept={[
+									"image/*",
+									".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+									"image/jpeg",
+								].toString()}
+								onChange={(e) => {
+									if (e.target.files && e.target.files.length > 0) {
+										setFiles(e.target.files);
+									}
+								}}
+							/>
+							<div className={classes.wrapper}>
+								<Button
+									onClick={handleFileUpload}
+									startIcon={
+										<span className="material-icons-outlined">file_upload</span>
+									}
+									disabled={uploading || files.length === 0}
+								>
+									{files ? (
+										"Upload"
+									) : (
+										<CircularProgress
+											size={24}
+											className={classes.progress}
+											variant="determinate"
+											color="inherit"
+											value={uploadProgress}
+										/>
+									)}
+								</Button>
+								{uploading && (
+									<CircularProgress
+										size={24}
+										thickness={5.4}
+										className={classes.progress}
+										disableShrink
+										variant="determinate"
+										color="inherit"
+										value={uploadProgress}
+									/>
+								)}
+							</div>
+						</ButtonGroup>
+						{uploadedFiles.length > 0 && (
+							<List
+								dense
+								subheader={
+									<ListSubheader component="div" id="nested-list-subheader">
+										Uploaded Files
+									</ListSubheader>
+								}
+							>
+								{Array.from(uploadedFiles).map((file) => (
+									<ListItem>
+										<ListItemIcon className={classes.listIcon}>
+											<span className="material-icons-outlined">
+												description
+											</span>
+										</ListItemIcon>
+										<ListItemText
+											primary={file.filename}
+											secondary={formatSizeUnits(file.size)}
+										/>
+										<ListItemSecondaryAction>
+											<IconButton
+												edge="end"
+												aria-label="clear"
+												onClick={() =>
+													openInNewTab(API_URL + "/api/" + file.path)
+												}
+											>
+												<span className="material-icons-outlined">
+													visibility
+												</span>
+											</IconButton>
+											<IconButton
+												edge="end"
+												aria-label="clear"
+												onClick={() => handleFileDelete(file)}
+											>
+												<span className="material-icons-outlined">delete</span>
+											</IconButton>
+										</ListItemSecondaryAction>
+									</ListItem>
+								))}
+							</List>
+						)}
 
 						<div className={classes.formGroup}>
 							<div component="fieldset" className={classes.field}>

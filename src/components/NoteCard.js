@@ -20,6 +20,10 @@ import { MoreVertOutlined } from "@material-ui/icons";
 import { formatDistance } from "date-fns";
 import React from "react";
 import { titleCase } from "../utils";
+import { openInNewTab, formatSizeUnits } from "../utils/index";
+import configData from "../configs/config";
+
+const API_URL = process.env.REACT_APP_SERVER_URL || configData.SERVER_URL;
 
 const useStyles = makeStyles((theme) => ({
 	avatar: {
@@ -201,13 +205,49 @@ export default function NoteCard({
 											);
 										})}
 								</Box>
-								{/* <List  dense aria-label={note.title}>
+								{note.files.length > 0 && (
+									<>
+										<Box
+											display="flex"
+											flexWrap="wrap"
+											flexDirection="row"
+											justifyContent="center"
+											alignItems="center"
+										>
+											{note.files &&
+												note.files.map((file, key) => {
+													return (
+														<Box key={key}>
+															<Button
+																variant="text"
+																color="default"
+																size="small"
+																component="a"
+																style={{ textTransform: "none" }}
+																startIcon={
+																	<span className="material-icons-outlined">
+																		description
+																	</span>
+																}
+																onClick={() =>
+																	openInNewTab(API_URL + "/api/" + file.path)
+																}
+															>
+																{file.filename}
+															</Button>
+														</Box>
+													);
+												})}
+										</Box>
+										{/* <List  dense aria-label={note.title}>
 								<ListItem button>
 									<ListItemIcon>
 									</ListItemIcon>
 									<ListItemText primary="Drafts" />
 								</ListItem>
 							</List> */}
+									</>
+								)}
 							</>
 						)}
 					</CardContent>

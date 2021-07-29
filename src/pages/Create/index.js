@@ -25,7 +25,7 @@ import ShowWithAnimation from "../../components/ShowWithAnimation";
 import axios from "../../configs/axios";
 import { openInNewTab, formatSizeUnits } from "../../utils";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { grey } from "@material-ui/core/colors";
+import { green } from "@material-ui/core/colors";
 import { ButtonGroup } from "@material-ui/core";
 import configData from "../../configs/config";
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 		position: "relative",
 	},
 	progress: {
-		color: grey[700],
+		color: green[700],
 		position: "absolute",
 		top: "50%",
 		left: "50%",
@@ -86,12 +86,13 @@ export default function Edit({ toast, loggedUser }) {
 	});
 
 	useEffect(() => {
-		if (uploadedFiles !== undefined) {
-			Array.from(uploadedFiles).forEach((item) => {
-				console.log(item.name);
-				console.log(formatSizeUnits(item.size));
-			});
-		}
+		// if (uploadedFiles !== undefined) {
+		// 	Array.from(uploadedFiles).forEach((item) => {
+		// 		console.log(item.filename);
+		// 		console.log(formatSizeUnits(item.size));
+		// 	});
+		// }
+		console.log(uploadedFiles);
 	}, [uploadedFiles]);
 
 	const isPrivateChange = (event) => {
@@ -171,7 +172,7 @@ export default function Edit({ toast, loggedUser }) {
 					// our mocked response will always return true
 					// in practice, you would want to use the actual response object
 					setUploading(false);
-					setUploadedFiles(res.data.files);
+					setUploadedFiles([...uploadedFiles, ...res.data.files]);
 					localStorage.setItem("uploadedFiles", JSON.stringify(res.data.files));
 					setFile([]);
 					toast.handleToastClick({
@@ -237,7 +238,7 @@ export default function Edit({ toast, loggedUser }) {
 				urlList,
 				isPrivate,
 				access,
-				files: file,
+				files: uploadedFiles,
 				sendEmailAlerts,
 				postedBy: { ...loggedUser },
 			};
@@ -250,6 +251,7 @@ export default function Edit({ toast, loggedUser }) {
 						toastVariant: "standard",
 						toastColor: "success",
 					});
+					localStorage.removeItem("uploadedFiles");
 					history.push("/dashboard");
 				})
 				.catch((error) => {
@@ -414,37 +416,7 @@ export default function Edit({ toast, loggedUser }) {
 						})}
 					</List>
 				}
-				{/* <div className={classes.field}>
-					<FormLabel>Post Category</FormLabel>
-					<RadioGroup
-						name="category"
-						aria-label="category"
-						value={note.category}
-						onChange={(e) => onChange(e)}
-						style={{ marginLeft: ".75rem" }}
-					>
-						<FormControlLabel
-							value="money"
-							control={<Radio color="primary" size="small" />}
-							label="Money"
-						/>
-						<FormControlLabel
-							value="todos"
-							control={<Radio color="primary" size="small" />}
-							label="Todos"
-						/>
-						<FormControlLabel
-							value="reminders"
-							control={<Radio color="primary" size="small" />}
-							label="Reminders"
-						/>
-						<FormControlLabel
-							value="work"
-							control={<Radio color="primary" size="small" />}
-							label="Work"
-						/>
-					</RadioGroup>
-				</div> */}
+
 				<ButtonGroup
 					size="small"
 					variant="outlined"
@@ -530,7 +502,7 @@ export default function Edit({ toast, loggedUser }) {
 						{Array.from(uploadedFiles).map((file) => (
 							<ListItem>
 								<ListItemIcon className={classes.listIcon}>
-									<span className="material-icons">insert_drive_file</span>
+									<span className="material-icons-outlined">description</span>
 								</ListItemIcon>
 								<ListItemText
 									primary={file.filename}

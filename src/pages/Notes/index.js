@@ -6,6 +6,9 @@ import { useHistory } from "react-router-dom";
 import Loading from "../../components/Loading";
 import NoteCard from "../../components/NoteCard";
 import axios from "../../configs/axios";
+import configData from "../../configs/config";
+
+const API_URL = process.env.REACT_APP_SERVER_URL || configData.SERVER_URL;
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -92,6 +95,11 @@ export default function Notes({ toast, loggedUser }) {
 				toastColor: "warning",
 			});
 			return;
+		}
+		if (note.files) {
+			note.files.map((file) => {
+				axios.delete(API_URL + "/api/uploads/" + file.filename);
+			});
 		}
 		axios
 			.delete("/api/notes/" + note._id)
