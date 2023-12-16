@@ -45,7 +45,11 @@
 	"exclude": ["node_modules", "**/node_modules/**/*", "build"]
 } -->
 
-# Getting Started with Create React App
+# ACADEMIC BULLETIN BOARD
+USE NODE JS VERSION v14.17.3
+
+## Getting Started with Create React App
+
 
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
